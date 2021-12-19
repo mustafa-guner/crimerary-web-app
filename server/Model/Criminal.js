@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 
 const criminalSchema = mongoose.Schema({
-  fullName: {
+  firstName: {
     type: String,
     required: true,
   },
+  lastName: { type: String, required: true },
   photo: { type: String },
   dob: {
     type: Date,
@@ -18,6 +19,9 @@ const criminalSchema = mongoose.Schema({
     type: String,
     enum: ["male", "female"],
     required: true,
+  },
+  bio: {
+    type: String,
   },
 });
 

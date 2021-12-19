@@ -1,10 +1,7 @@
 import React from "react";
-import NavigationBar from "../../components/Admin/layout/Navbar";
 import { logout } from "../../redux/actions/auth";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Menu from "../../components/Admin/layout/Menu";
-import Summary from "./Summary";
 
 const Dashboard = ({ children }) => {
   return (
@@ -14,7 +11,9 @@ const Dashboard = ({ children }) => {
           <div id="content" className="my-2">
             <hr />
             {children}
+            <hr />
           </div>
+
           <footer className="sticky-footer bg-white p-3 m">
             <div className="container my-auto">
               <div className="copyright text-center my-auto">

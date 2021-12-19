@@ -13,6 +13,8 @@ import Criminals from "./pages/Admin/Criminals";
 import MissingPeople from "./pages/Admin/MissingPeople";
 import Forms from "./pages/Admin/Forms";
 import Summary from "./pages/Admin/Summary";
+import CriminalsForm from "./components/Admin/layout/CriminalsForm";
+import CrimesForm from "./components/Admin/layout/CrimesForm";
 
 if (window.localStorage.getItem("token")) {
   store.dispatch(loadUser());
@@ -49,6 +51,25 @@ function App() {
             element={
               <PrivateRoute>
                 <Crimes />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            exact
+            path={"/add-criminal"}
+            element={
+              <PrivateRoute>
+                <CriminalsForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path={"/add-crime-post"}
+            element={
+              <PrivateRoute>
+                <CrimesForm />
               </PrivateRoute>
             }
           />

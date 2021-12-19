@@ -37,7 +37,10 @@ const Login = ({ isAuth, login, loading }) => {
         flexDirection: "column",
       }}
     >
-      <h1>Admin Panel Login</h1>
+      <h1 className="display-2 my-2">
+        Crime<span className="text-danger">Rary</span>
+      </h1>
+      <p className="lead text-underline">Admin Panel Login</p>
       <form onSubmit={handleSubmit}>
         <label className="d-block lead">username:</label>
         <input

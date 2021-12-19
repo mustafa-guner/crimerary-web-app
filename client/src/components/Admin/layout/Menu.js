@@ -11,6 +11,7 @@ const Menu = ({ handleLogout }) => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/dashboard">Home</Nav.Link>
+
             <Nav.Link href="/criminals">Criminals</Nav.Link>
             <Nav.Link href="/crimes">Crimes</Nav.Link>
             <Nav.Link href="/missing-people">Missing People</Nav.Link>
