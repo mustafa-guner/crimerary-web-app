@@ -21,7 +21,7 @@ const crimeSchema = mongoose.Schema({
 
   photo: {
     type: String,
-    required: true,
+    // required: true,
     default: "crime.png",
   },
 
@@ -34,12 +34,6 @@ const crimeSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
     required: true,
-  },
-
-  status: {
-    type: String,
-    enum: ["open", "closed"],
-    default: "open",
   },
 
   createdBy: {

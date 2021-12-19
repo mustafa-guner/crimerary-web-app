@@ -1,27 +1,40 @@
 const { sendJWTokensToClient } = require("../Helper/Auth/auth");
-const User = require("../Model/User");
+const Admin = require("../Model/Admin");
 
 module.exports = {
   login: async (req, res, next) => {
     try {
       const { password, username } = req.body;
-      const user = await User.findOne({ username: username }).select(
+      const admin = await Admin.findOne({ username: username }).select(
         "+password"
       );
-      if (!user)
+      if (!admin)
         return res.status(404).json({
           success: false,
           message: "Account is not found. Please contact with the admin.",
         });
 
-      if (!user.comparePasswords(password)) {
+      if (!admin.comparePasswords(password)) {
         return res.status(404).json({
           success: false,
           message: "Incorrect password entered.",
         });
       }
 
-      return sendJWTokensToClient(user, res);
+      return sendJWTokensToClient(admin, res);
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  },
+
+  testAuth: async (req, res, next) => {
+    try {
+      const admin = await Admin.findById(req.auth._id);
+      console.log(req.auth._id);
+      return res.status(200).json(admin);
     } catch (error) {
       return res.status(500).json({
         success: false,

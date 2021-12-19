@@ -1,0 +1,49 @@
+import React from "react";
+import PropTypes from "prop-types";
+import { Navigate } from "react-router-dom";
+import { Navbar, Container, Nav } from "react-bootstrap";
+
+const Menu = ({ handleLogout }) => {
+  return (
+    <Navbar collapseOnSelect expand="lg" className="my-4">
+      <Container>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/dashboard">Home</Nav.Link>
+            <Nav.Link href="/criminals">Criminals</Nav.Link>
+            <Nav.Link href="/crimes">Crimes</Nav.Link>
+            <Nav.Link href="/missing-people">Missing People</Nav.Link>
+            <Nav.Link href="/forms">Forms</Nav.Link>
+          </Nav>
+          <Nav>
+            <Nav.Link
+              className="nav-link"
+              href="#"
+              id="userDropdown"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span className="mr-2 d-none d-lg-inline text-gray-600 small">
+                Mustafa Guner
+              </span>
+              <img
+                className="img-profile rounded-circle"
+                style={{ width: "30px", height: "30px" }}
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Alesso_profile.png/467px-Alesso_profile.png"
+              />
+            </Nav.Link>
+            <Nav.Link className="nav-link" onClick={handleLogout}>
+              Logout
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
+
+Menu.propTypes = {};
+
+export default Menu;

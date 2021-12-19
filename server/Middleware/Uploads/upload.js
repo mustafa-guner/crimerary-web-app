@@ -9,9 +9,9 @@ const storage = multer.diskStorage({
   },
 
   filename: function (req, file, cb) {
-    console.log(req.file);
-    req.image = file.fieldname + req.user._id;
-    cb(null, req.image);
+    console.log(req.image);
+    req.image = file.fieldname + req.auth._id;
+    cb(null, req.image + path.extname(file.originalname));
   },
 });
 

@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
 
 const criminalSchema = mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
+  fullName: {
     type: String,
     required: true,
   },
   photo: { type: String },
   dob: {
     type: Date,
+  },
+  caught: {
+    //Is Criminal got away? (wanted) or already caught
+    type: Boolean,
+    default: true,
   },
   gender: {
     type: String,
@@ -20,4 +21,4 @@ const criminalSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Crime", criminalSchema);
+module.exports = mongoose.model("Criminal", criminalSchema);

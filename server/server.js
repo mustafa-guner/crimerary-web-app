@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const bp = require("body-parser");
 const cors = require("cors");
 const { connectDB } = require("./Helper/Database/connectDB");
+const morgan = require("morgan");
 
 dotenv.config({
   path: path.join(__dirname, "/Config/dotenv/.env"),
@@ -23,6 +24,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(morgan("dev"));
 
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: false }));

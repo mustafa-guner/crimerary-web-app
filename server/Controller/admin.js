@@ -1,27 +1,21 @@
-const User = require("../Model/User");
+const Admin = require("../Model/Admin");
 const Crime = require("../Model/Crime");
+const Criminal = require("../Model/Criminal");
 
 module.exports = {
   createUser: async (req, res, next) => {
     try {
-      const { email, password, username, firstName, lastName, role } = req.body;
+      const { email, password, username, firstName, lastName } = req.body;
 
-      const user = await User.findOne({ email: email });
-      if (user)
-        return res
-          .status(400)
-          .json({ success: false, message: "User is already exists!" });
-
-      const newUser = new User({
+      const admin = new Admin({
         email,
         password,
         username,
         firstName,
         lastName,
-        role,
       });
 
-      await newUser.save();
+      await admin.save();
 
       return res.status(201).json({
         success: true,
@@ -37,9 +31,7 @@ module.exports = {
   removeUser: async (req, res, next) => {
     try {
       const id = req.params.id;
-      console.log(req.params);
-      console.log(id);
-      await User.findByIdAndRemove(id);
+      await Admin.findByIdAndRemove(id);
       return res.status(200).json({
         success: true,
       });
@@ -55,6 +47,7 @@ module.exports = {
     try {
       const { title, description, location } = req.body;
       const crimePost = await Crime.findOne({ title, description });
+
       if (crimePost)
         return res.status(400).json({
           success: false,
@@ -65,7 +58,7 @@ module.exports = {
         title,
         description,
         location,
-        createdBy: req.user.id,
+        createdBy: req.auth._id,
       });
 
       await crime.save();
@@ -104,44 +97,70 @@ module.exports = {
   },
 
   editCredentials: async (req, res, next) => {
-    try {
-      const { username, firstName, lastName, email } = req.body;
-      const id = req.params.id;
-      let updates = {};
+    // try {
+    //   const { username, firstName, lastName, email } = req.body;
+    //   const id = req.params.id;
+    //   let updates = {};
+    //   console.log(req.file);
+    //   if (username) {
+    //     updates["username"] = username;
+    //   }
+    //   if (firstName) {
+    //     updates["firstName"] = firstName;
+    //   }
+    //   if (lastName) {
+    //     updates["lastName"] = lastName;
+    //   }
+    //   if (email) {
+    //     updates["email"] = email;
+    //   }
+    //   if (req.image) {
+    //   }
+    //   const user = await Admin.findByIdAndUpdate(
+    //     id,
+    //     { ...updates },
+    //     { new: true }
+    //   );
+    //   return res.status(200).json({
+    //     success: true,
+    //     user: user,
+    //   });
+    // } catch (error) {
+    //   return res.status(500).json({
+    //     success: false,
+    //     error: error.message,
+    //   });
+    // }
+  },
 
-      console.log(req.file);
-      if (username) {
-        updates["username"] = username;
-      }
-      if (firstName) {
-        updates["firstName"] = firstName;
-      }
-
-      if (lastName) {
-        updates["lastName"] = lastName;
-      }
-
-      if (email) {
-        updates["email"] = email;
-      }
-
-      if (req.image) {
-      }
-
-      const user = await User.findByIdAndUpdate(
-        id,
-        { ...updates },
-        { new: true }
-      );
-      return res.status(200).json({
-        success: true,
-        user: user,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        error: error.message,
-      });
-    }
+  createCriminal: async (req, res, next) => {
+    // try {
+    //   const { fullName, gender, dob } = req.body;
+    //   let criminalDetails = {};
+    //   if (fullName) criminalDetails["fullName"] = fullName;
+    //   if (gender) criminalDetails["gender"] = gender;
+    //   if (dob) criminalDetails["dob"] = dob;
+    //   if (req.file) criminalDetails["photo"] = req.file.filename;
+    //   const criminal = await Criminal.findOne({ fullName });
+    //   if (criminal)
+    //     return res.status(400).json({
+    //       success: false,
+    //       message: "Criminal is already exists",
+    //     });
+    //   console.log(req.file.filename);
+    //   const newCriminal = new Criminal({
+    //     ...criminalDetails,
+    //   });
+    //   await newCriminal.save();
+    //   return res.status(201).json({
+    //     success: true,
+    //     criminal: newCriminal,
+    //   });
+    // } catch (error) {
+    //   return res.status(500).json({
+    //     success: false,
+    //     error: error.message,
+    //   });
+    // }
   },
 };

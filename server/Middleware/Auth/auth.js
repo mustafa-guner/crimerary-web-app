@@ -1,5 +1,5 @@
 const expressJWT = require("express-jwt");
-const User = require("../../Model/User");
+const Admin = require("../../Model/Admin");
 
 module.exports = {
   checkAuthorization: expressJWT({
@@ -11,19 +11,13 @@ module.exports = {
   adminAccess: async (req, res, next) => {
     try {
       const id = req.auth._id;
-      const user = await User.findById(id);
-      if (!user)
+      const admin = await Admin.findById(id);
+      if (!admin)
         return res.status(404).json({
           success: false,
           message: "Account is not found.",
         });
 
-      if (user.role !== "admin") {
-        return res.status(401).json({
-          success: false,
-          message: "You are not authorized!",
-        });
-      }
       return next();
     } catch (error) {
       return res.status(500).json({
