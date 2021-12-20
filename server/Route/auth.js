@@ -10,8 +10,11 @@ const { checkAuthorization, adminAccess } = require("../Middleware/Auth/auth");
 //LIMITERS
 const { loginLimiter } = require("../Middleware/Limiters/limiter");
 
-authRouter.use(loginLimiter);
-authRouter.post("/login", [loginValidation, errorValidation], login);
+authRouter.post(
+  "/login",
+  [loginValidation, errorValidation, loginLimiter],
+  login
+);
 authRouter.get("/me", [checkAuthorization, adminAccess], dashboard);
 authRouter.get("/testAuth", [checkAuthorization, adminAccess], testAuth);
 module.exports = authRouter;
