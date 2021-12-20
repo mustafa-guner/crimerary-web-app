@@ -47,7 +47,7 @@ function App() {
 
           <Route
             exact
-            path={"/crimes"}
+            path={"/dashboard/crimes"}
             element={
               <PrivateRoute>
                 <Crimes />
@@ -57,7 +57,7 @@ function App() {
 
           <Route
             exact
-            path={"/add-criminal"}
+            path={"/dashboard/add-criminal"}
             element={
               <PrivateRoute>
                 <CriminalsForm />
@@ -66,7 +66,7 @@ function App() {
           />
           <Route
             exact
-            path={"/add-crime-post"}
+            path={"/dashboard/add-crime-post"}
             element={
               <PrivateRoute>
                 <CrimesForm />
@@ -76,7 +76,7 @@ function App() {
 
           <Route
             exact
-            path={"/criminals"}
+            path={"/dashboard/criminals"}
             element={
               <PrivateRoute>
                 <Criminals />
@@ -86,7 +86,7 @@ function App() {
 
           <Route
             exact
-            path={"/missing-people"}
+            path={"/dashboard/missing-people"}
             element={
               <PrivateRoute>
                 <MissingPeople />
@@ -96,7 +96,7 @@ function App() {
 
           <Route
             exact
-            path={"/forms"}
+            path={"/dashboard/forms"}
             element={
               <PrivateRoute>
                 <Forms />

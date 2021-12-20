@@ -7,8 +7,8 @@ module.exports = {
       console.log(errors.array());
       return res.status(422).json({
         success: false,
-        // errors: errors.array()[0].msg, //for latest error we get to display to screen
-        errors: errors.array(),
+        errors: errors.array()[0],
+        // errors: errors.array(),
       });
     }
 

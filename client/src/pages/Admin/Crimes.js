@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Crimes = (props) => {
   return (
     <div>
-      <Link to="/add-crime-post" className="mb-3 nav-link pl-0">
+      <Link to="/dashboard/add-crime-post" className="mb-3 nav-link pl-0">
         Add New Crime
       </Link>
       <CrimesList />

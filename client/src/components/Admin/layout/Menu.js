@@ -12,10 +12,10 @@ const Menu = ({ handleLogout }) => {
           <Nav className="me-auto">
             <Nav.Link href="/dashboard">Home</Nav.Link>
 
-            <Nav.Link href="/criminals">Criminals</Nav.Link>
-            <Nav.Link href="/crimes">Crimes</Nav.Link>
-            <Nav.Link href="/missing-people">Missing People</Nav.Link>
-            <Nav.Link href="/forms">Forms</Nav.Link>
+            <Nav.Link href="/dashboard/criminals">Criminals</Nav.Link>
+            <Nav.Link href="/dashboard/crimes">Crimes</Nav.Link>
+            <Nav.Link href="/dashboard/missing-people">Missing People</Nav.Link>
+            <Nav.Link href="/dashboard/forms">Forms</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link
@@ -31,8 +31,8 @@ const Menu = ({ handleLogout }) => {
               </span>
               <img
                 className="img-profile rounded-circle"
-                style={{ width: "30px", height: "30px" }}
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Alesso_profile.png/467px-Alesso_profile.png"
+                style={{ width: "30px", height: "30px", objectFit: "cover" }}
+                src="https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
               />
             </Nav.Link>
             <Nav.Link className="nav-link" onClick={handleLogout}>

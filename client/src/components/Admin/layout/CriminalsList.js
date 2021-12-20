@@ -5,7 +5,7 @@ import { Table, Row, Col } from "react-bootstrap";
 const CriminalsTable = (props) => {
   return (
     <div>
-      <Row xs={1} md={4} className="g-4">
+      <Row xs={1} md={5} className="g-4">
         {Array.from({ length: 8 }).map((_, idx) => (
           <Col>
             <div class="card p-4">

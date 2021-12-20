@@ -5,7 +5,7 @@ import { Form, Row, Col } from "react-bootstrap";
 const CrimesForm = (props) => {
   return (
     <div>
-      <Link to="/crimes" className="mb-3 nav-link pl-0">
+      <Link to="/dashboard/crimes" className="mb-3 nav-link pl-0">
         <i class="fas fa-long-arrow-alt-left"></i> Back
       </Link>
       <h1 className="lead mb-4" style={{ fontSize: "2rem" }}>

@@ -1,6 +1,7 @@
 import authAPI from "../../API/API";
 import * as types from "./actionTypes";
 import { clearDashboard } from "./dashboard";
+import Swal from "sweetalert2";
 
 export const loadUser = () => async (dispatch) => {
   try {
@@ -48,17 +49,43 @@ export const login =
 
       dispatch(loadUser());
     } catch (error) {
-      console.log(error);
+      const errors = error.response.data.errors;
+
+      if (errors) {
+        return Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: `${errors.msg}`,
+        });
+      }
+
+      return Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: `${error.response.data.message}`,
+      });
     }
   };
 
 export const logout = () => async (dispatch) => {
-  dispatch({
-    type: types.LOGOUT,
-  });
-  dispatch({
-    type: types.CLEAR_DASHBOARD,
-  });
+  Swal.fire({
+    title: "Leaving ? 🥺",
+    text: "Are you sure want to log out?",
+    icon: "warning",
+    showCancelButton: true,
 
-  dispatch(clearDashboard());
+    confirmButtonText: "Yes, log out!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Logged out!", "Logged out successfully.", "success");
+      dispatch({
+        type: types.LOGOUT,
+      });
+      dispatch({
+        type: types.CLEAR_DASHBOARD,
+      });
+
+      dispatch(clearDashboard());
+    }
+  });
 };

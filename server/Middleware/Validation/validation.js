@@ -36,12 +36,7 @@ module.exports = {
 
   loginValidation: [
     check("username").not().isEmpty().withMessage("Username is required."),
-    check("password")
-      .not()
-      .isEmpty()
-      .withMessage("Password is required.")
-      .isLength({ min: 6 })
-      .withMessage("Password must be at least 6 chars long"),
+    check("password").not().isEmpty().withMessage("Password is required."),
   ],
 
   crimeValidation: [

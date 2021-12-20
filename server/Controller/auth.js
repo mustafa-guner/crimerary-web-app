@@ -11,13 +11,13 @@ module.exports = {
       if (!admin)
         return res.status(404).json({
           success: false,
-          message: "Account is not found. Please contact with the admin.",
+          message: "Account is not found.",
         });
 
       if (!admin.comparePasswords(password)) {
         return res.status(404).json({
           success: false,
-          message: "Incorrect password entered.",
+          message: "The password you entered is incorrect. Please try again.",
         });
       }
 

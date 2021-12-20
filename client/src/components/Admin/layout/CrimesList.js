@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Row, Col, Card } from "react-bootstrap";
 const CrimesList = (props) => {
   return (
-    <Row xs={1} md={4} className="g-4">
+    <Row xs={1} md={5} className="g-4">
       {Array.from({ length: 8 }).map((_, idx) => (
         <Col>
           <Card>

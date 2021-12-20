@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 import { login } from "../../redux/actions/auth";
 import { Navigate } from "react-router-dom";
 
-const Login = ({ isAuth, login, loading }) => {
+const Login = ({ isAuth, login }) => {
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "musdy.guner",
     password: "asdf123",
@@ -21,12 +23,16 @@ const Login = ({ isAuth, login, loading }) => {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
-    login(formData);
+
+    login(formData).then(() => {
+      setLoading(false);
+    });
   };
 
   if (isAuth) return <Navigate to="/dashboard" />;
-
+  console.log(loading);
   return (
     <div
       style={{
@@ -41,12 +47,18 @@ const Login = ({ isAuth, login, loading }) => {
         Crime<span className="text-danger">Rary</span>
       </h1>
       <p className="lead text-underline">Admin Panel Login</p>
+      {loading && (
+        <div className="spinner-border " role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <label className="d-block lead">username:</label>
         <input
           type="text"
           name="username"
           value={username}
+          disabled={loading}
           placeholder="Enter username"
           onChange={(e) => handleChange(e)}
         />
@@ -56,11 +68,14 @@ const Login = ({ isAuth, login, loading }) => {
           type="password"
           name="password"
           value={password}
+          disabled={loading}
           placeholder="Enter password"
           onChange={(e) => handleChange(e)}
         />
 
-        <button className="d-block my-2 btn btn-success">Login</button>
+        <button disabled={loading} className="d-block my-2 btn btn-dark w-100">
+          Login
+        </button>
       </form>
     </div>
   );
@@ -73,7 +88,6 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth,
-  loading: state.auth.loading,
 });
 
 export default connect(mapStateToProps, { login })(Login);
