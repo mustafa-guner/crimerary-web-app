@@ -20,6 +20,7 @@ const CrimesForm = ({
   //Make animated things when removing select option data
   const animatedComponents = makeAnimated();
 
+  const [disable, setDisable] = useState(false);
   const [image, setImage] = useState({ photo: "" });
   const [datas, setDatas] = useState({
     title: "Galatya",
@@ -41,7 +42,7 @@ const CrimesForm = ({
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[e.target.files.length - 1];
+    const file = e.target.files[0];
 
     setImage({
       ...image,
@@ -53,20 +54,6 @@ const CrimesForm = ({
     return setSelectedCriminals([...criminal]);
   };
 
-  // let criminalsOptions = [
-  //   // { value: "jack", label: "Jack Daniel" },
-  //   // { value: "mike", label: "Mike Star" },
-  //   // { value: "steve", label: "Steve Floor" },
-  // ];
-
-  // criminals &&
-  //   criminals.forEach((criminal) => {
-  //     criminalsOptions.push({
-  //       value: criminal._id,
-  //       label: `${criminal.firstName} ${criminal.lastName}`,
-  //     });
-  //   });
-
   const { title, description, location, commitedAt, category } = datas;
 
   const handleSubmit = (e) => {
@@ -77,10 +64,6 @@ const CrimesForm = ({
 
     const formData = new FormData();
 
-    // Object.keys(datas).forEach((data) => {
-    //   formData.append(data, datas[data]);
-    // });
-
     formData.append("photo", datas.photo);
     formData.append("title", title);
     formData.append("description", description);
@@ -88,17 +71,10 @@ const CrimesForm = ({
     formData.append("commitedAt", commitedAt);
     formData.append("category", category);
     formData.append("criminals", JSON.stringify(datas.criminals));
-
-    // console.log(formData);
-    // console.log(formData.get("title"));
-    // console.log(formData.get("description"));
-    // console.log(formData.get("location"));
-    // console.log(formData.get("category"));
-    // console.log(formData.get("commitedAt"));
-    // console.log(formData.get("photo"));
-    // console.log(formData.get("criminals"));
-
-    createCrime(formData);
+    setDisable(true);
+    createCrime(formData).then(() => {
+      setDisable(false);
+    });
 
     //Empty inputs after submit
 
@@ -123,29 +99,41 @@ const CrimesForm = ({
       <Form onSubmit={handleSubmit}>
         <Row xs={1} md={3}>
           <Col className="my-2">
-            <Form.Label>Enter Title of Crime</Form.Label>
+            <Form.Label>
+              Enter Title of Crime{" "}
+              <span className="text-black-50">(Must be unique)</span>
+            </Form.Label>
             <Form.Control
               placeholder="Title"
               name="title"
+              disabled={disable}
               value={title}
               onChange={(e) => handleChange(e)}
             />
           </Col>
           <Col className="my-2">
-            <Form.Label>Enter Location of Crime</Form.Label>
+            <Form.Label>
+              Enter Location of Crime{" "}
+              <span className=" text-danger">(*Required)</span>
+            </Form.Label>
             <Form.Control
               placeholder="Location"
               name="location"
+              disabled={disable}
               value={location}
               onChange={(e) => handleChange(e)}
             />
           </Col>
           <Col className="my-2">
             <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Upload Image of Crime</Form.Label>
+              <Form.Label>
+                Upload Image of Crime{" "}
+                <span className=" text-danger">(*Required)</span>
+              </Form.Label>
               <Form.Control
                 type="file"
                 name="photo"
+                disabled={disable}
                 onChange={(e) => handleImageChange(e)}
               />
             </Form.Group>
@@ -153,11 +141,18 @@ const CrimesForm = ({
         </Row>
         <Row className="my-4" xs={1} md={3}>
           <Col className="my-2">
-            <Form.Label>Choose Criminals</Form.Label>
+            <Form.Label>
+              Choose Criminals <span className=" text-danger">(*Required)</span>
+              <p className="text-black-50 mb-0" style={{ fontSize: "12px" }}>
+                Please choose the criminals from downside (dropdown menu).
+              </p>
+            </Form.Label>
+
             <Select
               isDisabled={loading}
               placeholder="Choose criminal(s)"
               isSearchable
+              isDisabled={disable}
               value={criminals.label}
               options={
                 criminals &&
@@ -175,10 +170,18 @@ const CrimesForm = ({
           </Col>
           <Col className="my-2">
             <Form.Group controlId="dob">
-              <Form.Label>Choose Crime Commited Date</Form.Label>
+              <Form.Label>
+                Choose Crime Commited Date{" "}
+                <p className="text-black-50 mb-0" style={{ fontSize: "12px" }}>
+                  If you dont know the date leave it as empty. (Today's date
+                  picked by default.)
+                </p>
+              </Form.Label>
+
               <Form.Control
                 type="date"
                 name="dob"
+                disabled={disable}
                 placeholder="Date of Birth"
                 name="commitedAt"
                 onChange={(e) => handleChange(e)}
@@ -187,11 +190,19 @@ const CrimesForm = ({
           </Col>
 
           <Col className="my-2">
-            <Form.Label>Select Crime Category</Form.Label>
+            <Form.Label>
+              Select Crime Category{" "}
+              <span className=" text-danger">(*Required)</span>
+              <p className="text-black-50 mb-0" style={{ fontSize: "12px" }}>
+                Please choose the category from downside (dropdown menu).
+              </p>
+            </Form.Label>
             <Form.Control
               name="category"
               className="me-sm-2"
               value={category}
+              disabled={disable}
+              onChange={(e) => handleChange(e)}
               id="inlineFormCustomSelect"
             >
               {/* <option value="0">Choose...</option>
@@ -204,11 +215,16 @@ const CrimesForm = ({
 
         <Row xs={1} md={1} className="my-4">
           <Col className="my-2">
+            <Form.Label>
+              Brief Description of Crime{" "}
+              <span className=" text-danger">(*Required)</span>
+            </Form.Label>
             <Form.Control
               as="textarea"
               placeholder="Leave description here"
               style={{ height: "100px" }}
               name="description"
+              disabled={disable}
               value={description}
               onChange={(e) => handleChange(e)}
             />
@@ -216,8 +232,20 @@ const CrimesForm = ({
         </Row>
         <Row xs={1} md={4}>
           <Col className="my-2">
-            <button className="btn btn-success  w-100 text-center">Save</button>
+            <button
+              disabled={disable}
+              className="btn btn-success  w-100 text-center"
+            >
+              Save
+            </button>
           </Col>
+          {disable && (
+            <Col className="align-self-center">
+              <div className="spinner-border text-success " role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </Col>
+          )}
         </Row>
       </Form>
     </div>

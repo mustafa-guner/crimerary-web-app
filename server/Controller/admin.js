@@ -2,6 +2,7 @@ const Admin = require("../Model/Admin");
 const Crime = require("../Model/Crime");
 const Criminal = require("../Model/Criminal");
 const Category = require("../Model/Category");
+const urlencoded = require("body-parser/lib/types/urlencoded");
 module.exports = {
   createUser: async (req, res, next) => {
     try {
@@ -46,6 +47,20 @@ module.exports = {
   createCrime: async (req, res, next) => {
     try {
       const { title, description, location, category, criminals } = req.body;
+      const savedCriminals = JSON.parse(criminals);
+      if (
+        !title ||
+        !description ||
+        !location ||
+        !category ||
+        savedCriminals.length === 0 ||
+        !req.file
+      )
+        return res.status(400).json({
+          success: false,
+          message: "Please fill all the required blanks.",
+        });
+
       const url = req.protocol + "://" + req.get("host");
 
       const crimePost = await Crime.findOne({ title, description });
@@ -53,7 +68,8 @@ module.exports = {
       if (crimePost)
         return res.status(400).json({
           success: false,
-          message: "Post is already created before.",
+          message:
+            "The crime post that has the same title had created before. Please use unique titles.",
         });
 
       const newCategory = new Category({ category });
@@ -68,7 +84,7 @@ module.exports = {
 
       crime.category.push(newCategory._id);
 
-      JSON.parse(criminals).forEach((criminal) => {
+      savedCriminals.forEach((criminal) => {
         crime.criminals.push(criminal.value);
       });
 

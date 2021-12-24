@@ -15,7 +15,11 @@ const Crimes = ({ getCrimes, crimes: { crimes, loading } }) => {
         Add New Crime
       </Link>
 
-      {loading ? <h1>Loading</h1> : <CrimesList crimes={crimes} />}
+      {loading ? (
+        <h1>Loading</h1>
+      ) : (
+        <CrimesList crimes={crimes} loading={loading} />
+      )}
     </div>
   );
 };

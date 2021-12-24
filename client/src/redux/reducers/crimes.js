@@ -40,6 +40,14 @@ const crime = (state = initialState, action) => {
         loading: false,
       };
 
+    case types.ERROR_CRIME:
+      return {
+        ...state,
+        crime: null,
+        crimes: [],
+        loading: false,
+      };
+
     case types.REMOVE_CRIME:
       return {
         ...state,

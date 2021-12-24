@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 export const createCrime = (details) => async (dispatch) => {
   try {
+    console.log(details);
     const token = window.localStorage.getItem("token");
     const { data } = await crimeAPI("/admin/create-new-crime", {
       method: "POST",
@@ -11,6 +12,7 @@ export const createCrime = (details) => async (dispatch) => {
       data: details,
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
@@ -26,7 +28,16 @@ export const createCrime = (details) => async (dispatch) => {
       confirmButtonColor: "#212529",
     });
   } catch (error) {
-    console.log(error.response);
+    dispatch({
+      type: types.ERROR_CRIME,
+    });
+
+    return Swal.fire({
+      icon: "error",
+      title: "Crime is not created",
+      confirmButtonColor: "#212529",
+      text: `${error.response.data.message}`,
+    });
   }
 };
 

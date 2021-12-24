@@ -57,6 +57,9 @@ module.exports = {
       .not()
       .isEmpty()
       .withMessage("Time of crime is required."),
+    check("photo").custom((value, req) => {
+      console.log(req.file);
+    }),
   ],
 
   criminalValidation: [

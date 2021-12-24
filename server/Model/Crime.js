@@ -3,19 +3,16 @@ const mongoose = require("mongoose");
 const crimeSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true,
   },
 
   description: {
     type: String,
-    required: true,
   },
 
   category: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
     },
   ],
 
@@ -23,30 +20,25 @@ const crimeSchema = mongoose.Schema({
     {
       type: mongoose.Schema.ObjectId,
       ref: "Criminal",
-      required: true,
     },
   ],
 
   photo: {
     type: String,
-    // required: true,
-    default: "crime.png",
   },
 
   location: {
     type: String,
-    required: true,
   },
 
   commitedAt: {
     type: Date,
     default: Date.now(),
-    required: true,
   },
 
   createdBy: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
+    ref: "Admin",
   },
 });
 

@@ -20,6 +20,7 @@ export const CREATE_CRIME = "CREATE_CRIME";
 export const REMOVE_CRIME = "REMOVE_CRIME";
 export const GET_CRIMES = "GET_CRIMES";
 export const EDIT_CRIME = "EDIT_CRIME";
+export const ERROR_CRIME = "ERROR_CRIME";
 
 //Criminal Types
 export const CREATE_CRIMINAL = "CREATE_CRIMINAL";

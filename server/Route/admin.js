@@ -48,13 +48,7 @@ adminRoute.post(
 
 adminRoute.post(
   "/create-new-crime",
-  [
-    checkAuthorization,
-    adminAccess,
-    crimeValidation,
-    errorValidation,
-    uploadImage.single("photo"),
-  ],
+  [checkAuthorization, adminAccess, uploadImage.single("photo")],
   createCrime
 );
 
