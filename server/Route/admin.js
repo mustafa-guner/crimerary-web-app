@@ -48,11 +48,17 @@ adminRoute.post(
 
 adminRoute.post(
   "/create-new-crime",
-  [checkAuthorization, adminAccess, crimeValidation, errorValidation],
+  [
+    checkAuthorization,
+    adminAccess,
+    crimeValidation,
+    errorValidation,
+    uploadImage.single("photo"),
+  ],
   createCrime
 );
 
-adminRoute.delete(
+adminRoute.post(
   "/remove-crime/:crimeID",
   [checkAuthorization, adminAccess],
   removeCrime

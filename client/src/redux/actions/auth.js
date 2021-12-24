@@ -13,13 +13,12 @@ export const loadUser = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+
     return dispatch({
       type: types.LOAD_USER,
       payload: data,
     });
   } catch (error) {
-    console.log(error);
     return dispatch({
       type: types.AUTH_ERROR,
     });
@@ -59,6 +58,12 @@ export const login =
         });
       }
 
+      if (error.response.status === 429) {
+        dispatch({
+          type: types.IS_RESTRICTED,
+        });
+      }
+
       return Swal.fire({
         icon: "error",
         title: "Login Failed",
@@ -69,15 +74,22 @@ export const login =
 
 export const logout = () => async (dispatch) => {
   Swal.fire({
-    title: "Leaving ? 🥺",
+    title: "Leaving ?",
     text: "Are you sure want to log out?",
-    icon: "warning",
-    showCancelButton: true,
 
+    showCancelButton: true,
+    cancelButtonColor: "#DC3545",
+    confirmButtonColor: "#212529",
     confirmButtonText: "Yes, log out!",
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Logged out!", "Logged out successfully.", "success");
+      Swal.fire({
+        confirmButtonColor: "#212529",
+        title: "Logged out!",
+        text: "Logged out successfully.",
+        showCancelButton: false,
+        icon: "success",
+      });
       dispatch({
         type: types.LOGOUT,
       });

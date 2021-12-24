@@ -11,7 +11,7 @@ module.exports = {
       if (!admin)
         return res.status(404).json({
           success: false,
-          message: "Account is not found.",
+          message: "Wrong Credentials",
         });
 
       if (!admin.comparePasswords(password)) {

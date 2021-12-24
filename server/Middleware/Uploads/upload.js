@@ -1,31 +1,32 @@
 const multer = require("multer");
 const path = require("path");
+const { v4 } = require("uuid");
+
+const DIR = path.dirname(require.main.filename);
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const rootDirectory = path.dirname(require.main.filename); //server.js
-
-    cb(null, path.join(rootDirectory, "public/uploads"));
+  destination: (req, file, cb) => {
+    return cb(null, path.join(DIR, "public/uploads"));
   },
 
-  filename: function (req, file, cb) {
-    console.log(req.image);
-    req.image = file.fieldname + req.auth._id;
-    cb(null, req.image + path.extname(file.originalname));
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(" ").join("-");
+    cb(null, v4() + "-" + fileName);
   },
 });
 
 const upload = multer({
   storage: storage,
-
-  fileFilter: function (req, file, cb) {
-    const extension = path.extname(file.originalname).toLowerCase();
-    const validExtensions = [".png", ".jpeg", ".jpg", ".gif"];
-    console.log(extension);
-    if (!validExtensions.includes(extension)) {
-      return cb("error");
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true);
     } else {
-      return cb(null, true);
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
     }
   },
 });

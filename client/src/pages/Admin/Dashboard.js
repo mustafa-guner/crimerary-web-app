@@ -11,7 +11,6 @@ const Dashboard = ({ children }) => {
           <div id="content" className="my-2">
             <hr />
             {children}
-            <hr />
           </div>
 
           <footer className="sticky-footer bg-white p-3 m">

@@ -15,6 +15,7 @@ import Forms from "./pages/Admin/Forms";
 import Summary from "./pages/Admin/Summary";
 import CriminalsForm from "./components/Admin/layout/CriminalsForm";
 import CrimesForm from "./components/Admin/layout/CrimesForm";
+import AdminError from "./pages/Admin/Error";
 
 if (window.localStorage.getItem("token")) {
   store.dispatch(loadUser());
@@ -103,6 +104,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route exact path={"/dashboard/*"} element={<AdminError />} />
 
           <Route exact path="*" element={<Error />} />
         </Routes>

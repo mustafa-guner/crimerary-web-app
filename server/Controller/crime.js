@@ -3,7 +3,9 @@ const Crime = require("../Model/Crime");
 module.exports = {
   crimes: async (req, res, next) => {
     try {
-      const crimePosts = await Crime.find({});
+      const crimePosts = await Crime.find({}).populate("category", [
+        "category",
+      ]);
 
       return res.status(200).json({
         success: true,

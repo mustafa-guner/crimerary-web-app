@@ -5,6 +5,7 @@ const initialState = {
   isAuth: false,
   token: localStorage.getItem("token"),
   loading: true,
+  isRestricted: false,
 };
 
 const auth = (state = initialState, action) => {
@@ -13,7 +14,7 @@ const auth = (state = initialState, action) => {
   switch (type) {
     case types.LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
-      console.log(state);
+
       return {
         ...state,
         isAuth: true,
@@ -26,6 +27,9 @@ const auth = (state = initialState, action) => {
         ...state,
         loading: false,
       };
+
+    case types.IS_RESTRICTED:
+      return { ...state, isRestricted: true };
 
     case types.LOGOUT:
     case types.LOGIN_ERROR:
@@ -40,7 +44,6 @@ const auth = (state = initialState, action) => {
       };
 
     case types.LOAD_USER:
-      console.log(state);
       return {
         ...state,
         isAuth: true,

@@ -60,7 +60,8 @@ module.exports = {
   ],
 
   criminalValidation: [
-    check("fullName").not().isEmpty().withMessage("Full name is required."),
+    check("firstName").not().isEmpty().withMessage("First name is required."),
+    check("lastName").not().isEmpty().withMessage("Last name is required."),
     check("gender").not().isEmpty().withMessage("Gender is required."),
   ],
 };

@@ -11,9 +11,17 @@ const crimeSchema = mongoose.Schema({
     required: true,
   },
 
+  category: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+  ],
+
   criminals: [
     {
-      type: [mongoose.Schema.ObjectId],
+      type: mongoose.Schema.ObjectId,
       ref: "Criminal",
       required: true,
     },

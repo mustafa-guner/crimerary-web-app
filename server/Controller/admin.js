@@ -1,7 +1,7 @@
 const Admin = require("../Model/Admin");
 const Crime = require("../Model/Crime");
 const Criminal = require("../Model/Criminal");
-
+const Category = require("../Model/Category");
 module.exports = {
   createUser: async (req, res, next) => {
     try {
@@ -45,7 +45,9 @@ module.exports = {
 
   createCrime: async (req, res, next) => {
     try {
-      const { title, description, location } = req.body;
+      const { title, description, location, category, criminals } = req.body;
+      const url = req.protocol + "://" + req.get("host");
+
       const crimePost = await Crime.findOne({ title, description });
 
       if (crimePost)
@@ -54,14 +56,25 @@ module.exports = {
           message: "Post is already created before.",
         });
 
+      const newCategory = new Category({ category });
+
       const crime = new Crime({
         title,
         description,
         location,
+        photo: url + "/public/uploads/" + req.file.filename,
         createdBy: req.auth._id,
       });
 
+      crime.category.push(newCategory._id);
+
+      JSON.parse(criminals).forEach((criminal) => {
+        crime.criminals.push(criminal.value);
+      });
+
+      console.log(crime);
       await crime.save();
+      await newCategory.save();
 
       return res.json({
         crime,
@@ -74,19 +87,35 @@ module.exports = {
     }
   },
 
+  editCrime: async (req, res, next) => {},
+
   removeCrime: async (req, res, next) => {
     try {
       const id = req.params.crimeID;
+      const { password } = req.body;
+
+      const admin = await Admin.findById({ _id: req.auth._id }).select(
+        "+password"
+      );
+
       const crime = await Crime.findById(id);
+
       if (!crime)
         return res.status(400).json({
           success: false,
           message: "Post is not found",
         });
 
-      await Crime.findByIdAndRemove(id);
-      return res.status(200).json({
-        success: true,
+      if (admin.comparePasswords(password)) {
+        await Crime.findByIdAndRemove(id);
+        return res.status(200).json({
+          success: true,
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: "Passwords doesnt match",
       });
     } catch (error) {
       return res.status(500).json({
@@ -134,33 +163,41 @@ module.exports = {
   },
 
   createCriminal: async (req, res, next) => {
-    // try {
-    //   const { fullName, gender, dob } = req.body;
-    //   let criminalDetails = {};
-    //   if (fullName) criminalDetails["fullName"] = fullName;
-    //   if (gender) criminalDetails["gender"] = gender;
-    //   if (dob) criminalDetails["dob"] = dob;
-    //   if (req.file) criminalDetails["photo"] = req.file.filename;
-    //   const criminal = await Criminal.findOne({ fullName });
-    //   if (criminal)
-    //     return res.status(400).json({
-    //       success: false,
-    //       message: "Criminal is already exists",
-    //     });
-    //   console.log(req.file.filename);
-    //   const newCriminal = new Criminal({
-    //     ...criminalDetails,
-    //   });
-    //   await newCriminal.save();
-    //   return res.status(201).json({
-    //     success: true,
-    //     criminal: newCriminal,
-    //   });
-    // } catch (error) {
-    //   return res.status(500).json({
-    //     success: false,
-    //     error: error.message,
-    //   });
-    // }
+    try {
+      const { firstName, lastName, gender, dob, bio } = req.body;
+      let criminalDetails = {};
+      if (firstName) criminalDetails["firstName"] = firstName;
+      if (lastName) criminalDetails["lastName"] = lastName;
+      if (gender) criminalDetails["gender"] = gender;
+      if (dob) criminalDetails["dob"] = dob;
+      // if (req.file) criminalDetails["photo"] = req.file.filename;
+      const criminal = await Criminal.findOne({ firstName, lastName });
+      if (criminal)
+        return res.status(400).json({
+          success: false,
+          message: "Criminal is already exists",
+        });
+      // console.log(req.file.filename);
+      // const newCriminal = new Criminal({
+      //   ...criminalDetails,
+      // });
+      const newCriminal = new Criminal({
+        firstName,
+        lastName,
+        gender,
+        dob,
+        bio,
+      });
+      await newCriminal.save();
+      return res.status(201).json({
+        success: true,
+        criminal: newCriminal,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
   },
 };

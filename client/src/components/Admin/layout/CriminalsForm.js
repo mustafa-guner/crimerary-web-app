@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 const CriminalsForm = (props) => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    bio: "",
+  });
+
+  const { firstName, lastName, gender, dob, bio } = formData;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   return (
     <div>
       <Link to="/dashboard/criminals" className="mb-3 nav-link pl-0">
@@ -11,15 +29,25 @@ const CriminalsForm = (props) => {
       <h1 className="lead mb-4" style={{ fontSize: "2rem" }}>
         Criminals Form
       </h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Row xs={1} md={3}>
           <Col className="my-2">
             <Form.Label>Enter Name of Criminal</Form.Label>
-            <Form.Control placeholder="First name" />
+            <Form.Control
+              placeholder="First name"
+              name="firstName"
+              onChange={(e) => handleChange(e)}
+              value={firstName}
+            />
           </Col>
           <Col className="my-2">
             <Form.Label>Enter Surname of Criminal</Form.Label>
-            <Form.Control placeholder="Last name" />
+            <Form.Control
+              placeholder="Last name"
+              name="lastName"
+              value={lastName}
+              onChange={(e) => handleChange(e)}
+            />
           </Col>
           <Col className="my-2">
             <Form.Group controlId="formFile" className="mb-3">
@@ -30,7 +58,7 @@ const CriminalsForm = (props) => {
         </Row>
         <Row className="my-4" xs={1} md={3}>
           <Col className="my-2">
-            <Form.Label>Select Crime Category Commited</Form.Label>
+            <Form.Label>Select Commited Crime Category</Form.Label>
             <Form.Select className="me-sm-2" id="inlineFormCustomSelect">
               <option value="0">Choose...</option>
               <option value="1">Rape</option>
@@ -44,6 +72,8 @@ const CriminalsForm = (props) => {
               <Form.Control
                 type="date"
                 name="dob"
+                value={dob}
+                onChange={(e) => handleChange(e)}
                 placeholder="Date of Birth"
               />
             </Form.Group>
@@ -57,6 +87,7 @@ const CriminalsForm = (props) => {
               label="male"
               name="gender"
               type={"radio"}
+              onChange={(e) => handleChange(e)}
               id={`inline-${"radio"}-2`}
             />
             <Form.Check
@@ -73,6 +104,9 @@ const CriminalsForm = (props) => {
           <Col className="my-2">
             <Form.Control
               as="textarea"
+              name="bio"
+              value={bio}
+              onChange={(e) => handleChange(e)}
               placeholder="Leave brief bio here"
               style={{ height: "100px" }}
             />

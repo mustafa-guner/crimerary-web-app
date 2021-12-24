@@ -26,7 +26,6 @@ app.use(
 );
 
 app.use(morgan("dev"));
-
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: false }));
 app.use(express.json());

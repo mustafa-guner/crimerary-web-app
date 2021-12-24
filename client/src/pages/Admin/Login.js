@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { login } from "../../redux/actions/auth";
 import { Navigate } from "react-router-dom";
 
-const Login = ({ isAuth, login }) => {
-  const [loading, setLoading] = useState(false);
+const Login = ({ auth, login }) => {
+  const [disable, setDisable] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "musdy.guner",
@@ -23,16 +23,16 @@ const Login = ({ isAuth, login }) => {
   };
 
   const handleSubmit = (e) => {
-    setLoading(true);
+    setDisable(true);
     e.preventDefault();
 
     login(formData).then(() => {
-      setLoading(false);
+      setDisable(false);
     });
   };
 
-  if (isAuth) return <Navigate to="/dashboard" />;
-  console.log(loading);
+  if (auth.isAuth) return <Navigate to="/dashboard" />;
+
   return (
     <div
       style={{
@@ -47,10 +47,13 @@ const Login = ({ isAuth, login }) => {
         Crime<span className="text-danger">Rary</span>
       </h1>
       <p className="lead text-underline">Admin Panel Login</p>
-      {loading && (
+      {disable && (
         <div className="spinner-border " role="status">
           <span className="sr-only">Loading...</span>
         </div>
+      )}
+      {auth.isRestricted && (
+        <p className="text-danger">You are restricted for a while.</p>
       )}
       <form onSubmit={handleSubmit}>
         <label className="d-block lead">username:</label>
@@ -58,7 +61,7 @@ const Login = ({ isAuth, login }) => {
           type="text"
           name="username"
           value={username}
-          disabled={loading}
+          disabled={disable}
           placeholder="Enter username"
           onChange={(e) => handleChange(e)}
         />
@@ -68,12 +71,12 @@ const Login = ({ isAuth, login }) => {
           type="password"
           name="password"
           value={password}
-          disabled={loading}
+          disabled={disable}
           placeholder="Enter password"
           onChange={(e) => handleChange(e)}
         />
 
-        <button disabled={loading} className="d-block my-2 btn btn-dark w-100">
+        <button disabled={disable} className="d-block my-2 btn btn-dark w-100">
           Login
         </button>
       </form>
@@ -83,11 +86,11 @@ const Login = ({ isAuth, login }) => {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  isAuth: PropTypes.bool.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isAuth: state.auth.isAuth,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { login })(Login);
