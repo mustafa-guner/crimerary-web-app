@@ -18,7 +18,6 @@ const criminal = (state = initialState, action) => {
       };
 
     case types.GET_CRIMINALS:
-      console.log(payload);
       return {
         ...state,
         criminals: payload,

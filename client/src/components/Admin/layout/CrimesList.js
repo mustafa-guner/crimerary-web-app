@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import Moment from "react-moment";
 import noData from "../../../images/no data.svg";
+import Preview from "./Preview";
 
 const CrimesList = ({ crimes, removeCrime }) => {
   const handleRemove = (crimeID) => {
@@ -27,6 +28,8 @@ const CrimesList = ({ crimes, removeCrime }) => {
       return removeCrime(crimeID, result.value.password);
     });
   };
+
+  const [modalShow, setModalShow] = React.useState(false);
 
   return crimes.length === 0 ? (
     <div className="text-center">
@@ -110,7 +113,21 @@ const CrimesList = ({ crimes, removeCrime }) => {
                 >
                   Remove
                 </button>
-                <button className="btn btn-dark btn-sm">Edit</button>
+                <button className="btn btn-dark btn-sm  mr-1">Edit</button>
+                <button
+                  className="btn btn-dark btn-sm"
+                  onClick={() => setModalShow(true)}
+                >
+                  Preview
+                </button>
+
+                <Preview
+                  show={modalShow}
+                  crime={crime}
+                  onHide={() => {
+                    setModalShow(false);
+                  }}
+                />
               </td>
             </tr>
           );

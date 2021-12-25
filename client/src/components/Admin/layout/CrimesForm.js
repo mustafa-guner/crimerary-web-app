@@ -101,7 +101,10 @@ const CrimesForm = ({
           <Col className="my-2">
             <Form.Label>
               Enter Title of Crime{" "}
-              <span className="text-black-50">(Must be unique)</span>
+              <span className=" text-danger">(*Required)</span>
+              <p className="text-black-50 mb-0" style={{ fontSize: "12px" }}>
+                Title has to be unique title among the posts.
+              </p>
             </Form.Label>
             <Form.Control
               placeholder="Title"
@@ -115,6 +118,9 @@ const CrimesForm = ({
             <Form.Label>
               Enter Location of Crime{" "}
               <span className=" text-danger">(*Required)</span>
+              <p className="text-black-50 mb-0" style={{ fontSize: "12px" }}>
+                Enter the location of crime where commited at.
+              </p>
             </Form.Label>
             <Form.Control
               placeholder="Location"
@@ -129,6 +135,9 @@ const CrimesForm = ({
               <Form.Label>
                 Upload Image of Crime{" "}
                 <span className=" text-danger">(*Required)</span>
+                <p className="text-black-50 mb-0" style={{ fontSize: "12px" }}>
+                  Upload the thumbnail image for crime post.
+                </p>
               </Form.Label>
               <Form.Control
                 type="file"
