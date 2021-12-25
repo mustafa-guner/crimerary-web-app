@@ -29,7 +29,10 @@ app.use(morgan("dev"));
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+app.use(
+  "/public/uploads/",
+  express.static(path.join(__dirname, "public", "uploads"))
+);
 
 const indexRoute = require("./Route/index");
 app.use("/api/v1/", indexRoute);

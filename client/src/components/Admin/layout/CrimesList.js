@@ -56,10 +56,20 @@ const CrimesList = ({ crimes, removeCrime }) => {
       </thead>
       <tbody className="text-center">
         {crimes.map((crime, idx) => {
+          console.log(crime.photo);
           return (
             <tr key={crime._id}>
               <td>
-                <img src={`${crime.photo}`} alt={`${crime.title}_image`} />
+                <img
+                  src={`${crime.photo}`}
+                  alt={`${crime.title}_image`}
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    objectFit: "cover",
+                    borderRadius: "100%",
+                  }}
+                />
               </td>
               <td>{crime.title}</td>
               <td>{crime.description}</td>
