@@ -15,6 +15,7 @@ import Forms from "./pages/Admin/Forms";
 import Summary from "./pages/Admin/Summary";
 import CriminalsForm from "./components/Admin/layout/CriminalsForm";
 import CrimesForm from "./components/Admin/layout/CrimesForm";
+import CrimesEdit from "./components/Admin/layout/CrimesEdit";
 import AdminError from "./pages/Admin/Error";
 
 if (window.localStorage.getItem("token")) {
@@ -71,6 +72,16 @@ function App() {
             element={
               <PrivateRoute>
                 <CrimesForm />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            exact
+            path={"/dashboard/edit-crime/:crimeID"}
+            element={
+              <PrivateRoute>
+                <CrimesEdit />
               </PrivateRoute>
             }
           />

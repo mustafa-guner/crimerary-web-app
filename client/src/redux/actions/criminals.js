@@ -37,7 +37,6 @@ export const getCriminals = () => async (dispatch) => {
       withCredentials: true,
     });
 
-    console.log(data);
     return dispatch({
       type: types.GET_CRIMINALS,
       payload: data.criminals,

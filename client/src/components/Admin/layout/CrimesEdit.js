@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
-import {
-  createCrime,
-  editCrime,
-  getCrimeByID,
-} from "../../../redux/actions/crimes";
+import { createCrime, editCrime } from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -16,7 +12,7 @@ import { getCriminals } from "../../../redux/actions/criminals";
 const CrimesForm = ({
   createCrime,
   getCriminals,
-  getCrimeByID,
+
   editCrime,
   crime,
   criminals: { criminals, loading },
@@ -62,9 +58,9 @@ const CrimesForm = ({
 
   useEffect(() => {
     getCriminals();
-    getCrimeByID(crimeID);
 
     if (crime && !crime.loading) {
+      console.log(crime);
       const crimePostData = { ...initialState };
       for (const key in crime) {
         if (key in crimePostData) crimePostData[key] = crime[key];
@@ -86,7 +82,7 @@ const CrimesForm = ({
         }),
       ]);
     }
-  }, [loading, getCriminals, crime && crime.loading, getCrimeByID]);
+  }, [loading, getCriminals, crime && crime.loading]);
 
   const handleChange = (e) => {
     setDatas({
@@ -330,7 +326,7 @@ const CrimesForm = ({
 CrimesForm.propTypes = {
   createCrime: PropTypes.func.isRequired,
   criminals: PropTypes.object,
-  getCrimeByID: PropTypes.func.isRequired,
+
   editCrime: PropTypes.func.isRequired,
   crime: PropTypes.object,
 };
@@ -342,6 +338,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   createCrime,
   getCriminals,
-  getCrimeByID,
+
   editCrime,
 })(CrimesForm);

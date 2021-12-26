@@ -34,16 +34,16 @@ const crime = (state = initialState, action) => {
     case types.EDIT_CRIME:
       return {
         ...state,
-        crime: payload.crime,
-        crimes: state.crimes.map((crime) => {
-          if (crime._id === payload.id) {
-            const newCrime = payload.crime;
-            let updatedCrime = { ...crime, ...newCrime };
-            return updatedCrime;
-          } else {
-            return crime;
-          }
-        }),
+        crime: { ...state.crime, ...payload },
+        // crimes: state.crimes.map((crime) => {
+        //   if (crime._id === payload.id) {
+        //     const newCrime = payload.crime;
+        //     let updatedCrime = { ...crime, ...newCrime };
+        //     return updatedCrime;
+        //   } else {
+        //     return crime;
+        //   }
+        // }),
         loading: false,
       };
 

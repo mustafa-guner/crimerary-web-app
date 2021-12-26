@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Card, Table, Modal, Button } from "react-bootstrap";
+import { Table, Modal, Button } from "react-bootstrap";
 import { getCrimeByID, removeCrime } from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
@@ -8,9 +8,11 @@ import Moment from "react-moment";
 import noData from "../../../images/no data.svg";
 import Preview from "./Preview";
 import { Link } from "react-router-dom";
+import { Navigate, Redirect, useNavigate } from "react-router-dom";
+import CrimesEdit from "./CrimesEdit";
 
 const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
-  console.log(crime);
+  const navigate = useNavigate();
   const handleRemove = (crimeID) => {
     Swal.fire({
       title: "Confirm your password",
@@ -116,12 +118,20 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
                 >
                   Remove
                 </button>
-                <Link
+                <Button
                   to={`/dashboard/edit-crime/${crime._id}`}
                   className="btn btn-dark btn-sm  mr-1"
+                  onClick={() => {
+                    setLoadingModal(true);
+                    getCrimeByID(crime._id).then(() => {
+                      setLoadingModal(false);
+
+                      return navigate(`/dashboard/edit-crime/${crime._id}`);
+                    });
+                  }}
                 >
                   Edit
-                </Link>
+                </Button>
                 <button
                   className="btn btn-dark btn-sm"
                   onClick={() => {

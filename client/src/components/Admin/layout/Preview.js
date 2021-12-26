@@ -1,10 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import { Modal, Button } from "react-bootstrap";
 import Moment from "react-moment";
 
 const Preview = (props) => {
-  console.log(props.crime._id);
   return (
     <Modal
       {...props}
