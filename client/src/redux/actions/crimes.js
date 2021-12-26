@@ -41,6 +41,25 @@ export const createCrime = (details) => async (dispatch) => {
   }
 };
 
+export const getCrimeByID = (id) => async (dispatch) => {
+  try {
+    const { data } = await crimeAPI(`/crimes/${id}`, {
+      method: "GET",
+      withCredentials: true,
+    });
+
+    return dispatch({
+      type: types.GET_CRIME,
+      payload: data.crime,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: types.ERROR_CRIME,
+    });
+  }
+};
+
 export const editCrime = (newDetails) => async (dispatch) => {
   try {
     const token = window.localStorage.getItem("token");

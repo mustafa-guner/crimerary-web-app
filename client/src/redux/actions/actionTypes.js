@@ -19,6 +19,7 @@ export const GET_DASHBOARD = "GET_DASHBOARD";
 export const CREATE_CRIME = "CREATE_CRIME";
 export const REMOVE_CRIME = "REMOVE_CRIME";
 export const GET_CRIMES = "GET_CRIMES";
+export const GET_CRIME = "GET_CRIME";
 export const EDIT_CRIME = "EDIT_CRIME";
 export const ERROR_CRIME = "ERROR_CRIME";
 

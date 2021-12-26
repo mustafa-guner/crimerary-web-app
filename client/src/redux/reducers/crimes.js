@@ -17,6 +17,13 @@ const crime = (state = initialState, action) => {
         loading: false,
       };
 
+    case types.GET_CRIME:
+      return {
+        ...state,
+        crime: { ...state.crime, ...payload },
+        loading: false,
+      };
+
     case types.GET_CRIMES:
       return {
         ...state,

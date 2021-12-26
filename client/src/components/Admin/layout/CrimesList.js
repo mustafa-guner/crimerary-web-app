@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Card, Table } from "react-bootstrap";
-import { removeCrime } from "../../../redux/actions/crimes";
+import { Row, Col, Card, Table, Modal, Button } from "react-bootstrap";
+import { getCrimeByID, removeCrime } from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import Moment from "react-moment";
 import noData from "../../../images/no data.svg";
 import Preview from "./Preview";
+import { Link } from "react-router-dom";
 
-const CrimesList = ({ crimes, removeCrime }) => {
+const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
+  console.log(crime);
   const handleRemove = (crimeID) => {
     Swal.fire({
       title: "Confirm your password",
@@ -28,7 +30,7 @@ const CrimesList = ({ crimes, removeCrime }) => {
       return removeCrime(crimeID, result.value.password);
     });
   };
-
+  const [loadingModal, setLoadingModal] = React.useState(false);
   const [modalShow, setModalShow] = React.useState(false);
 
   return crimes.length === 0 ? (
@@ -43,6 +45,8 @@ const CrimesList = ({ crimes, removeCrime }) => {
         alt="No Data Found"
       />{" "}
     </div>
+  ) : crimes.loading ? (
+    <h3>Loading</h3>
   ) : (
     <Table responsive>
       <thead className="text-center">
@@ -59,7 +63,6 @@ const CrimesList = ({ crimes, removeCrime }) => {
       </thead>
       <tbody className="text-center">
         {crimes.map((crime, idx) => {
-          console.log(crime.photo);
           return (
             <tr key={crime._id}>
               <td>
@@ -113,26 +116,55 @@ const CrimesList = ({ crimes, removeCrime }) => {
                 >
                   Remove
                 </button>
-                <button className="btn btn-dark btn-sm  mr-1">Edit</button>
+                <Link
+                  to={`/dashboard/edit-crime/${crime._id}`}
+                  className="btn btn-dark btn-sm  mr-1"
+                >
+                  Edit
+                </Link>
                 <button
                   className="btn btn-dark btn-sm"
-                  onClick={() => setModalShow(true)}
+                  onClick={() => {
+                    setLoadingModal(true);
+                    getCrimeByID(crime._id).then(() => {
+                      setModalShow(true);
+                      setLoadingModal(false);
+                    });
+                  }}
                 >
                   Preview
                 </button>
-
-                <Preview
-                  show={modalShow}
-                  crime={crime}
-                  onHide={() => {
-                    setModalShow(false);
-                  }}
-                />
               </td>
             </tr>
           );
         })}
       </tbody>
+
+      {loadingModal ? (
+        <Modal show={loadingModal} centered backdrop="static" keyboard={false}>
+          <Modal.Body className="text-center">
+            <h3
+              id="contained-modal-title-vcenter"
+              className="text-center  my-4"
+            >
+              Loading
+            </h3>
+            <div className="spinner-border text-center" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </Modal.Body>
+        </Modal>
+      ) : (
+        modalShow && (
+          <Preview
+            show={modalShow}
+            crime={crime}
+            onHide={() => {
+              setModalShow(false);
+            }}
+          />
+        )
+      )}
     </Table>
   );
 
@@ -187,5 +219,10 @@ const CrimesList = ({ crimes, removeCrime }) => {
 CrimesList.propTypes = {
   crimes: PropTypes.array.isRequired,
 };
+const mapStateToProps = (state) => ({
+  crime: state.crimes.crime,
+});
 
-export default connect(null, { removeCrime })(CrimesList);
+export default connect(mapStateToProps, { removeCrime, getCrimeByID })(
+  CrimesList
+);
