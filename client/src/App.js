@@ -17,6 +17,10 @@ import CriminalsForm from "./components/Admin/layout/CriminalsForm";
 import CrimesForm from "./components/Admin/layout/CrimesForm";
 import CrimesEdit from "./components/Admin/layout/CrimesEdit";
 import AdminError from "./pages/Admin/Error";
+import Team from "./pages/Team";
+import PublicCrimes from "./pages/Crimes";
+import PublicCriminals from "./pages/Criminals";
+import { Contact } from "./pages/Contact";
 
 if (window.localStorage.getItem("token")) {
   store.dispatch(loadUser());
@@ -36,6 +40,10 @@ function App() {
         <header className="App-header"></header>
         <Routes>
           <Route exact path={"/"} element={<Home />} />
+          <Route exact path={"/team"} element={<Team />} />
+          <Route exact path={"/crimes"} element={<PublicCrimes />} />
+          <Route exact path={"/criminals"} element={<PublicCriminals />} />
+          <Route exact path={"/contact"} element={<Contact />} />
           <Route exact path={"/login"} element={<Login />} />
           <Route
             exact

@@ -59,32 +59,44 @@ const CrimesForm = ({
     photo: "",
     category: "",
   });
-
+  // console.log(categories);
+  // console.log(criminals);
   const [selectedCriminals, setSelectedCriminals] = useState([]);
   const [selectedCatg, setSelectedCatg] = useState({});
 
   useEffect(() => {
     getCriminals();
     getCategories();
+
     if (!crime && crimeID) {
       getCrimeByID(crimeID);
     }
 
-    if (crime && !crime.loading && categories && !categories.loading) {
+    if (
+      crime &&
+      !crime.loading &&
+      categories &&
+      !categories.loading &&
+      criminals &&
+      !criminals.loading
+    ) {
       const crimePostData = { ...initialState };
       for (const key in crime) {
         if (key in crimePostData) crimePostData[key] = crime[key];
       }
-      console.log(crime);
+      // console.log(crime);
 
       const selectedCategory = categories.filter(
         (category) => category._id === crime.category._id
       )[0];
 
-      setSelectedCatg({
-        value: selectedCategory._id,
-        label: selectedCategory.category,
-      });
+      console.log(selectedCategory);
+
+      // setSelectedCatg({
+      //   value: selectedCategory._id,
+      //   label: selectedCategory.category,
+      // });
+      //HATA VERIR BUL NEDENINI
 
       setDatas({ ...datas, ...crimePostData });
 
@@ -107,6 +119,8 @@ const CrimesForm = ({
     getCategories,
     getCrimeByID,
     crime && crime.loading,
+    criminals && criminals.loading,
+    categories && categories.loading,
   ]);
 
   const handleChange = (e) => {
@@ -145,8 +159,8 @@ const CrimesForm = ({
     datas.category = { ...selectedCatg };
     formData.append("photo", datas.photo);
     formData.append("title", title);
-    formData.append("description", description);
-    formData.append("location", location);
+    formData.append("description", description.trim());
+    formData.append("location", location.trim());
     formData.append("commitedAt", commitedAt);
     formData.append("category", datas.category.value);
     formData.append("criminals", JSON.stringify(datas.criminals));

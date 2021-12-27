@@ -1,20 +1,41 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Navbar, Container, Nav } from "react-bootstrap";
+import "../../pages/App.css";
 
 const NavigationBar = () => {
   return (
-    <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Nav className="me-auto text-center mx-auto">
-            <Navbar.Brand className="text-center" href="#home">
-              CrimeRary
-            </Navbar.Brand>
-          </Nav>
-        </Container>
-      </Navbar>
-    </>
+    <header id="header" className="d-flex align-items-center">
+      <div className="container d-flex justify-content-between align-items-center">
+        <div className="logo">
+          <h1>
+            <NavLink to="/">
+              Crime<span>rary</span>{" "}
+            </NavLink>
+          </h1>
+        </div>
+
+        <nav id="navbar" className="navbar">
+          <ul>
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/team">Team</NavLink>
+            </li>
+            <li>
+              <NavLink to="/crimes">Crimes</NavLink>
+            </li>
+            <li>
+              <NavLink to="/criminals">Criminals</NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact">Contact</NavLink>
+            </li>
+          </ul>
+          <i className="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+      </div>
+    </header>
   );
 };
 

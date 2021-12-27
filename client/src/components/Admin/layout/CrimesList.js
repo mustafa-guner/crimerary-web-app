@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import Moment from "react-moment";
 import Preview from "./Preview";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
+const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
   const navigate = useNavigate();
 
   const handleRemove = (crimeID) => {
@@ -48,10 +48,14 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
       </thead>
       <tbody className="text-center">
         {crimes.map((crime) => {
-          console.log(crime);
           return (
             <tr key={crime._id}>
-              <td>{crime.title}</td>
+              <td>
+                {" "}
+                {crime.title.length > 20
+                  ? crime.title.substring(0, 20) + "..."
+                  : crime.title}
+              </td>
               <td>
                 {crime.description.length > 20
                   ? crime.description.substring(0, 15) + "..."

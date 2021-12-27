@@ -77,8 +77,8 @@ const CrimesForm = ({
 
     formData.append("photo", datas.photo);
     formData.append("title", title);
-    formData.append("description", description);
-    formData.append("location", location);
+    formData.append("description", description.trim());
+    formData.append("location", location.trim());
     formData.append("commitedAt", commitedAt);
     formData.append("category", datas.category.value);
     formData.append("criminals", JSON.stringify(datas.criminals));
