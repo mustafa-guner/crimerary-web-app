@@ -5,14 +5,12 @@ import { getCrimeByID, removeCrime } from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import Moment from "react-moment";
-import noData from "../../../images/no data.svg";
 import Preview from "./Preview";
-import { Link } from "react-router-dom";
-import { Navigate, Redirect, useNavigate } from "react-router-dom";
-import CrimesEdit from "./CrimesEdit";
+import { useNavigate, Link } from "react-router-dom";
 
-const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
+const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
   const navigate = useNavigate();
+
   const handleRemove = (crimeID) => {
     Swal.fire({
       title: "Confirm your password",
@@ -35,21 +33,7 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
   const [loadingModal, setLoadingModal] = React.useState(false);
   const [modalShow, setModalShow] = React.useState(false);
 
-  return crimes.length === 0 ? (
-    <div className="text-center">
-      {" "}
-      <h1 className="display-4 text-center text-black-50 p-4">
-        No Crimes Found
-      </h1>
-      <img
-        style={{ width: "80px", height: "80px" }}
-        src={noData}
-        alt="No Data Found"
-      />{" "}
-    </div>
-  ) : crimes.loading ? (
-    <h3>Loading</h3>
-  ) : (
+  return (
     <Table responsive>
       <thead className="text-center">
         <tr>
@@ -64,7 +48,7 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
         </tr>
       </thead>
       <tbody className="text-center">
-        {crimes.map((crime, idx) => {
+        {crimes.map((crime) => {
           return (
             <tr key={crime._id}>
               <td>
@@ -119,13 +103,12 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
                   Remove
                 </button>
                 <Button
-                  to={`/dashboard/edit-crime/${crime._id}`}
+                  // to={`/dashboard/edit-crime/${crime._id}`}
                   className="btn btn-dark btn-sm  mr-1"
                   onClick={() => {
                     setLoadingModal(true);
                     getCrimeByID(crime._id).then(() => {
                       setLoadingModal(false);
-
                       return navigate(`/dashboard/edit-crime/${crime._id}`);
                     });
                   }}
@@ -177,53 +160,6 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime }) => {
       )}
     </Table>
   );
-
-  // <Row xs={1} md={4} className="g-4">
-  //   {crimes.map((crime, idx) => (
-  //     <Col key={crime._id}>
-  //       <Card className=" position-relative w-100 h-100">
-  //         <Card.Img
-  //           variant="top"
-  //           src="https://cdn.discordapp.com/attachments/701763657285238864/701780807911604274/40524105_386128695256218_1388852467722092544_n.jpg"
-  //         />
-  //         {crime.category.map((ctg) => {
-  //           return (
-  //             <div
-  //               key={ctg._id}
-  //               className="btn btn-light btn-sm position-absolute"
-  //               style={{ top: "10px", left: "10px" }}
-  //             >
-  //               {ctg.category}
-  //             </div>
-  //           );
-  //         })}
-
-  //         <Card.Body>
-  //           <Card.Title>{crime.title}</Card.Title>
-  //           <small className="text-muted cat">
-  //             <i className="fas fa-users text-danger"></i>{" "}
-  //             <span>{crime.criminals.length} criminals</span>
-  //           </small>
-
-  //           <Card.Text className="my-2 py-3">{crime.description}</Card.Text>
-  //           <button className="btn btn-dark mr-2">Edit</button>
-  //           <button
-  //             className="btn btn-danger "
-  //             onClick={() => handleRemove(crime._id)}
-  //           >
-  //             Remove
-  //           </button>
-  //         </Card.Body>
-  //         <Card.Footer className="text-muted d-flex justify-content-between bg-transparent border-top-0">
-  //           <div className="views">
-  //             Commited At:{" "}
-  //             <Moment format="YYYY/MM/DD">{crime.commitedAt}</Moment>
-  //           </div>
-  //         </Card.Footer>
-  //       </Card>
-  //     </Col>
-  //   ))}
-  // </Row>
 };
 
 CrimesList.propTypes = {

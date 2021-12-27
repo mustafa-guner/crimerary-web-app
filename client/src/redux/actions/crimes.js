@@ -63,15 +63,15 @@ export const getCrimeByID = (id) => async (dispatch) => {
 export const editCrime = (id, newDetails) => async (dispatch) => {
   try {
     const token = window.localStorage.getItem("token");
-    const { data } = await crimeAPI(`/crimes/edit-crime/${id}`, {
+    const { data } = await crimeAPI(`/admin/edit-crime/${id}`, {
       method: "PUT",
-      data: { newDetails },
+      data: newDetails,
       headers: {
         Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });
-
+    console.log(data);
     return dispatch({
       type: types.EDIT_CRIME,
       payload: data.crime,

@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import CrimesList from "../../components/Admin/layout/CrimesList";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getCrimes, removeCrime } from "../../redux/actions/crimes";
+import { getCrimes } from "../../redux/actions/crimes";
+import noData from "../../images/no data.svg";
 
 const Crimes = ({ getCrimes, crimes: { crimes, loading } }) => {
   useEffect(() => {
     getCrimes();
   }, [getCrimes]);
+
   return (
     <div>
       <Link to="/dashboard/add-crime-post" className="mb-3 nav-link pl-0">
@@ -16,9 +18,25 @@ const Crimes = ({ getCrimes, crimes: { crimes, loading } }) => {
       </Link>
 
       {loading ? (
-        <h1>Loading</h1>
+        <div className="text-center mx-auto">
+          <div className="spinner-border text-center" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      ) : crimes.length ? (
+        <CrimesList crimes={crimes} />
       ) : (
-        <CrimesList crimes={crimes} loading={loading} />
+        <div className="text-center">
+          {" "}
+          <h1 className="display-4 text-center text-black-50 p-4">
+            No Crimes Found
+          </h1>
+          <img
+            style={{ width: "80px", height: "80px" }}
+            src={noData}
+            alt="No Data Found"
+          />{" "}
+        </div>
       )}
     </div>
   );

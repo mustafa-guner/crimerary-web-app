@@ -7,6 +7,7 @@ const Preview = (props) => {
   return (
     <Modal
       {...props}
+      key={props.crime._id}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered

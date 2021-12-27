@@ -2,22 +2,25 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
-import { createCrime, editCrime } from "../../../redux/actions/crimes";
+import {
+  createCrime,
+  editCrime,
+  getCrimeByID,
+} from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useParams } from "react-router";
 import { getCriminals } from "../../../redux/actions/criminals";
 
 const CrimesForm = ({
   createCrime,
   getCriminals,
-
+  getCrimeByID,
   editCrime,
   crime,
   criminals: { criminals, loading },
 }) => {
-  const { crimeID } = useParams();
+  const crimeID = window.location.pathname.split("/dashboard/edit-crime/")[1];
 
   //Make animated things when removing select option data
   const animatedComponents = makeAnimated();
@@ -59,8 +62,11 @@ const CrimesForm = ({
   useEffect(() => {
     getCriminals();
 
+    if (!crime && crimeID) {
+      getCrimeByID(crimeID);
+    }
+
     if (crime && !crime.loading) {
-      console.log(crime);
       const crimePostData = { ...initialState };
       for (const key in crime) {
         if (key in crimePostData) crimePostData[key] = crime[key];
@@ -82,7 +88,7 @@ const CrimesForm = ({
         }),
       ]);
     }
-  }, [loading, getCriminals, crime && crime.loading]);
+  }, [loading, getCriminals, getCrimeByID, crime && crime.loading]);
 
   const handleChange = (e) => {
     setDatas({
@@ -124,9 +130,9 @@ const CrimesForm = ({
 
     if (crimeID) {
       // console.log(datas);
-      setDisable(false);
-      editCrime(crimeID, formData);
-      //   console.log(datas);
+
+      editCrime(crimeID, formData).then(() => setDisable(false));
+
       //   console.log(crimeID);
     } else {
       createCrime(formData).then(() => {
@@ -326,7 +332,7 @@ const CrimesForm = ({
 CrimesForm.propTypes = {
   createCrime: PropTypes.func.isRequired,
   criminals: PropTypes.object,
-
+  getCrimeByID: PropTypes.func.isRequired,
   editCrime: PropTypes.func.isRequired,
   crime: PropTypes.object,
 };
@@ -338,6 +344,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   createCrime,
   getCriminals,
-
+  getCrimeByID,
   editCrime,
 })(CrimesForm);
