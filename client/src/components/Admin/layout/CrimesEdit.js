@@ -30,7 +30,7 @@ const CrimesForm = ({
     description: "",
     location: "",
     commitedAt: "",
-    criminals: "",
+    criminals: [],
     photo: "",
     category: "",
   };
@@ -87,6 +87,8 @@ const CrimesForm = ({
           };
         }),
       ]);
+
+      console.log(selectedCriminals);
     }
   }, [loading, getCriminals, getCrimeByID, crime && crime.loading]);
 
@@ -130,7 +132,7 @@ const CrimesForm = ({
 
     if (crimeID) {
       // console.log(datas);
-
+      console.log(formData.get("criminals"));
       editCrime(crimeID, formData).then(() => setDisable(false));
 
       //   console.log(crimeID);

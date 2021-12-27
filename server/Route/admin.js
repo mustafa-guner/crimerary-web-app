@@ -7,6 +7,7 @@ const {
   createCrime,
   removeCrime,
   createCriminal,
+  editCrime,
 } = require("../Controller/admin");
 
 //Admin Dashboard after success login
@@ -50,6 +51,12 @@ adminRoute.post(
   "/create-new-crime",
   [checkAuthorization, adminAccess, uploadImage.single("photo")],
   createCrime
+);
+
+adminRoute.put(
+  "/edit-crime/:crimeID",
+  [checkAuthorization, adminAccess, uploadImage.single("photo")],
+  editCrime
 );
 
 adminRoute.post(

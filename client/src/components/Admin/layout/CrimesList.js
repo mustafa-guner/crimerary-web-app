@@ -37,7 +37,6 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
     <Table responsive>
       <thead className="text-center">
         <tr>
-          <th>Image</th>
           <th>Title</th>
           <th>Description</th>
           <th>Criminals</th>
@@ -51,20 +50,12 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
         {crimes.map((crime) => {
           return (
             <tr key={crime._id}>
-              <td>
-                <img
-                  src={`${crime.photo}`}
-                  alt={`${crime.title}_image`}
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    objectFit: "cover",
-                    borderRadius: "100%",
-                  }}
-                />
-              </td>
               <td>{crime.title}</td>
-              <td>{crime.description}</td>
+              <td>
+                {crime.description.length > 20
+                  ? crime.description.substring(0, 15) + "..."
+                  : crime.description}
+              </td>
               <td>{crime.criminals.length}</td>
               <td>{crime.location}</td>
 
@@ -78,18 +69,6 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
                     {category.category}
                   </p>
                 ))}
-                <p
-                  className="border border-danger text-danger  rounded  mr-1"
-                  style={{ fontSize: "12px", padding: "4px" }}
-                >
-                  Deneme
-                </p>
-                <p
-                  className="border border-danger text-danger  rounded  mr-1"
-                  style={{ fontSize: "12px", padding: "4px" }}
-                >
-                  Deneme
-                </p>
               </td>
               <td>
                 {" "}

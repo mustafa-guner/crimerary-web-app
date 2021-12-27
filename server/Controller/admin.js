@@ -103,7 +103,45 @@ module.exports = {
     }
   },
 
-  editCrime: async (req, res, next) => {},
+  editCrime: async (req, res, next) => {
+    try {
+      const { crimeID } = req.params;
+      const url = req.protocol + "://" + req.get("host");
+
+      const updates = {};
+
+      if (req.body.title) updates["title"] = req.body.title;
+      if (req.body.description) updates["description"] = req.body.description;
+      if (req.body.category) updates["category"] = req.body.category;
+      if (req.body.criminals)
+        updates["criminals"] = JSON.parse(req.body.criminals).map(
+          (criminal) => criminal.value
+        );
+      if (req.body.location) updates["location"] = req.body.location;
+      if (req.body.commitedAt) updates["commitedAt"] = req.body.commitedAt;
+
+      if (req.file)
+        updates["photo"] = url + "/public/uploads/" + req.file.filename;
+
+      console.log(updates);
+      const updatedCrime = await Crime.findByIdAndUpdate(
+        crimeID,
+        { ...updates },
+        {
+          new: true,
+        }
+      );
+      return res.status(200).json({
+        success: true,
+        crime: updatedCrime,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  },
 
   removeCrime: async (req, res, next) => {
     try {
