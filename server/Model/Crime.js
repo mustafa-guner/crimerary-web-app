@@ -9,12 +9,10 @@ const crimeSchema = mongoose.Schema({
     type: String,
   },
 
-  category: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-    },
-  ],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
 
   criminals: [
     {

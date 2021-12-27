@@ -27,3 +27,6 @@ export const ERROR_CRIME = "ERROR_CRIME";
 export const CREATE_CRIMINAL = "CREATE_CRIMINAL";
 export const REMOVE_CRIMINAL = "REMOVE_CRIMINAL";
 export const GET_CRIMINALS = "GET_CRIMINALS";
+
+//Categories Types
+export const GET_CATEGORIES = "GET_CATEGORIES";

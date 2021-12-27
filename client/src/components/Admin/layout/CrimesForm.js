@@ -7,15 +7,20 @@ import { connect } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { getCriminals } from "../../../redux/actions/criminals";
+import { getCategories } from "../../../redux/actions/category";
 
 const CrimesForm = ({
   createCrime,
   getCriminals,
+  getCategories,
+  categories,
   criminals: { criminals, loading },
 }) => {
   useEffect(() => {
     getCriminals();
-  }, [getCriminals]);
+    getCategories();
+    console.log(categories);
+  }, [getCriminals, getCategories]);
 
   //Make animated things when removing select option data
   const animatedComponents = makeAnimated();
@@ -29,10 +34,11 @@ const CrimesForm = ({
     commitedAt: "",
     criminals: [],
     photo: "",
-    category: "Murder",
+    //category: "Murder",
   });
 
   const [selectedCriminals, setSelectedCriminals] = useState([]);
+  const [selectedCatg, setSelectedCatg] = useState({});
 
   const handleChange = (e) => {
     setDatas({
@@ -54,14 +60,19 @@ const CrimesForm = ({
     return setSelectedCriminals([...criminal]);
   };
 
-  const { title, description, location, commitedAt, category } = datas;
+  const handleCategoryChange = (catg) => {
+    return setSelectedCatg({ ...catg });
+  };
+
+  const { title, description, location, commitedAt } = datas;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     datas.criminals = [...selectedCriminals];
     datas.photo = image.photo;
-
+    datas.category = { ...selectedCatg };
+    console.log(datas.category.value);
     const formData = new FormData();
 
     formData.append("photo", datas.photo);
@@ -69,9 +80,10 @@ const CrimesForm = ({
     formData.append("description", description);
     formData.append("location", location);
     formData.append("commitedAt", commitedAt);
-    formData.append("category", category);
+    formData.append("category", datas.category.value);
     formData.append("criminals", JSON.stringify(datas.criminals));
     setDisable(true);
+    console.log(datas);
     createCrime(formData).then(() => {
       setDisable(false);
     });
@@ -206,19 +218,24 @@ const CrimesForm = ({
                 Please choose the category from downside (dropdown menu).
               </p>
             </Form.Label>
-            <Form.Control
-              name="category"
-              className="me-sm-2"
-              value={category}
-              disabled={disable}
-              onChange={(e) => handleChange(e)}
-              id="inlineFormCustomSelect"
-            >
-              {/* <option value="0">Choose...</option>
-              <option value="rape">Rape</option>
-              <option value="murder">Kill</option>
-              <option value="fight">Fight</option> */}
-            </Form.Control>
+            <Select
+              isDisabled={loading}
+              placeholder="Choose Category"
+              isSearchable
+              isDisabled={disable}
+              value={categories.label}
+              options={
+                categories &&
+                categories.map((catg) => {
+                  return {
+                    value: catg._id,
+                    label: catg.category,
+                  };
+                })
+              }
+              components={animatedComponents}
+              onChange={(categry) => handleCategoryChange(categry)}
+            />
           </Col>
         </Row>
 
@@ -268,7 +285,10 @@ CrimesForm.propTypes = {
 
 const mapStateToProps = (state) => ({
   criminals: state.criminals,
+  categories: state.category.categories,
 });
-export default connect(mapStateToProps, { createCrime, getCriminals })(
-  CrimesForm
-);
+export default connect(mapStateToProps, {
+  createCrime,
+  getCriminals,
+  getCategories,
+})(CrimesForm);

@@ -47,6 +47,7 @@ module.exports = {
   createCrime: async (req, res, next) => {
     try {
       const { title, description, location, category, criminals } = req.body;
+
       const savedCriminals = JSON.parse(criminals);
       if (
         !title ||
@@ -72,25 +73,20 @@ module.exports = {
             "The crime post that has the same title had created before. Please use unique titles.",
         });
 
-      const newCategory = new Category({ category });
-
       const crime = new Crime({
         title,
         description,
         location,
+        category,
         photo: url + "/public/uploads/" + req.file.filename,
         createdBy: req.auth._id,
       });
-
-      crime.category.push(newCategory._id);
 
       savedCriminals.forEach((criminal) => {
         crime.criminals.push(criminal.value);
       });
 
-      console.log(crime);
       await crime.save();
-      await newCategory.save();
 
       return res.json({
         crime,
@@ -112,11 +108,17 @@ module.exports = {
 
       if (req.body.title) updates["title"] = req.body.title;
       if (req.body.description) updates["description"] = req.body.description;
-      if (req.body.category) updates["category"] = req.body.category;
-      if (req.body.criminals)
+      if (req.body.category) {
+        console.log(req.body.category);
+        updates["category"] = req.body.category;
+      }
+      if (req.body.criminals) {
+        console.log(req.body.criminals);
         updates["criminals"] = JSON.parse(req.body.criminals).map(
           (criminal) => criminal.value
         );
+      }
+
       if (req.body.location) updates["location"] = req.body.location;
       if (req.body.commitedAt) updates["commitedAt"] = req.body.commitedAt;
 

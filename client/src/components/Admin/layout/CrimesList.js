@@ -48,6 +48,7 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
       </thead>
       <tbody className="text-center">
         {crimes.map((crime) => {
+          console.log(crime);
           return (
             <tr key={crime._id}>
               <td>{crime.title}</td>
@@ -60,15 +61,12 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
               <td>{crime.location}</td>
 
               <td className="d-flex justify-content-center">
-                {crime.category.map((category) => (
-                  <p
-                    className="border border-danger text-danger  rounded  mr-1"
-                    style={{ fontSize: "12px", padding: "4px" }}
-                    key={category._id}
-                  >
-                    {category.category}
-                  </p>
-                ))}
+                <p
+                  className="border border-danger text-danger  rounded  mr-1"
+                  style={{ fontSize: "12px", padding: "4px" }}
+                >
+                  {crime.category.category}
+                </p>
               </td>
               <td>
                 {" "}
@@ -82,7 +80,6 @@ const CrimesList = ({ crimes, removeCrime, getCrimeByID, crime, history }) => {
                   Remove
                 </button>
                 <Button
-                  // to={`/dashboard/edit-crime/${crime._id}`}
                   className="btn btn-dark btn-sm  mr-1"
                   onClick={() => {
                     setLoadingModal(true);

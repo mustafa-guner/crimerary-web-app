@@ -11,12 +11,15 @@ import { connect } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { getCriminals } from "../../../redux/actions/criminals";
+import { getCategories } from "../../../redux/actions/category";
 
 const CrimesForm = ({
   createCrime,
   getCriminals,
   getCrimeByID,
   editCrime,
+  categories,
+  getCategories,
   crime,
   criminals: { criminals, loading },
 }) => {
@@ -32,7 +35,7 @@ const CrimesForm = ({
     commitedAt: "",
     criminals: [],
     photo: "",
-    category: "",
+    category: [],
   };
 
   const [disable, setDisable] = useState(false);
@@ -58,23 +61,31 @@ const CrimesForm = ({
   });
 
   const [selectedCriminals, setSelectedCriminals] = useState([]);
+  const [selectedCatg, setSelectedCatg] = useState({});
 
   useEffect(() => {
     getCriminals();
-
+    getCategories();
     if (!crime && crimeID) {
       getCrimeByID(crimeID);
     }
 
-    if (crime && !crime.loading) {
+    if (crime && !crime.loading && categories && !categories.loading) {
       const crimePostData = { ...initialState };
       for (const key in crime) {
         if (key in crimePostData) crimePostData[key] = crime[key];
       }
-      crimePostData.category = crime.category.map(
-        (category) => category.category
-      );
-      //   console.log(crimePostData);
+      console.log(crime);
+
+      const selectedCategory = categories.filter(
+        (category) => category._id === crime.category._id
+      )[0];
+
+      setSelectedCatg({
+        value: selectedCategory._id,
+        label: selectedCategory.category,
+      });
+
       setDatas({ ...datas, ...crimePostData });
 
       setImage({ ...image, photo: crimePostData.photo });
@@ -88,9 +99,15 @@ const CrimesForm = ({
         }),
       ]);
 
-      console.log(selectedCriminals);
+      // console.log(selectedCriminals);
     }
-  }, [loading, getCriminals, getCrimeByID, crime && crime.loading]);
+  }, [
+    loading,
+    getCriminals,
+    getCategories,
+    getCrimeByID,
+    crime && crime.loading,
+  ]);
 
   const handleChange = (e) => {
     setDatas({
@@ -113,6 +130,10 @@ const CrimesForm = ({
     return setSelectedCriminals([...criminal]);
   };
 
+  const handleCategoryChange = (catg) => {
+    return setSelectedCatg({ ...catg });
+  };
+
   const { title, description, location, commitedAt, category } = datas;
 
   const handleSubmit = (e) => {
@@ -120,27 +141,19 @@ const CrimesForm = ({
 
     const formData = new FormData();
     datas.photo = image.photo;
+    datas.criminals = [...selectedCriminals];
+    datas.category = { ...selectedCatg };
     formData.append("photo", datas.photo);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("location", location);
     formData.append("commitedAt", commitedAt);
-    formData.append("category", category);
+    formData.append("category", datas.category.value);
     formData.append("criminals", JSON.stringify(datas.criminals));
 
     setDisable(true);
-
-    if (crimeID) {
-      // console.log(datas);
-      console.log(formData.get("criminals"));
-      editCrime(crimeID, formData).then(() => setDisable(false));
-
-      //   console.log(crimeID);
-    } else {
-      createCrime(formData).then(() => {
-        setDisable(false);
-      });
-    }
+    console.log(datas);
+    editCrime(crimeID, formData).then(() => setDisable(false));
 
     //Empty inputs after submit
 
@@ -275,20 +288,24 @@ const CrimesForm = ({
                 Please choose the category from downside (dropdown menu).
               </p>
             </Form.Label>
-            <Form.Control
-              name="category"
-              className="me-sm-2"
-              value={category}
-              value={category}
-              disabled={disable}
-              onChange={(e) => handleChange(e)}
-              id="inlineFormCustomSelect"
-            >
-              {/* <option value="0">Choose...</option>
-           <option value="rape">Rape</option>
-           <option value="murder">Kill</option>
-           <option value="fight">Fight</option> */}
-            </Form.Control>
+            <Select
+              isDisabled={loading}
+              placeholder="Choose Category"
+              isSearchable
+              isDisabled={disable}
+              value={selectedCatg}
+              options={
+                categories &&
+                categories.map((catg) => {
+                  return {
+                    value: catg._id,
+                    label: catg.category,
+                  };
+                })
+              }
+              components={animatedComponents}
+              onChange={(categry) => handleCategoryChange(categry)}
+            />
           </Col>
         </Row>
 
@@ -342,10 +359,12 @@ CrimesForm.propTypes = {
 const mapStateToProps = (state) => ({
   criminals: state.criminals,
   crime: state.crimes.crime,
+  categories: state.category.categories,
 });
 export default connect(mapStateToProps, {
   createCrime,
   getCriminals,
   getCrimeByID,
+  getCategories,
   editCrime,
 })(CrimesForm);
