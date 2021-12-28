@@ -42,7 +42,7 @@ const Pagination = ({ data, RenderComponent, dataLimit }) => {
         })}
       </>
 
-      <div className="blog-pagination my-4">
+      <div className="blog-pagination">
         <ul className="justify-content-center">
           {getPaginationGroup().map((item, index) => {
             return (

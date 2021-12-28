@@ -42,10 +42,14 @@ const Crimes = ({
         <section id="blog" className="blog">
           <div className="container" data-aos="fade-up">
             <div className="sidebar-item search-form">
-              <form action="">
-                <input type="text" />
-                <button type="submit">
-                  <i className="bi bi-search"></i>
+              <form action="" className="w-25 d-flex">
+                <input
+                  type="text"
+                  placeholder="Search for crime(s)"
+                  className="form-control"
+                />
+                <button type="submit" className="btn btn-danger btn-sm ml-1">
+                  <i className="fas fa-search"></i>
                 </button>
               </form>
             </div>
@@ -62,7 +66,7 @@ const Crimes = ({
               ) : (
                 <div className="col-lg-9 entries">
                   {!loading && crimes && crimes.length ? (
-                    <div className="row my-2">
+                    <div className="row">
                       <Pagination
                         data={crimes}
                         RenderComponent={CrimesListItem}

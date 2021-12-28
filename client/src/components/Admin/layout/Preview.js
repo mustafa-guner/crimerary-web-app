@@ -39,24 +39,27 @@ const Preview = (props) => {
               <ul>
                 <li className="d-flex align-items-center">
                   <i className="fas fa-users text-danger align-self-center"></i>{" "}
-                  {props.crime.criminals.map((criminal) => {
-                    console.log(criminal);
-                    return (
-                      <li key={criminal._id} className="align-self-center mr-1">
-                        {criminal.firstName} {criminal.lastName}
-                      </li>
-                    );
-                  })}
+                  {props.crime.criminals.length} criminal(s)
                 </li>
                 <li className="d-flex align-items-center">
-                  <i className="bi bi-clock"></i>{" "}
                   <Moment format="YYYY/MM/DD">{props.crime.commitedAt}</Moment>
+                </li>
+                <li className="d-flex align-items-center">
+                  {props.crime.location}
+                </li>
+                <li className="d-flex align-items-center">
+                  {props.crime.category.category}
                 </li>
               </ul>
             </div>
 
             <div className="entry-content">
-              <p>{props.crime.description}</p>
+              <p>
+                {" "}
+                {props.crime.description.length > 20
+                  ? props.crime.description.substring(0, 120) + "..."
+                  : props.crime.description}
+              </p>
             </div>
           </article>
           <Button className="btn btn-block btn-dark" onClick={props.onHide}>

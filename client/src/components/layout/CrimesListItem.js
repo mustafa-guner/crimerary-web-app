@@ -9,7 +9,7 @@ const CrimesListItem = ({ crime, getCrimeByID }) => {
   const navigate = useNavigate();
   const [loadingModal, setLoadingModal] = React.useState(false);
   return (
-    <article className="entry h-100" key={crime._id}>
+    <article className="entry " key={crime._id}>
       <div className="entry-img">
         <img src={`${crime.photo}`} alt="" className="img-fluid" />
       </div>
