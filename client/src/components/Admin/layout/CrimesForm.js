@@ -28,9 +28,9 @@ const CrimesForm = ({
   const [disable, setDisable] = useState(false);
   const [image, setImage] = useState({ photo: "" });
   const [datas, setDatas] = useState({
-    title: "Galatya",
-    description: "Galatya",
-    location: "Galatya",
+    title: "",
+    description: "",
+    location: "",
     commitedAt: "",
     criminals: [],
     photo: "",
@@ -90,14 +90,14 @@ const CrimesForm = ({
 
     //Empty inputs after submit
 
-    // setDatas({
-    //   title: "",
-    //   description: "",
-    //   location: "",
-    //   commitedAt: "",
-    //   criminals: "",
-    //   category: "",
-    // });
+    setDatas({
+      title: "",
+      description: "",
+      location: "",
+      commitedAt: "",
+      criminals: "",
+      category: "",
+    });
   };
 
   return (

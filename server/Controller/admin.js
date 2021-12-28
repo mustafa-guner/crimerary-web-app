@@ -46,7 +46,8 @@ module.exports = {
 
   createCrime: async (req, res, next) => {
     try {
-      const { title, description, location, category, criminals } = req.body;
+      const { title, description, location, category, criminals, commitedAt } =
+        req.body;
 
       const savedCriminals = JSON.parse(criminals);
       if (
@@ -78,6 +79,7 @@ module.exports = {
         description,
         location,
         category,
+        commitedAt,
         photo: url + "/public/uploads/" + req.file.filename,
         createdBy: req.auth._id,
       });

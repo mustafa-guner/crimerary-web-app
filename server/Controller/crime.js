@@ -3,9 +3,14 @@ const Crime = require("../Model/Crime");
 module.exports = {
   crimes: async (req, res, next) => {
     try {
-      const crimePosts = await Crime.find({}).populate("category", [
-        "category",
-      ]);
+      const { page = 1, limit = 2 } = req.query;
+
+      const crimePosts = await Crime.find({})
+        // .limit(limit * 1)
+        // .skip((page - 1) * limit)
+        .populate(["category", "criminals"]);
+
+      console.log(crimePosts.length);
 
       return res.status(200).json({
         success: true,

@@ -2,6 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import NavigationBar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+
+import mustafa from "../images/musdi.png";
+import akil from "../images/akil.png";
+import borte from "../images/bort.png";
+import ufuk from "../images/ufuk.png";
 const Team = () => {
   return (
     <>
@@ -28,7 +33,7 @@ const Team = () => {
 
               <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
                 <div className="member">
-                  <img src="assets/img/bort.png" alt="" />
+                  <img src={borte} alt="" />
                   <h4>Borte Avsaroglu</h4>
                   <span>Frontend Developer</span>
                   <p>
@@ -54,7 +59,7 @@ const Team = () => {
 
               <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
                 <div className="member">
-                  <img src="assets/img/musdi.png" alt="" />
+                  <img src={mustafa} alt="" />
                   <h4>Mustafa Guner</h4>
                   <span>Full Stack Developer</span>
                   <p>
@@ -86,7 +91,7 @@ const Team = () => {
 
               <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
                 <div className="member">
-                  <img src="assets/img/akil.png" alt="" />
+                  <img src={akil} alt="" />
                   <h4>Akil Evlat</h4>
                   <span>System Analyzer & UML Designer</span>
                   <p>
@@ -112,7 +117,7 @@ const Team = () => {
 
               <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
                 <div className="member">
-                  <img src="assets/img/ufuk.png" alt="" />
+                  <img src={ufuk} alt="" />
                   <h4>Ufuk Cem Delice</h4>
                   <span>System Analyzer & UI Designer</span>
                   <p>

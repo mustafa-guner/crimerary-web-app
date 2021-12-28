@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavigationBar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { NavLink } from "react-router-dom";
-const Crimes = () => {
+import Categories from "../components/layout/Categories";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Crime from "../components/layout/Crime";
+import { getCrimes } from "../redux/actions/crimes";
+import { getCategories } from "../redux/actions/category";
+import Pagination from "../components/Pagination";
+
+const Crimes = ({
+  getCrimes,
+  crimes: { crimes, loading },
+  getCategories,
+  categories,
+}) => {
+  useEffect(() => {
+    getCrimes();
+    getCategories();
+  }, [getCrimes, getCategories]);
+
   return (
     <>
       <NavigationBar />
@@ -24,124 +42,29 @@ const Crimes = () => {
         <section id="blog" className="blog">
           <div className="container" data-aos="fade-up">
             <div className="row">
-              <div className="col-lg-8 entries">
-                <article className="entry">
-                  <div className="entry-img">
-                    <img
-                      src="assets/img/crimes/crime-img1.jpg"
-                      alt=""
-                      className="img-fluid"
-                    />
+              {loading ? (
+                <div className="col-lg-8 entries text-center">
+                  <div
+                    className="spinner-border text-center mx-auto "
+                    role="status"
+                  >
+                    <span className="sr-only">Loading...</span>
                   </div>
-
-                  <h2 className="entry-title">
-                    <NavLink to="crimes-single.html">
-                      Dolorum optio tempore voluptas dignissimos cumque fuga qui
-                      quibusdam quia
-                    </NavLink>
-                  </h2>
-
-                  <div className="entry-meta">
-                    <ul>
-                      <li className="d-flex align-items-center">
-                        <i className="bi bi-person"></i>{" "}
-                        <NavLink to="crimes-single.html">John Doe</NavLink>
-                      </li>
-                      <li className="d-flex align-items-center">
-                        <i className="bi bi-clock"></i>{" "}
-                        <NavLink to="crimes-single.html">
-                          <time dateTime="2020-01-01">Jan 1, 2020</time>
-                        </NavLink>
-                      </li>
-                      <li className="d-flex align-items-center">
-                        <i className="bi bi-chat-dots"></i>{" "}
-                        <NavLink to="crimes-single.html">12 Comments</NavLink>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="entry-content">
-                    <p>
-                      Similique neque nam consequuntur ad non maxime aliquam
-                      quas. Quibusdam animi praesentium. Aliquam et laboriosam
-                      eius aut nostrum quidem aliquid dicta. Et eveniet enim.
-                      Qui velit est ea dolorem doloremque deleniti aperiam unde
-                      soluta. Est cum et quod quos aut ut et sit sunt. Voluptate
-                      porro consequatur assumenda perferendis dolore.
-                    </p>
-                    <div className="read-more">
-                      <NavLink to="crimes-single.html">Read More</NavLink>
-                    </div>
-                  </div>
-                </article>
-
-                <article className="entry">
-                  <div className="entry-img">
-                    <img
-                      src="assets/img/crimes/crime-img2.jpg"
-                      alt=""
-                      className="img-fluid"
-                    />
-                  </div>
-
-                  <h2 className="entry-title">
-                    <NavLink to="crimes-single.html">
-                      Non rem rerum nam cum quo minus. Dolor distinctio deleniti
-                      explicabo eius exercitationem.
-                    </NavLink>
-                  </h2>
-
-                  <div className="entry-meta">
-                    <ul>
-                      <li className="d-flex align-items-center">
-                        <i className="bi bi-person"></i>{" "}
-                        <NavLink to="crimes-single.html">John Doe</NavLink>
-                      </li>
-                      <li className="d-flex align-items-center">
-                        <i className="bi bi-clock"></i>{" "}
-                        <NavLink to="crimes-single.html">
-                          <time dateTime="2020-01-01">Jan 1, 2020</time>
-                        </NavLink>
-                      </li>
-                      <li className="d-flex align-items-center">
-                        <i className="bi bi-chat-dots"></i>{" "}
-                        <NavLink to="crimes-single.html">12 Comments</NavLink>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="entry-content">
-                    <p>
-                      Aspernatur rerum perferendis et sint. Voluptates
-                      cupiditate voluptas atque quae. Rem veritatis rerum enim
-                      et autem. Saepe atque cum eligendi eaque iste omnis a qui.
-                      Quia sed sunt. Ea asperiores expedita et et delectus
-                      voluptates rerum. Id saepe ut itaque quod qui voluptas
-                      nobis porro rerum. Quam quia nesciunt qui aut est non
-                      omnis. Inventore occaecati et quaerat magni itaque nam
-                      voluptas. Voluptatem ducimus sint id earum ut nesciunt sed
-                      corrupti nemo.
-                    </p>
-                    <div className="read-more">
-                      <NavLink to="crimes-single.html">Read More</NavLink>
-                    </div>
-                  </div>
-                </article>
-
-                <div className="blog-pagination">
-                  <ul className="justify-content-center">
-                    <li>
-                      <NavLink to="#">1</NavLink>
-                    </li>
-                    <li className="active">
-                      <NavLink to="#">2</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="#">3</NavLink>
-                    </li>
-                  </ul>
                 </div>
-              </div>
+              ) : (
+                <div className="col-lg-8 entries">
+                  {!loading && crimes && crimes.length ? (
+                    <Pagination
+                      data={crimes}
+                      RenderComponent={Crime}
+                      pageLimit={5}
+                      dataLimit={3}
+                    />
+                  ) : (
+                    <h3>No Crimes</h3>
+                  )}
+                </div>
+              )}
 
               <div className="col-lg-4">
                 <div className="sidebar">
@@ -157,38 +80,18 @@ const Crimes = () => {
 
                   <h3 className="sidebar-title">Categories</h3>
                   <div className="sidebar-item categories">
-                    <ul>
-                      <li>
-                        <NavLink to="#">
-                          Accident <span>(25)</span>
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink to="#">
-                          Murder <span>(12)</span>
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink to="#">
-                          Theft <span>(5)</span>
-                        </NavLink>
-                      </li>
-                      <li>
-                        <a to="#">
-                          Sexual Asssault <span>(22)</span>
-                        </a>
-                      </li>
-                      <li>
-                        <NavLink to="#">
-                          Violence <span>(8)</span>
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink to="#">
-                          Assault <span>(14)</span>
-                        </NavLink>
-                      </li>
-                    </ul>
+                    {categories.categories && categories.loading ? (
+                      <div className="w-100 text-center">
+                        <div
+                          className="spinner-border text-center mx-auto "
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <Categories categories={categories.categories} />
+                    )}
                   </div>
                 </div>
               </div>
@@ -202,4 +105,15 @@ const Crimes = () => {
   );
 };
 
-export default Crimes;
+Crimes.propTypes = {
+  crimes: PropTypes.object.isRequired,
+  getCrimes: PropTypes.func.isRequired,
+  getCategories: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  crimes: state.crimes,
+  categories: state.category,
+});
+
+export default connect(mapStateToProps, { getCrimes, getCategories })(Crimes);

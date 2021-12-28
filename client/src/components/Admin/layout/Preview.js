@@ -39,14 +39,14 @@ const Preview = (props) => {
               <ul>
                 <li className="d-flex align-items-center">
                   <i className="fas fa-users text-danger align-self-center"></i>{" "}
-                  {/* {props.crime.criminals.map((crime) => {
-                  console.log(crime);
-                  return (
-                    <span key={crime} className="align-self-center">
-                      {crime}{" "}
-                    </span>
-                  );
-                })} */}
+                  {props.crime.criminals.map((criminal) => {
+                    console.log(criminal);
+                    return (
+                      <li key={criminal._id} className="align-self-center mr-1">
+                        {criminal.firstName} {criminal.lastName}
+                      </li>
+                    );
+                  })}
                 </li>
                 <li className="d-flex align-items-center">
                   <i className="bi bi-clock"></i>{" "}
