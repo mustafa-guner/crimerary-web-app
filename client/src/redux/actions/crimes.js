@@ -48,15 +48,33 @@ export const getCrimeByID = (id) => async (dispatch) => {
       withCredentials: true,
     });
 
+    console.log(data);
     return dispatch({
       type: types.GET_CRIME,
       payload: data.crime,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data.message);
     dispatch({
       type: types.ERROR_CRIME,
     });
+  }
+};
+
+export const getSimilarCategories = (category) => async (dispatch) => {
+  try {
+    const { data } = await crimeAPI(`/crimes?category=${category}`, {
+      method: "GET",
+      withCredentials: true,
+    });
+    console.log(data);
+    // console.log(category);
+    dispatch({
+      type: types.GET_CRIMES,
+      payload: data.crimes,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 

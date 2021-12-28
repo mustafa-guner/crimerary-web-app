@@ -5,8 +5,8 @@ a {
   text-decoration: none !important;
 }
 .img-fluid {
-  max-width: 100%;
-  height: auto;
+  max-width: 100% !important;
+  height: auto !important;
 }
 .main-red-text {
   color: #d72323 !important;
@@ -1455,18 +1455,20 @@ section {
 /*--------------------------------------------------------------
 # Blog
 --------------------------------------------------------------*/
-.blog {
-  padding: 40px 0 20px 0;
-}
+
 .blog .entry {
   padding: 30px;
   margin-bottom: 60px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 .blog .entry .entry-img {
-  max-height: 440px;
-  margin: -30px -30px 20px -30px;
   overflow: hidden;
+  height: 100vh;
+}
+.blog .entry .entry-img img {
+  width: 100% !important ;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 .blog .entry .entry-title {
   font-size: 28px;
@@ -1514,16 +1516,17 @@ section {
   -moz-text-align-last: right;
   text-align-last: right;
 }
-.blog .entry .entry-content .read-more a {
+.blog .entry .entry-content .read-more button {
   display: inline-block;
   background: #d72323;
   color: #fff;
   padding: 6px 20px;
+  border: none !important;
   transition: 0.3s;
   font-size: 14px;
   border-radius: 4px;
 }
-.blog .entry .entry-content .read-more a:hover {
+.blog .entry .entry-content .read-more button:hover {
   background: #d723239d;
 }
 .blog .entry .entry-content h3 {

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-const Pagination = ({ data, RenderComponent, title, pageLimit, dataLimit }) => {
-  const [pages] = useState(Math.round(data.length / dataLimit));
-  console.log(pages);
+const Pagination = ({ data, RenderComponent, dataLimit }) => {
+  //const [pages] = useState(Math.round(data.length / dataLimit));
+
   const [currentPage, setCurrentPage] = useState(1);
+
   const goToNextPage = () => {
     setCurrentPage((page) => page + 1);
   };
@@ -12,17 +13,15 @@ const Pagination = ({ data, RenderComponent, title, pageLimit, dataLimit }) => {
   };
   const changePage = (event) => {
     const pageNumber = Number(event.target.textContent);
-    console.log(pageNumber);
     setCurrentPage(pageNumber);
   };
   const getPaginatedData = () => {
     const startIndex = currentPage * dataLimit - dataLimit;
     const endIndex = startIndex + dataLimit;
-    console.log(data);
-    console.log(data.slice(startIndex, endIndex));
+
     return data.slice(startIndex, endIndex);
   };
-  //const totalPageCount = Math.ceil(totalCount / pageSize);
+
   const getPaginationGroup = () => {
     let limit = Math.ceil(data.length / dataLimit);
     let start = Math.floor((currentPage - 1) / limit) * limit;
@@ -33,16 +32,19 @@ const Pagination = ({ data, RenderComponent, title, pageLimit, dataLimit }) => {
   }, [currentPage]);
   return (
     <>
-      <div>
+      <>
         {getPaginatedData().map((crime) => {
-          return <RenderComponent crime={crime} />;
+          return (
+            <div className="col-6 col-lg-6 mt-4">
+              <RenderComponent crime={crime} />{" "}
+            </div>
+          );
         })}
-      </div>
+      </>
 
-      <div className="blog-pagination">
+      <div className="blog-pagination my-4">
         <ul className="justify-content-center">
           {getPaginationGroup().map((item, index) => {
-            console.log(item);
             return (
               <li key={index}>
                 {/* <NavLink to="#">1</NavLink> */}

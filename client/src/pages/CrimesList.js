@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import Categories from "../components/layout/Categories";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Crime from "../components/layout/Crime";
+import CrimesListItem from "../components/layout/CrimesListItem";
 import { getCrimes } from "../redux/actions/crimes";
 import { getCategories } from "../redux/actions/category";
 import Pagination from "../components/Pagination";
@@ -41,6 +41,14 @@ const Crimes = ({
 
         <section id="blog" className="blog">
           <div className="container" data-aos="fade-up">
+            <div className="sidebar-item search-form">
+              <form action="">
+                <input type="text" />
+                <button type="submit">
+                  <i className="bi bi-search"></i>
+                </button>
+              </form>
+            </div>
             <div className="row">
               {loading ? (
                 <div className="col-lg-8 entries text-center">
@@ -52,31 +60,24 @@ const Crimes = ({
                   </div>
                 </div>
               ) : (
-                <div className="col-lg-8 entries">
+                <div className="col-lg-9 entries">
                   {!loading && crimes && crimes.length ? (
-                    <Pagination
-                      data={crimes}
-                      RenderComponent={Crime}
-                      pageLimit={5}
-                      dataLimit={3}
-                    />
+                    <div className="row my-2">
+                      <Pagination
+                        data={crimes}
+                        RenderComponent={CrimesListItem}
+                        dataLimit={4}
+                      />
+                    </div>
                   ) : (
                     <h3>No Crimes</h3>
                   )}
                 </div>
               )}
 
-              <div className="col-lg-4">
+              <div className="col-lg-3  mt-4">
                 <div className="sidebar">
                   <h3 className="sidebar-title">Search</h3>
-                  <div className="sidebar-item search-form">
-                    <form action="">
-                      <input type="text" />
-                      <button type="submit">
-                        <i className="bi bi-search"></i>
-                      </button>
-                    </form>
-                  </div>
 
                   <h3 className="sidebar-title">Categories</h3>
                   <div className="sidebar-item categories">
