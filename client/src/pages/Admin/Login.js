@@ -9,8 +9,8 @@ const Login = ({ auth, login }) => {
   const [disable, setDisable] = useState(false);
 
   const [formData, setFormData] = useState({
-    username: "musdy.guner",
-    password: "asdf123",
+    // username: "musdy.guner",
+    // password: "asdf123",
   });
 
   const { username, password } = formData;

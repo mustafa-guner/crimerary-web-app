@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
+import { connect } from "react-redux";
 
-const Menu = ({ handleLogout }) => {
+const Menu = ({ handleLogout, auth: { loading, user } }) => {
   return (
     <Navbar collapseOnSelect expand="lg" className="my-4">
       <Container>
@@ -27,7 +28,8 @@ const Menu = ({ handleLogout }) => {
               aria-expanded="false"
             >
               <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-                Mustafa Guner
+                {user && !loading && user.firstName}{" "}
+                {user && !loading && user.lastName}
               </span>
               <img
                 className="img-profile rounded-circle"
@@ -46,5 +48,7 @@ const Menu = ({ handleLogout }) => {
 };
 
 Menu.propTypes = {};
-
-export default Menu;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+export default connect(mapStateToProps)(Menu);

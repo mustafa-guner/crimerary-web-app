@@ -5,7 +5,7 @@ const initialState = {
   isAuth: false,
   token: localStorage.getItem("token"),
   loading: true,
-  isRestricted: false,
+  isRestricted: false, //after many wrong credentials
 };
 
 const auth = (state = initialState, action) => {
