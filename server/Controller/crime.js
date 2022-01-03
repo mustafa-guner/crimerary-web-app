@@ -6,21 +6,34 @@ module.exports = {
     try {
       //const { page = 1, limit = 2 } = req.query;
 
+      const crimePosts = await Crime.find({}).populate([
+        "category",
+        "criminals",
+      ]);
+
       if (req.query.category) {
         return res.status(200).json({
           success: true,
-          crimes: await Crime.find({ category: req.query.category }).populate([
-            "category",
-            "criminals",
-          ]),
+          crimes: crimePosts.filter(
+            (crime) => crime.category.category === req.query.category
+          ),
         });
       }
 
-      const crimePosts = await Crime.find()
-
-        // .limit(limit * 1)
-        // .skip((page - 1) * limit)
-        .populate(["category", "criminals"]);
+      if (req.query.k) {
+        console.log(req.query.k);
+        console.log(
+          await Crime.find({
+            title: { $regex: req.query.k, $options: "i" },
+          })
+        );
+        return res.status(200).json({
+          success: true,
+          crimes: await Crime.find({
+            title: { $regex: req.query.k, $options: "i" },
+          }),
+        });
+      }
 
       return res.status(200).json({
         success: true,

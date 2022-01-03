@@ -20,6 +20,7 @@ import AdminError from "./pages/Admin/Error";
 import Team from "./pages/Team";
 import CrimesList from "./pages/CrimesList";
 import CriminalsList from "./pages/CriminalsList";
+import CriminalEdit from "./components/Admin/layout/CriminalsEdit";
 import { Contact } from "./pages/Contact";
 import Crime from "./pages/Crime";
 
@@ -102,6 +103,16 @@ function App() {
             element={
               <PrivateRoute>
                 <Criminals />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            exact
+            path={"/dashboard/edit-criminal/:criminalID"}
+            element={
+              <PrivateRoute>
+                <CriminalEdit />
               </PrivateRoute>
             }
           />

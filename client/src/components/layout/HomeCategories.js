@@ -9,7 +9,9 @@ const Categories = ({ categories }) => {
             <i className="fas fa-balance-scale"></i>
           </div>
           <h4>
-            <NavLink to="">{category.category}</NavLink>
+            <NavLink to={`/crimes?category=${category.category}`}>
+              {category.category}
+            </NavLink>
           </h4>
           <p>
             Voluptatum deleniti atque corrupti quos dolores et quas molestias

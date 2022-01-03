@@ -70,7 +70,7 @@ export const getSimilarCategories = (category) => async (dispatch) => {
     console.log(data);
     // console.log(category);
     dispatch({
-      type: types.GET_CRIMES,
+      type: types.SIMILAR_CRIMES,
       payload: data.crimes,
     });
   } catch (error) {
@@ -89,7 +89,7 @@ export const editCrime = (id, newDetails) => async (dispatch) => {
       },
       withCredentials: true,
     });
-    console.log(data);
+
     return dispatch({
       type: types.EDIT_CRIME,
       payload: data.crime,
@@ -101,7 +101,7 @@ export const editCrime = (id, newDetails) => async (dispatch) => {
 
 export const getCrimes = () => async (dispatch) => {
   try {
-    const { data } = await crimeAPI("/crimes/", {
+    const { data } = await crimeAPI(`/crimes/`, {
       method: "GET",
       withCredentials: true,
     });
@@ -112,6 +112,38 @@ export const getCrimes = () => async (dispatch) => {
     });
   } catch (error) {
     console.log(error.response.data);
+  }
+};
+
+export const getCrimesByCategory = (category) => async (dispatch) => {
+  try {
+    const { data } = await crimeAPI(`/crimes?category=${category}`, {
+      method: "GET",
+      withCredentials: true,
+    });
+
+    return dispatch({
+      type: types.GET_CRIMES,
+      payload: data.crimes,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCrimesBySearch = (search) => async (dispatch) => {
+  try {
+    const { data } = await crimeAPI(`/crimes?k=${search}`, {
+      method: "GET",
+      withCredentials: true,
+    });
+    console.log(data.crimes);
+    return dispatch({
+      type: types.GET_CRIMES,
+      payload: data.crimes,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 

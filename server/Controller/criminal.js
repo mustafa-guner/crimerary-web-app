@@ -17,6 +17,23 @@ module.exports = {
     }
   },
 
+  criminal: async (req, res, next) => {
+    try {
+      const { criminalID } = req.params;
+      const criminal = await Criminal.findById(criminalID);
+      console.log(criminal);
+      return res.status(200).json({
+        success: true,
+        criminal: criminal,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  },
+
   //   crime: async (req, res, next) => {
   //     try {
   //     } catch (error) {

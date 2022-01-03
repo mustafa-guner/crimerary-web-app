@@ -22,11 +22,15 @@ export const GET_CRIMES = "GET_CRIMES";
 export const GET_CRIME = "GET_CRIME";
 export const EDIT_CRIME = "EDIT_CRIME";
 export const ERROR_CRIME = "ERROR_CRIME";
+export const SIMILAR_CRIMES = "SIMILAR_CRIMES";
 
 //Criminal Types
 export const CREATE_CRIMINAL = "CREATE_CRIMINAL";
 export const REMOVE_CRIMINAL = "REMOVE_CRIMINAL";
 export const GET_CRIMINALS = "GET_CRIMINALS";
+export const GET_CRIMINAL = "GET_CRIMINAL";
+export const EDIT_CRIMINAL = "EDIT_CRIMINAL";
+export const ERROR_CRIMINAL = "ERROR_CRIMINAL";
 
 //Categories Types
 export const GET_CATEGORIES = "GET_CATEGORIES";

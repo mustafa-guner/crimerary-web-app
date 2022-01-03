@@ -59,8 +59,7 @@ const CrimesForm = ({
     photo: "",
     category: "",
   });
-  // console.log(categories);
-  // console.log(criminals);
+
   const [selectedCriminals, setSelectedCriminals] = useState([]);
   const [selectedCatg, setSelectedCatg] = useState({});
 
@@ -84,7 +83,6 @@ const CrimesForm = ({
       for (const key in crime) {
         if (key in crimePostData) crimePostData[key] = crime[key];
       }
-      // console.log(crime);
 
       const selectedCategory = categories.filter(
         (category) => category._id === crime.category._id
@@ -110,8 +108,6 @@ const CrimesForm = ({
           };
         }),
       ]);
-
-      // console.log(selectedCriminals);
     }
   }, [
     loading,
@@ -132,7 +128,7 @@ const CrimesForm = ({
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    // console.log(e.target.files[0]);
+
     setImage({
       ...image,
       photo: file,
@@ -140,7 +136,6 @@ const CrimesForm = ({
   };
 
   const handleCriminalsChange = (criminal) => {
-    //console.log(criminal);
     return setSelectedCriminals([...criminal]);
   };
 

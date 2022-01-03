@@ -76,7 +76,7 @@ const CrimesForm = ({
     const formData = new FormData();
 
     formData.append("photo", datas.photo);
-    formData.append("title", title);
+    formData.append("title", title.trim());
     formData.append("description", description.trim());
     formData.append("location", location.trim());
     formData.append("commitedAt", commitedAt);

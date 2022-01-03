@@ -13,7 +13,7 @@ const criminal = (state = initialState, action) => {
     case types.CREATE_CRIMINAL:
       return {
         ...state,
-        crimes: [...state.crimes, payload],
+        criminal: payload,
         loading: false,
       };
 
@@ -21,6 +21,31 @@ const criminal = (state = initialState, action) => {
       return {
         ...state,
         criminals: payload,
+        loading: false,
+      };
+
+    case types.GET_CRIMINAL:
+    case types.EDIT_CRIMINAL:
+      return {
+        ...state,
+        criminal: payload,
+        loading: false,
+      };
+
+    case types.ERROR_CRIMINAL:
+      return {
+        ...state,
+        criminal: null,
+        criminals: [],
+        loading: false,
+      };
+
+    case types.REMOVE_CRIMINAL:
+      return {
+        ...state,
+        criminals: state.criminals.filter(
+          (criminal) => criminal._id !== payload.criminalID
+        ),
         loading: false,
       };
 

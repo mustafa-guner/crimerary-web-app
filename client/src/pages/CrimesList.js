@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavigationBar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { NavLink } from "react-router-dom";
@@ -6,20 +6,55 @@ import Categories from "../components/layout/Categories";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CrimesListItem from "../components/layout/CrimesListItem";
-import { getCrimes } from "../redux/actions/crimes";
+import {
+  getCrimes,
+  getCrimesByCategory,
+  getCrimesBySearch,
+} from "../redux/actions/crimes";
 import { getCategories } from "../redux/actions/category";
 import Pagination from "../components/Pagination";
+import { useSearchParams } from "react-router-dom";
 
 const Crimes = ({
   getCrimes,
   crimes: { crimes, loading },
   getCategories,
   categories,
+  getCrimesByCategory,
+  getCrimesBySearch,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchByTitle, setSearchByTitle] = useState({ k: "" });
+
+  const handleChangeTitle = (e) =>
+    setSearchByTitle({
+      ...searchByTitle.k,
+      [e.target.name]: e.target.value,
+    });
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchParams({ k: searchByTitle.k });
+    getCrimesBySearch(searchByTitle.k);
+  };
+
   useEffect(() => {
-    getCrimes();
     getCategories();
-  }, [getCrimes, getCategories]);
+
+    if (searchParams.get("category")) {
+      getCrimesByCategory(searchParams.get("category"));
+    } else if (searchParams.get("k")) {
+      getCrimesByCategory(searchParams.get("k"));
+    } else {
+      getCrimes();
+    }
+  }, [
+    getCrimes,
+    getCategories,
+    getCrimesByCategory,
+    getCrimesBySearch,
+    searchParams,
+  ]);
 
   return (
     <>
@@ -42,11 +77,13 @@ const Crimes = ({
         <section id="blog" className="blog">
           <div className="container" data-aos="fade-up">
             <div className="sidebar-item search-form">
-              <form action="" className="w-25 d-flex">
+              <form onSubmit={handleSearch} className="w-25 d-flex">
                 <input
                   type="text"
+                  onChange={(e) => handleChangeTitle(e)}
                   placeholder="Search for crime(s)"
                   className="form-control"
+                  name="k"
                 />
                 <button type="submit" className="btn btn-danger btn-sm ml-1">
                   <i className="fas fa-search"></i>
@@ -114,6 +151,8 @@ Crimes.propTypes = {
   crimes: PropTypes.object.isRequired,
   getCrimes: PropTypes.func.isRequired,
   getCategories: PropTypes.func.isRequired,
+  getCrimesByCategory: PropTypes.func.isRequired,
+  getCrimesBySearch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -121,4 +160,9 @@ const mapStateToProps = (state) => ({
   categories: state.category,
 });
 
-export default connect(mapStateToProps, { getCrimes, getCategories })(Crimes);
+export default connect(mapStateToProps, {
+  getCrimes,
+  getCategories,
+  getCrimesByCategory,
+  getCrimesBySearch,
+})(Crimes);

@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavigationBar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { NavLink } from "react-router-dom";
-const Criminals = () => {
+import { getCriminals } from "../redux/actions/criminals";
+import { connect } from "react-redux";
+import { Row, Col } from "react-bootstrap";
+
+const Criminals = ({ criminals, getCriminals }) => {
+  useEffect(() => {
+    getCriminals();
+    console.log(criminals);
+  }, [getCriminals]);
   return (
     <>
       <NavigationBar />
@@ -22,207 +30,62 @@ const Criminals = () => {
         </section>
         <section id="team" className="team">
           <div className="container">
-            <div className="row">
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <div className="img-container">
-                      <img
-                        src="assets/img/criminals/women-criminal.png"
-                        alt=""
-                      />
-                    </div>
-                    <h4>Jane Doe</h4>
-                    <span>Murder</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 42</li>
-                          <li>Gender: Female</li>
+            <Row xs={1} md={5} className="g-4">
+              {criminals.criminals &&
+              criminals.criminals.length &&
+              !criminals.loading ? (
+                criminals.criminals.map((criminal, idx) => (
+                  <Col>
+                    <div className="card p-4">
+                      <div className=" image d-flex flex-column justify-content-center align-items-center">
+                        {" "}
+                        <img
+                          src={criminal.photo}
+                          height="100"
+                          width="100"
+                          style={{ objectFit: "cover" }}
+                        />
+                        <span className="name mt-3">
+                          {criminal.firstName} {criminal.lastName}
+                        </span>{" "}
+                        <div className="text mt-3">
+                          {" "}
+                          <span>
+                            {criminal.bio.length > 20
+                              ? criminal.bio.substring(0, 15) + "..."
+                              : criminal.bio}
+                            <br />
+                          </span>{" "}
                         </div>
-                      </ul>
+                        <div className=" px-2 rounded mt-4 border border-danger text-danger ">
+                          {criminal.gender}
+                        </div>
+                        <div className=" px-2 rounded mt-4 date ">
+                          {" "}
+                          <span className="join">
+                            {new Date().getFullYear() -
+                              new Date(criminal.dob).getFullYear()}{" "}
+                            years old
+                          </span>{" "}
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-danger border border-danger rounded p-2 d-inline-block span-caught">
-                      <h4>Wanted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
+                  </Col>
+                ))
+              ) : criminals.length === 0 ? (
+                <h3>No Criminals</h3>
+              ) : (
+                <h3>Loading</h3>
+              )}
 
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <img
-                      src="assets/img/criminals/criminal-modified.png"
-                      alt=""
-                    />
-                    <h4>John Doe</h4>
-                    <span>Sexual Assault</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 28</li>
-                          <li>Gender: Male</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-primary border border-primary rounded p-2 d-inline-block span-caught">
-                      <h4>Busted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
-
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <div className="img-container">
-                      <img
-                        src="assets/img/criminals/women-criminal.png"
-                        alt=""
-                      />
-                    </div>
-                    <h4>Jane Doe</h4>
-                    <span>Murder</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 42</li>
-                          <li>Gender: Female</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-danger border border-danger rounded p-2 d-inline-block span-caught">
-                      <h4>Wanted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
-
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <img
-                      src="assets/img/criminals/criminal-modified.png"
-                      alt=""
-                    />
-                    <h4>John Doe</h4>
-                    <span>Sexual Assault</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 28</li>
-                          <li>Gender: Male</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-primary border border-primary rounded p-2 d-inline-block span-caught">
-                      <h4>Busted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
-
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <div className="img-container">
-                      <img
-                        src="assets/img/criminals/women-criminal.png"
-                        alt=""
-                      />
-                    </div>
-                    <h4>Jane Doe</h4>
-                    <span>Murder</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 42</li>
-                          <li>Gender: Female</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-danger border border-danger rounded p-2 d-inline-block span-caught">
-                      <h4>Wanted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
-
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <img
-                      src="assets/img/criminals/criminal-modified.png"
-                      alt=""
-                    />
-                    <h4>John Doe</h4>
-                    <span>Sexual Assault</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 28</li>
-                          <li>Gender: Male</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-primary border border-primary rounded p-2 d-inline-block span-caught">
-                      <h4>Busted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
-
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <div className="img-container">
-                      <img
-                        src="assets/img/criminals/women-criminal.png"
-                        alt=""
-                      />
-                    </div>
-                    <h4>Jane Doe</h4>
-                    <span>Murder</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 42</li>
-                          <li>Gender: Female</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-danger border border-danger rounded p-2 d-inline-block span-caught">
-                      <h4>Wanted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
-
-              <div className="col-lg-3 col-md-6 d-flex align-items-stretch criminals-card">
-                <NavLink to="./criminal-single.html">
-                  <div className="member">
-                    <img
-                      src="assets/img/criminals/criminal-modified.png"
-                      alt=""
-                    />
-                    <h4>John Doe</h4>
-                    <span>Sexual Assault</span>
-                    <div className="mpcard-desc criminals-card-desc">
-                      <ul className="">
-                        <div>
-                          <li>Age: 28</li>
-                          <li>Gender: Male</li>
-                        </div>
-                      </ul>
-                    </div>
-                    <span className="text-primary border border-primary rounded p-2 d-inline-block span-caught">
-                      <h4>Busted</h4>
-                    </span>
-                  </div>
-                </NavLink>
-              </div>
+              {/* {disable && (
+          <Col className="align-self-center">
+            <div className="spinner-border text-success " role="status">
+              <span className="sr-only">Loading...</span>
             </div>
+          </Col>
+        )} */}
+            </Row>
           </div>
         </section>
       </main>
@@ -231,4 +94,8 @@ const Criminals = () => {
   );
 };
 
-export default Criminals;
+const mapStateToProps = (state) => ({
+  criminals: state.criminals,
+});
+
+export default connect(mapStateToProps, { getCriminals })(Criminals);

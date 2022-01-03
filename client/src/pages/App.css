@@ -1808,14 +1808,14 @@ section {
 .blog .sidebar .categories ul li + li {
   padding-top: 10px;
 }
-.blog .sidebar .categories ul a {
+.blog .sidebar .categories ul button {
   color: #545454;
   transition: 0.3s;
 }
-.blog .sidebar .categories ul a:hover {
+.blog .sidebar .categories ul button:hover {
   color: #d72323;
 }
-.blog .sidebar .categories ul a span {
+.blog .sidebar .categories ul button span {
   padding-left: 5px;
   color: #aaaaaa;
   font-size: 14px;

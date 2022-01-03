@@ -8,17 +8,15 @@ const {
   removeCrime,
   createCriminal,
   editCrime,
+  editCriminal,
+  removeCriminal,
 } = require("../Controller/admin");
 
 //Admin Dashboard after success login
 const { dashboard } = require("../Controller/auth");
 
 //ADD VALIDATION MIDDLEWARE FUNCTIONS
-const {
-  registerValidation,
-  criminalValidation,
-  crimeValidation,
-} = require("../Middleware/Validation/validation");
+const { registerValidation } = require("../Middleware/Validation/validation");
 
 const { checkAuthorization, adminAccess } = require("../Middleware/Auth/auth");
 const { errorValidation } = require("../Middleware/Validation/error");
@@ -38,12 +36,7 @@ adminRoute.post(
 
 adminRoute.post(
   "/add-new-criminal",
-  [
-    checkAuthorization,
-    adminAccess,
-    criminalValidation,
-    uploadImage.single("photo"),
-  ],
+  [checkAuthorization, adminAccess, uploadImage.single("photo")],
   createCriminal
 );
 
@@ -57,6 +50,18 @@ adminRoute.put(
   "/edit-crime/:crimeID",
   [checkAuthorization, adminAccess, uploadImage.single("photo")],
   editCrime
+);
+
+adminRoute.put(
+  "/edit-criminal/:criminalID",
+  [checkAuthorization, adminAccess, uploadImage.single("photo")],
+  editCriminal
+);
+
+adminRoute.post(
+  "/remove-criminal/:criminalID",
+  [checkAuthorization, adminAccess],
+  removeCriminal
 );
 
 adminRoute.post(

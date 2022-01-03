@@ -4,6 +4,7 @@ const initialState = {
   crimes: [],
   crime: null,
   loading: true,
+  similarCrimes: [],
 };
 
 const crime = (state = initialState, action) => {
@@ -24,7 +25,15 @@ const crime = (state = initialState, action) => {
         loading: false,
       };
 
+    case types.SIMILAR_CRIMES:
+      return {
+        ...state,
+        similarCrimes: payload,
+        loading: false,
+      };
+
     case types.GET_CRIMES:
+      console.log(payload);
       return {
         ...state,
         crimes: payload,

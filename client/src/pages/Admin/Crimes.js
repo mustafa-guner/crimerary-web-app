@@ -5,10 +5,18 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCrimes } from "../../redux/actions/crimes";
 import noData from "../../images/no data.svg";
+import { useSearchParams } from "react-router-dom";
 
 const Crimes = ({ getCrimes, crimes: { crimes, loading } }) => {
+  const getQueryParams = (query = null) =>
+    (query || window.location.search.replace("?", ""))
+      .split("&")
+      .map((e) => e.split("=").map(decodeURIComponent))
+      .reduce((r, [k, v]) => ((r[k] = v), r), {});
+
   useEffect(() => {
     getCrimes();
+    console.log(window.location.href);
   }, [getCrimes]);
 
   return (

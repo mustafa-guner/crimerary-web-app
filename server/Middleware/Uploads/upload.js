@@ -3,6 +3,7 @@ const path = require("path");
 const { v4 } = require("uuid");
 
 const DIR = path.dirname(require.main.filename);
+console.log(DIR);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

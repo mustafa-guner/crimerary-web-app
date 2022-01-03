@@ -35,7 +35,7 @@ const Team = () => {
                 <div className="member">
                   <img src={borte} alt="" />
                   <h4>Borte Avsaroglu</h4>
-                  <span>Frontend Developer</span>
+                  <span>Team Member</span>
                   <p>
                     Magni qui quod omnis unde et eos fuga et exercitationem.
                     Odio veritatis perspiciatis quaerat qui aut aut aut
@@ -61,7 +61,7 @@ const Team = () => {
                 <div className="member">
                   <img src={mustafa} alt="" />
                   <h4>Mustafa Guner</h4>
-                  <span>Full Stack Developer</span>
+                  <span>Team Member</span>
                   <p>
                     Repellat fugiat adipisci nemo illum nesciunt voluptas
                     repellendus. In architecto rerum rerum temporibus
@@ -93,7 +93,7 @@ const Team = () => {
                 <div className="member">
                   <img src={akil} alt="" />
                   <h4>Akil Evlat</h4>
-                  <span>System Analyzer & UML Designer</span>
+                  <span>Team Member</span>
                   <p>
                     Voluptas necessitatibus occaecati quia. Earum totam
                     consequuntur qui porro et laborum toro des clara
@@ -119,7 +119,7 @@ const Team = () => {
                 <div className="member">
                   <img src={ufuk} alt="" />
                   <h4>Ufuk Cem Delice</h4>
-                  <span>System Analyzer & UI Designer</span>
+                  <span>Team Member</span>
                   <p>
                     Voluptas necessitatibus occaecati quia. Earum totam
                     consequuntur qui porro et laborum toro des clara

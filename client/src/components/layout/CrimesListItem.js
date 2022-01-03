@@ -15,7 +15,7 @@ const CrimesListItem = ({ crime, getCrimeByID }) => {
       </div>
 
       <h2 className="entry-title">
-        <NavLink to="crimes-single.html">{crime.title}</NavLink>
+        <NavLink to={`/crimes/crime/${crime._id}`}>{crime.title}</NavLink>
       </h2>
 
       <div className="entry-meta">

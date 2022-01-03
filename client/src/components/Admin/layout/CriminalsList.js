@@ -1,66 +1,137 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Table, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
+import { getCriminals } from "../../../redux/actions/criminals";
+import { connect } from "react-redux";
+import { getCriminal } from "../../../redux/actions/criminals";
+import { useNavigate } from "react-router-dom";
+import { removeCriminal } from "../../../redux/actions/criminals";
 
-const CriminalsTable = (props) => {
+import Swal from "sweetalert2";
+const CriminalsTable = ({
+  criminals,
+  getCriminals,
+  getCriminal,
+  removeCriminal,
+}) => {
+  const [disable, setDisable] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    getCriminals();
+  }, [getCriminals]);
+
+  const handleRemove = (criminalID) => {
+    Swal.fire({
+      title: "Confirm your password",
+      html: `
+      <input type="password" id="password"  autocomplete="off" class="p-2 rounded " placeholder="Password">`,
+      confirmButtonText: "Confirm",
+      confirmButtonColor: "#212529",
+      focusConfirm: false,
+      preConfirm: () => {
+        const password = Swal.getPopup().querySelector("#password").value;
+        if (!password) {
+          Swal.showValidationMessage(`Please enter your password.`);
+        }
+        return { password: password };
+      },
+    }).then((result) => {
+      console.log(result.value.password);
+      return removeCriminal(criminalID, result.value.password);
+    });
+  };
+
   return (
     <div>
       <Row xs={1} md={5} className="g-4">
-        {Array.from({ length: 8 }).map((_, idx) => (
-          <Col>
-            <div class="card p-4">
-              <div class=" image d-flex flex-column justify-content-center align-items-center">
-                {" "}
-                <button class="btn btn-secondary">
+        {criminals.criminals &&
+        criminals.criminals.length &&
+        !criminals.loading ? (
+          criminals.criminals.map((criminal, idx) => (
+            <Col>
+              <div className="card p-4">
+                <div className=" image d-flex flex-column justify-content-center align-items-center">
                   {" "}
                   <img
-                    src="https://i.imgur.com/wvxPV9S.png"
+                    src={criminal.photo}
                     height="100"
                     width="100"
+                    style={{ objectFit: "cover" }}
                   />
-                </button>{" "}
-                <span class="name mt-3">Eleanor Pena</span>{" "}
-                <div class=" d-flex mt-2">
-                  {" "}
-                  <button class="btn1 btn-dark mr-2">Edit </button>{" "}
-                  <button class="btn1 btn-danger">Remove </button>{" "}
-                </div>
-                <div class="text mt-3">
-                  {" "}
-                  <span>
-                    Eleanor Pena is a creator of minimalistic x bold graphics
-                    and digital artwork.
-                    <br />
+                  <span className="name mt-3">
+                    {criminal.firstName} {criminal.lastName}
                   </span>{" "}
-                </div>
-                <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center">
-                  {" "}
-                  <span>
-                    <i class="fa fa-twitter"></i>
-                  </span>{" "}
-                  <span>
-                    <i class="fa fa-facebook-f"></i>
-                  </span>{" "}
-                  <span>
-                    <i class="fa fa-instagram"></i>
-                  </span>{" "}
-                  <span>
-                    <i class="fa fa-linkedin"></i>
-                  </span>{" "}
-                </div>
-                <div class=" px-2 rounded mt-4 date ">
-                  {" "}
-                  <span class="join">Joined May,2021</span>{" "}
+                  <div className=" d-flex mt-2">
+                    {" "}
+                    <button
+                      className="btn1 btn-dark mr-2"
+                      onClick={() => {
+                        setDisable(true);
+                        getCriminal(criminal._id).then(() => {
+                          setDisable(false);
+                          return navigate(
+                            `/dashboard/edit-criminal/${criminal._id}`
+                          );
+                        });
+                      }}
+                    >
+                      Edit{" "}
+                    </button>{" "}
+                    <button
+                      className="btn1 btn-danger"
+                      onClick={() => handleRemove(criminal._id)}
+                    >
+                      Remove{" "}
+                    </button>{" "}
+                  </div>
+                  <div className="text mt-3">
+                    {" "}
+                    <span>
+                      {criminal.bio.length > 20
+                        ? criminal.bio.substring(0, 15) + "..."
+                        : criminal.bio}
+                      <br />
+                    </span>{" "}
+                  </div>
+                  <div className=" px-2 rounded mt-4 border border-danger text-danger ">
+                    {criminal.gender}
+                  </div>
+                  <div className=" px-2 rounded mt-4 date ">
+                    {" "}
+                    <span className="join">
+                      {new Date().getFullYear() -
+                        new Date(criminal.dob).getFullYear()}{" "}
+                      years old
+                    </span>{" "}
+                  </div>
                 </div>
               </div>
+            </Col>
+          ))
+        ) : criminals.length === 0 ? (
+          <h3>No Criminals</h3>
+        ) : (
+          <h3>Loading</h3>
+        )}
+
+        {/* {disable && (
+          <Col className="align-self-center">
+            <div className="spinner-border text-success " role="status">
+              <span className="sr-only">Loading...</span>
             </div>
           </Col>
-        ))}
+        )} */}
       </Row>
     </div>
   );
 };
 
 CriminalsTable.propTypes = {};
-
-export default CriminalsTable;
+const mapStateToProps = (state) => ({
+  criminals: state.criminals,
+});
+export default connect(mapStateToProps, {
+  getCriminals,
+  getCriminal,
+  removeCriminal,
+})(CriminalsTable);

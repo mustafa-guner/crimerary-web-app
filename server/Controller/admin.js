@@ -2,7 +2,7 @@ const Admin = require("../Model/Admin");
 const Crime = require("../Model/Crime");
 const Criminal = require("../Model/Criminal");
 const Category = require("../Model/Category");
-const urlencoded = require("body-parser/lib/types/urlencoded");
+
 module.exports = {
   createUser: async (req, res, next) => {
     try {
@@ -127,7 +127,6 @@ module.exports = {
       if (req.file)
         updates["photo"] = url + "/public/uploads/" + req.file.filename;
 
-      console.log(updates);
       const updatedCrime = await Crime.findByIdAndUpdate(
         crimeID,
         { ...updates },
@@ -223,11 +222,20 @@ module.exports = {
   createCriminal: async (req, res, next) => {
     try {
       const { firstName, lastName, gender, dob, bio } = req.body;
-      let criminalDetails = {};
-      if (firstName) criminalDetails["firstName"] = firstName;
-      if (lastName) criminalDetails["lastName"] = lastName;
-      if (gender) criminalDetails["gender"] = gender;
-      if (dob) criminalDetails["dob"] = dob;
+      const url = req.protocol + "://" + req.get("host");
+      console.log(req.body);
+      console.log(req.file);
+
+      if (!firstName || !lastName || !gender || !dob || !bio || !req.file)
+        return res.status(400).json({
+          success: false,
+          message: "Can not leave empty!",
+        });
+      // let criminalDetails = {};
+      // if (firstName) criminalDetails["firstName"] = firstName;
+      // if (lastName) criminalDetails["lastName"] = lastName;
+      // if (gender) criminalDetails["gender"] = gender;
+      // if (dob) criminalDetails["dob"] = dob;
       // if (req.file) criminalDetails["photo"] = req.file.filename;
       const criminal = await Criminal.findOne({ firstName, lastName });
       if (criminal)
@@ -245,11 +253,75 @@ module.exports = {
         gender,
         dob,
         bio,
+        photo: url + "/public/uploads/" + req.file.filename,
       });
       await newCriminal.save();
       return res.status(201).json({
         success: true,
         criminal: newCriminal,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  },
+
+  editCriminal: async (req, res, next) => {
+    try {
+      const { criminalID } = req.params;
+      const url = req.protocol + "://" + req.get("host");
+      const updates = {};
+      if (req.body.firstName) updates["firstName"] = req.body.firstName;
+      if (req.body.lastName) updates["lastName"] = req.body.lastName;
+      if (req.body.gender) updates["gender"] = req.body.gender;
+      if (req.body.dob) updates["dob"] = req.body.dob;
+      if (req.file)
+        updates["photo"] = url + "/public/uploads/" + req.file.filename;
+
+      const updatedCriminal = await Criminal.findByIdAndUpdate(
+        criminalID,
+        { ...updates },
+        { new: true }
+      );
+
+      await updatedCriminal.save();
+
+      return res.status(200).json({
+        success: true,
+        criminal: updatedCriminal,
+      });
+    } catch (error) {}
+  },
+
+  removeCriminal: async (req, res, next) => {
+    try {
+      const id = req.params.criminalID;
+      const { password } = req.body;
+
+      const admin = await Admin.findById({ _id: req.auth._id }).select(
+        "+password"
+      );
+
+      const criminal = await Criminal.findById(id);
+
+      if (!criminal)
+        return res.status(400).json({
+          success: false,
+          message: "Criminal is not found",
+        });
+
+      if (admin.comparePasswords(password)) {
+        await Criminal.findByIdAndRemove(id);
+        return res.status(200).json({
+          success: true,
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: "Passwords doesnt match",
       });
     } catch (error) {
       return res.status(500).json({

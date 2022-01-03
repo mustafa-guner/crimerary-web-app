@@ -26,12 +26,6 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
   const [loadingModal, setLoadingModal] = React.useState(false);
   useEffect(() => {
     getSimilarCategories(crime.category._id);
-    console.log(crimes);
-
-    console.log(
-      crimes.crimes.filter((similarCrime) => similarCrime._id !== crime._id)
-        .length
-    );
   }, [getSimilarCategories]);
   return (
     <>
@@ -84,21 +78,17 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
                   <div className="criminals d-flex">
                     {crime.criminals.map((criminal) => {
                       return (
-                        <div
-                          className="criminal mr-4"
-                          style={{ width: "90px" }}
-                        >
-                          <div className="criminal-image w-100">
+                        <div className=" mr-4">
+                          <div>
                             <img
                               style={{
-                                width: "100%",
-                                height: "100%",
+                                width: "90px",
+                                height: "90px",
                                 objectFit: "cover",
                                 borderRadius: "100%",
+                                margin: "1rem auto",
                               }}
-                              src={
-                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuZ9k0a58JfVhJt69eL2ajiaasscYV6L5P2Yu9OMo_YrG3J-OIPw1H4TI6lXRP-6U6vLA&usqp=CAU"
-                              }
+                              src={criminal.photo}
                             />
                           </div>
                           <div className="criminal-name text-center">
@@ -109,28 +99,6 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
                       );
                     })}
                   </div>
-
-                  {/* <div className="entry-footer">
-                    <i className="bi bi-folder"></i>
-                    <ul className="cats">
-                      <li>
-                        <a href="#">Business</a>
-                      </li>
-                    </ul>
-
-                    <i className="bi bi-tags"></i>
-                  <ul className="tags">
-                    <li>
-                      <a href="#">Creative</a>
-                    </li>
-                    <li>
-                      <a href="#">Tips</a>
-                    </li>
-                    <li>
-                      <a href="#">Marketing</a>
-                    </li>
-                  </ul>
-                  </div> */}
                 </article>
               </div>
             </div>
@@ -157,11 +125,12 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
           </Modal>
         )}
 
-        {crimes.loading ? (
+        {crimes.loading || crimes.similarCrimes.loading ? (
           <h1>Loading</h1>
-        ) : crimes.crimes.length &&
-          crimes.crimes.filter((similarCrime) => similarCrime._id !== crime._id)
-            .length > 0 &&
+        ) : crimes.similarCrimes.length &&
+          crimes.similarCrimes.filter(
+            (similarCrime) => similarCrime._id !== crime._id
+          ).length > 0 &&
           !crimes.loading ? (
           <div className="similar-crimes my-4">
             <h4>Similar Posts</h4>
@@ -172,7 +141,7 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
               slidesPerView={4}
               pagination={{ clickable: true }}
             >
-              {crimes.crimes
+              {crimes.similarCrimes
                 .filter((similarCrime) => similarCrime._id !== crime._id)
                 .map((crime) => {
                   return (

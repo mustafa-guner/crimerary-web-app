@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
-import { createCriminal } from "../../../redux/actions/criminals";
+import { editCriminal } from "../../../redux/actions/criminals";
 import { connect } from "react-redux";
-import Select from "react-select";
+import { useParams } from "react-router-dom";
+import { getCriminal } from "../../../redux/actions/criminals";
 
-const CriminalsForm = ({ createCriminal }) => {
+const CriminalsEdit = ({ editCriminal, criminal, getCriminal }) => {
   const [criminalData, setCriminalData] = useState({
     firstName: "",
     lastName: "",
@@ -15,6 +16,15 @@ const CriminalsForm = ({ createCriminal }) => {
     bio: "",
   });
 
+  const initialState = {
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    bio: "",
+  };
+
+  const { criminalID } = useParams();
   const [image, setImage] = useState({ photo: "" });
   const [disable, setDisable] = useState(false);
   const { firstName, lastName, gender, dob, bio } = criminalData;
@@ -32,10 +42,8 @@ const CriminalsForm = ({ createCriminal }) => {
     formData.append("gender", criminalData.gender);
     formData.append("bio", criminalData.bio.trim());
 
-    console.log(criminalData);
-    console.log(formData.get("photo"));
     setDisable(true);
-    createCriminal(formData).then(() => setDisable(false));
+    editCriminal(criminalID, formData).then(() => setDisable(false));
   };
 
   const handleChange = (e) => {
@@ -45,6 +53,22 @@ const CriminalsForm = ({ createCriminal }) => {
   const handleImageChange = (e) => {
     setImage({ ...image, photo: e.target.files[0] });
   };
+
+  useEffect(() => {
+    if (criminalID && !criminal) {
+      getCriminal(criminalData);
+    }
+
+    if (criminal && !criminal.loading) {
+      const criminalPost = { ...initialState };
+
+      for (const key in criminal.criminal) {
+        if (key in criminalPost) criminalPost[key] = criminal.criminal[key];
+      }
+
+      setCriminalData({ ...criminalData, ...criminalPost });
+    }
+  }, [getCriminal, criminal && criminal.loading]);
   return (
     <div>
       <Link to="/dashboard/criminals" className="mb-3 nav-link pl-0">
@@ -155,6 +179,12 @@ const CriminalsForm = ({ createCriminal }) => {
   );
 };
 
-CriminalsForm.propTypes = {};
+CriminalsEdit.propTypes = {};
 
-export default connect(null, { createCriminal })(CriminalsForm);
+const mapStateToProps = (state) => ({
+  criminal: state.criminals,
+});
+
+export default connect(mapStateToProps, { editCriminal, getCriminal })(
+  CriminalsEdit
+);
