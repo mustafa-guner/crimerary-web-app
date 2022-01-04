@@ -13,7 +13,6 @@ dotenv.config({
 
 const PORT = process.env.PORT || 80;
 const { CLIENT_URL } = process.env;
-console.log(process.env.PORT);
 
 //Connect to database;
 connectDB();
@@ -25,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
 //Cors policy for the communicate with front end / back end
 app.use(
   cors({
-    origin: "*",
+    origin: CLIENT_URL,
     credentials: true,
   })
 );
