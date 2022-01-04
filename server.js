@@ -11,8 +11,9 @@ dotenv.config({
   path: path.join(__dirname + "/Config/dotenv/.env"),
 });
 
-const PORT = process.env.PORT || 4200;
+const PORT = process.env.PORT || 80;
 const { CLIENT_URL } = process.env;
+console.log(process.env.PORT);
 
 //Connect to database;
 connectDB();
@@ -24,7 +25,7 @@ if (process.env.NODE_ENV === "production") {
 //Cors policy for the communicate with front end / back end
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: "*",
     credentials: true,
   })
 );
@@ -41,9 +42,9 @@ app.use(
 const indexRoute = require("./Route/index");
 app.use("/api/v1/", indexRoute);
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT:${PORT}.`);
