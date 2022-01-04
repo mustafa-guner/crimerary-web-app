@@ -41,9 +41,9 @@ app.use(
 const indexRoute = require("./Route/index");
 app.use("/api/v1/", indexRoute);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT:${PORT}.`);
