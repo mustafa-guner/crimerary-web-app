@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 import {
   createCrime,
@@ -37,7 +37,7 @@ const CrimesForm = ({
     photo: "",
     category: [],
   };
-
+  const navigate = useNavigate();
   const [disable, setDisable] = useState(false);
   const [image, setImage] = useState({ photo: "" });
   // const [datas, setDatas] = useState({
@@ -87,8 +87,6 @@ const CrimesForm = ({
       const selectedCategory = categories.filter(
         (category) => category._id === crime.category._id
       )[0];
-
-      console.log(selectedCategory);
 
       // setSelectedCatg({
       //   value: selectedCategory._id,
@@ -162,7 +160,10 @@ const CrimesForm = ({
 
     setDisable(true);
     console.log(datas);
-    editCrime(crimeID, formData).then(() => setDisable(false));
+    editCrime(crimeID, formData).then(() => {
+      setDisable(false);
+      navigate("/dashboard/crimes");
+    });
 
     //Empty inputs after submit
 

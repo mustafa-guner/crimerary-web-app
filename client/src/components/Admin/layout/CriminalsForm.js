@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 import { createCriminal } from "../../../redux/actions/criminals";
 import { connect } from "react-redux";
@@ -15,6 +15,7 @@ const CriminalsForm = ({ createCriminal }) => {
     bio: "",
   });
 
+  const navigate = useNavigate();
   const [image, setImage] = useState({ photo: "" });
   const [disable, setDisable] = useState(false);
   const { firstName, lastName, gender, dob, bio } = criminalData;
@@ -32,10 +33,11 @@ const CriminalsForm = ({ createCriminal }) => {
     formData.append("gender", criminalData.gender);
     formData.append("bio", criminalData.bio.trim());
 
-    console.log(criminalData);
-    console.log(formData.get("photo"));
     setDisable(true);
-    createCriminal(formData).then(() => setDisable(false));
+    createCriminal(formData).then(() => {
+      setDisable(false);
+      navigate("/dashboard/criminals");
+    });
   };
 
   const handleChange = (e) => {

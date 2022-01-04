@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 import { createCrime } from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
@@ -19,12 +19,12 @@ const CrimesForm = ({
   useEffect(() => {
     getCriminals();
     getCategories();
-    console.log(categories);
   }, [getCriminals, getCategories]);
 
   //Make animated things when removing select option data
   const animatedComponents = makeAnimated();
 
+  const navigate = useNavigate();
   const [disable, setDisable] = useState(false);
   const [image, setImage] = useState({ photo: "" });
   const [datas, setDatas] = useState({
@@ -86,6 +86,7 @@ const CrimesForm = ({
     console.log(datas);
     createCrime(formData).then(() => {
       setDisable(false);
+      navigate("/dashboard/crimes");
     });
 
     //Empty inputs after submit
@@ -98,6 +99,8 @@ const CrimesForm = ({
       criminals: "",
       category: "",
     });
+
+    // navigate("/dashboard/crimes");
   };
 
   return (

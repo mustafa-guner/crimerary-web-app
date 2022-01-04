@@ -61,9 +61,16 @@ export const editCriminal = (id, updates) => async (dispatch) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return dispatch({
+    dispatch({
       type: types.EDIT_CRIMINAL,
       payload: data.criminal,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Criminal is edited!",
+      confirmButtonColor: "#212529",
     });
   } catch (error) {
     dispatch({

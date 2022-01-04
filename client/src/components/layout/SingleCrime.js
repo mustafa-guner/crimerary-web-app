@@ -25,8 +25,9 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
   const navigate = useNavigate();
   const [loadingModal, setLoadingModal] = React.useState(false);
   useEffect(() => {
-    getSimilarCategories(crime.category._id);
+    getSimilarCategories(crime.category.category);
   }, [getSimilarCategories]);
+
   return (
     <>
       <NavigationBar />

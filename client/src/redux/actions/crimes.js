@@ -89,10 +89,16 @@ export const editCrime = (id, newDetails) => async (dispatch) => {
       },
       withCredentials: true,
     });
-
-    return dispatch({
+    dispatch({
       type: types.EDIT_CRIME,
       payload: data.crime,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Crime is edited!",
+      confirmButtonColor: "#212529",
     });
   } catch (error) {
     console.log(error.response.data);

@@ -21,13 +21,12 @@ const Menu = ({ handleLogout, auth: { loading, user } }) => {
           <Nav>
             <Nav.Link
               className="nav-link"
-              href="#"
               id="userDropdown"
-              role="button"
               aria-haspopup="true"
               aria-expanded="false"
             >
               <span className="mr-2 d-none d-lg-inline text-gray-600 small">
+                <span className="font-weight-bold">Logged in as</span>{" "}
                 {user && !loading && user.firstName}{" "}
                 {user && !loading && user.lastName}
               </span>

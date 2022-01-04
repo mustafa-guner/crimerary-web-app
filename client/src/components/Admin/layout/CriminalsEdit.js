@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
 import { editCriminal } from "../../../redux/actions/criminals";
 import { connect } from "react-redux";
@@ -23,7 +23,7 @@ const CriminalsEdit = ({ editCriminal, criminal, getCriminal }) => {
     gender: "",
     bio: "",
   };
-
+  const navigate = useNavigate();
   const { criminalID } = useParams();
   const [image, setImage] = useState({ photo: "" });
   const [disable, setDisable] = useState(false);
@@ -43,7 +43,10 @@ const CriminalsEdit = ({ editCriminal, criminal, getCriminal }) => {
     formData.append("bio", criminalData.bio.trim());
 
     setDisable(true);
-    editCriminal(criminalID, formData).then(() => setDisable(false));
+    editCriminal(criminalID, formData).then(() => {
+      setDisable(false);
+      navigate("/dashboard/criminals");
+    });
   };
 
   const handleChange = (e) => {
