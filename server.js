@@ -17,14 +17,12 @@ const { CLIENT_URL } = process.env;
 //Connect to database;
 connectDB();
 
-console.log(__dirname);
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-  });
+  // app.get("*", (req, res) => {
+  //   res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  // });
 }
 
 //Cors policy for the communicate with front end / back end
@@ -35,7 +33,7 @@ app.use(
   })
 );
 
-app.use(morgan("dev"));
+process.env.NODE_ENV === "development" && app.use(morgan("dev"));
 // app.use(bp.json());
 // app.use(bp.urlencoded({ extended: false }));
 app.use(express.json());
