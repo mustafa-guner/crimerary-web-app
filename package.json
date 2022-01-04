@@ -2,12 +2,12 @@
   "name": "crimerary",
   "version": "1.0.0",
   "description": "Crime library to follow missing people and crimes commited recently",
-  "main": "./server/server.js",
+  "main": "./server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon ./server/server.js",
+    "server": "nodemon server.js",
     "client": "cd client && npm run start --prefix",
-    "start":"node ./server/server.js",
+    "start":"node server.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "dev": "concurrently \"npm run server\"  \"npm run client \" "
   },
