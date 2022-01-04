@@ -8,7 +8,7 @@ const { connectDB } = require("./Helper/Database/connectDB");
 const morgan = require("morgan");
 
 dotenv.config({
-  path: path.join(__dirname, "/Config/dotenv/.env"),
+  path: path.join(__dirname + "/Config/dotenv/.env"),
 });
 
 const PORT = process.env.PORT || 4200;
@@ -20,9 +20,9 @@ connectDB();
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
 
-  // app.get("*", (req, res) => {
-  //   res.sendFile(path.join(__dirname + "/client/build/index.html"));
-  // });
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
 }
 
 //Cors policy for the communicate with front end / back end

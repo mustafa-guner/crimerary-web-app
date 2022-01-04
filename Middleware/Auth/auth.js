@@ -3,7 +3,7 @@ const Admin = require("../../Model/Admin");
 
 module.exports = {
   checkAuthorization: expressJWT({
-    secret: process.env.JWT_SECRET,
+    secret: process.env.JWT_SECRET || "some secret",
     algorithms: ["HS256"],
     userProperty: "auth",
   }),

@@ -66,12 +66,12 @@ adminSchema.methods.comparePasswords = function (password) {
 };
 
 adminSchema.methods.generateJWT = function () {
-  const { JWT_SECRET } = process.env;
+  const secret = process.env.JWT_SECRET || "some secret";
 
   const payload = {
     _id: this._id,
   };
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign(payload, secret, { expiresIn: "1d" });
   return token;
 };
 
