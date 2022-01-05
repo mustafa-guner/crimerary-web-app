@@ -27,12 +27,6 @@ module.exports = {
       }
 
       if (req.query.k) {
-        console.log(req.query.k);
-        console.log(
-          await Crime.find({
-            title: { $regex: req.query.k, $options: "i" },
-          })
-        );
         return res.status(200).json({
           success: true,
           crimes: await Crime.find({

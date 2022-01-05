@@ -3,7 +3,10 @@ import { NavLink } from "react-router-dom";
 const Categories = ({ categories }) => {
   return categories.map((category) => {
     return (
-      <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+      <div
+        className="col-lg-4 col-md-6 d-flex align-items-stretch"
+        key={category._id}
+      >
         <div className="icon-box">
           <div className="icon">
             <i className="fas fa-balance-scale"></i>

@@ -42,23 +42,25 @@ const Pagination = ({ data, RenderComponent, dataLimit }) => {
         })}
       </>
 
-      <div className="blog-pagination">
-        <ul className="justify-content-center">
-          {getPaginationGroup().map((item, index) => {
-            return (
-              <li key={index}>
-                {/* <NavLink to="#">1</NavLink> */}
-                <button
-                  onClick={changePage}
-                  className={` ${currentPage === item ? "active" : null}`}
-                >
-                  {item}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      {data.length > dataLimit && (
+        <div className="blog-pagination">
+          <ul className="justify-content-center">
+            {getPaginationGroup().map((item, index) => {
+              return (
+                <li key={index}>
+                  {/* <NavLink to="#">1</NavLink> */}
+                  <button
+                    onClick={changePage}
+                    className={` ${currentPage === item ? "active" : null}`}
+                  >
+                    {item}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </>
   );
 };

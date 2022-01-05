@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 
 export const createCrime = (details) => async (dispatch) => {
   try {
-    console.log(details);
     const token = window.localStorage.getItem("token");
     const { data } = await crimeAPI("/admin/create-new-crime", {
       method: "POST",
@@ -48,13 +47,11 @@ export const getCrimeByID = (id) => async (dispatch) => {
       withCredentials: true,
     });
 
-    console.log(data);
     return dispatch({
       type: types.GET_CRIME,
       payload: data.crime,
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: types.ERROR_CRIME,
     });
@@ -67,8 +64,7 @@ export const getSimilarCategories = (category) => async (dispatch) => {
       method: "GET",
       withCredentials: true,
     });
-    console.log(data);
-    // console.log(category);
+
     dispatch({
       type: types.SIMILAR_CRIMES,
       payload: data.crimes,
@@ -143,7 +139,7 @@ export const getCrimesBySearch = (search) => async (dispatch) => {
       method: "GET",
       withCredentials: true,
     });
-    console.log(data.crimes);
+
     return dispatch({
       type: types.GET_CRIMES,
       payload: data.crimes,
@@ -184,8 +180,6 @@ export const removeCrime = (id, password) => async (dispatch) => {
       payload: { crimeID: id },
     });
   } catch (error) {
-    console.log(error.response.data);
-
     Swal.fire({
       icon: "error",
       title: "Oops...",

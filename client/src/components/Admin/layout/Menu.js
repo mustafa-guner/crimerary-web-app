@@ -24,6 +24,7 @@ const Menu = ({ handleLogout, auth: { loading, user } }) => {
               id="userDropdown"
               aria-haspopup="true"
               aria-expanded="false"
+              style={{ cursor: "default" }}
             >
               <span className="mr-2 d-none d-lg-inline text-gray-600 small">
                 <span className="font-weight-bold">Logged in as</span>{" "}

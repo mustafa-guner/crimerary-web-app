@@ -30,6 +30,13 @@ export const createCriminal = (details) => async (dispatch) => {
     dispatch({
       type: types.ERROR_CRIMINAL,
     });
+
+    return Swal.fire({
+      icon: "error",
+      title: "Crime is not created",
+      confirmButtonColor: "#212529",
+      text: `${error.response.data.message}`,
+    });
   }
 };
 
@@ -43,6 +50,24 @@ export const getCriminal = (id) => async (dispatch) => {
     return dispatch({
       type: types.GET_CRIMINAL,
       payload: data.criminal,
+    });
+  } catch (error) {
+    dispatch({
+      type: types.ERROR_CRIMINAL,
+    });
+  }
+};
+
+export const getCriminalBySearch = (query) => async (dispatch) => {
+  try {
+    const { data } = await crimeAPI(`/criminals/?q=${query}`, {
+      withCredentials: true,
+      method: "GET",
+    });
+
+    return dispatch({
+      type: types.GET_CRIMINALS,
+      payload: data.criminals,
     });
   } catch (error) {
     dispatch({

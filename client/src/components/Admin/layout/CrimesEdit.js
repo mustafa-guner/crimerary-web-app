@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
-import {
-  createCrime,
-  editCrime,
-  getCrimeByID,
-} from "../../../redux/actions/crimes";
+import { editCrime, getCrimeByID } from "../../../redux/actions/crimes";
 import { connect } from "react-redux";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -14,7 +10,6 @@ import { getCriminals } from "../../../redux/actions/criminals";
 import { getCategories } from "../../../redux/actions/category";
 
 const CrimesForm = ({
-  createCrime,
   getCriminals,
   getCrimeByID,
   editCrime,
@@ -159,7 +154,7 @@ const CrimesForm = ({
     formData.append("criminals", JSON.stringify(datas.criminals));
 
     setDisable(true);
-    console.log(datas);
+
     editCrime(crimeID, formData).then(() => {
       setDisable(false);
       navigate("/dashboard/crimes");
@@ -167,14 +162,14 @@ const CrimesForm = ({
 
     //Empty inputs after submit
 
-    // setDatas({
-    //   title: "",
-    //   description: "",
-    //   location: "",
-    //   commitedAt: "",
-    //   criminals: "",
-    //   category: "",
-    // });
+    setDatas({
+      title: "",
+      description: "",
+      location: "",
+      commitedAt: "",
+      criminals: "",
+      category: "",
+    });
   };
 
   return crime && crime.loading ? (
@@ -359,7 +354,6 @@ const CrimesForm = ({
 };
 
 CrimesForm.propTypes = {
-  createCrime: PropTypes.func.isRequired,
   criminals: PropTypes.object,
   getCrimeByID: PropTypes.func.isRequired,
   editCrime: PropTypes.func.isRequired,
@@ -372,7 +366,6 @@ const mapStateToProps = (state) => ({
   categories: state.category.categories,
 });
 export default connect(mapStateToProps, {
-  createCrime,
   getCriminals,
   getCrimeByID,
   getCategories,

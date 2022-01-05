@@ -8,6 +8,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { getCriminals } from "../../../redux/actions/criminals";
 import { getCategories } from "../../../redux/actions/category";
+import Swal from "sweetalert2";
 
 const CrimesForm = ({
   createCrime,
@@ -72,7 +73,7 @@ const CrimesForm = ({
     datas.criminals = [...selectedCriminals];
     datas.photo = image.photo;
     datas.category = { ...selectedCatg };
-    console.log(datas.category.value);
+
     const formData = new FormData();
 
     formData.append("photo", datas.photo);
@@ -83,10 +84,10 @@ const CrimesForm = ({
     formData.append("category", datas.category.value);
     formData.append("criminals", JSON.stringify(datas.criminals));
     setDisable(true);
-    console.log(datas);
+
     createCrime(formData).then(() => {
       setDisable(false);
-      navigate("/dashboard/crimes");
+      // navigate("/dashboard/crimes");
     });
 
     //Empty inputs after submit

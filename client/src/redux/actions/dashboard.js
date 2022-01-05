@@ -17,7 +17,6 @@ export const dashboard = () => async (dispatch) => {
       payload: data.token,
     });
   } catch (error) {
-    console.log(error);
     return dispatch({
       type: types.AUTH_ERROR,
     });

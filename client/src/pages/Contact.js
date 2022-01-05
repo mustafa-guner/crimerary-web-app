@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavigationBar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { NavLink } from "react-router-dom";
 
 export const Contact = () => {
+  //Documentation
+  //1- ->Report new missing people
+  //2- ->Report existed missing people
+  const [contactTopic, setContactTopic] = useState({ topic: "1" });
+
+  const handleTopicChange = (e) => {
+    console.log(e.target.value);
+    setContactTopic({ ...contactTopic.topic, topic: e.target.value });
+  };
+
   return (
     <>
       <NavigationBar />
@@ -51,17 +61,7 @@ export const Contact = () => {
             </div>
 
             <div className="row">
-              <div className="col-lg-6 ">
-                <iframe
-                  className="mb-4 mb-lg-0"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3262.570764219215!2d33.90945921608166!3d35.142383666940475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14dfc9de2ec388ab%3A0x90b5c9b9584b6f10!2sDo%C4%9Fu%20Akdeniz%20%C3%9Cniversitesi!5e0!3m2!1str!2s!4v1640303308871!5m2!1str!2s"
-                  frameBorder="0"
-                  style={{ border: "0", width: "100%", height: "384px" }}
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="col-lg-6">
+              <div className="col-lg-12">
                 <form
                   action="forms/contact.php"
                   method="post"
@@ -70,45 +70,161 @@ export const Contact = () => {
                 >
                   <div className="row">
                     <div className="col-md-6 form-group">
+                      <label>Your Name</label>
                       <input
                         type="text"
                         name="name"
                         className="form-control"
-                        id="name"
-                        placeholder="Your Name"
+                        placeholder="Enter Name"
                         required
                       />
                     </div>
-                    <div className="col-md-6 form-group mt-3 mt-md-0">
+                    <div className="col-md-6 form-group  mt-md-0">
+                      <label>Your Email </label>
                       <input
                         type="email"
-                        className="form-control"
                         name="email"
-                        id="email"
-                        placeholder="Your Email"
+                        className="form-control"
+                        placeholder="Enter Email"
                         required
                       />
                     </div>
                   </div>
-                  <div className="form-group mt-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="subject"
-                      id="subject"
-                      placeholder="Subject"
-                      required
-                    />
+                  <div className="row my-3">
+                    <div className="form-group">
+                      <label>Select the topic</label>
+                      <select
+                        className="form-control"
+                        onChange={(e) => handleTopicChange(e)}
+                      >
+                        <option value={"1"}>Report New Missing Person</option>
+                        <option value={"2"}>
+                          Report Existed Missing Person{" "}
+                        </option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="form-group mt-3">
-                    <textarea
-                      className="form-control"
-                      name="message"
-                      rows="5"
-                      placeholder="Message"
-                      required
-                    ></textarea>
-                  </div>
+                  {contactTopic.topic == "1" ? (
+                    <>
+                      <div className="row my-3">
+                        <div className="col-md-6 form-group mt-3 mt-md-0">
+                          <label>Victim's Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="firstName"
+                            placeholder="Firstname"
+                            required
+                          />
+                        </div>
+                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                          <label>Victim's Surname</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="lastName"
+                            placeholder="Lastname"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="row my-3">
+                        <div className="col-md-6 form-group mt-3 mt-md-0">
+                          <label>Dob of the Victim</label>
+                          <input
+                            type="date"
+                            className="form-control"
+                            name="dob"
+                            required
+                          />
+                        </div>
+                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                          <label>Last Seen Location</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="location"
+                            placeholder="Location"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="row my-3">
+                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                          <label className="d-block">
+                            Picture of the Victim
+                          </label>
+                          <input
+                            type="file"
+                            name="photo "
+                            placeholder="Lastname"
+                            required
+                          />
+                        </div>
+
+                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                          <label className="d-block">
+                            Date of Disappearance (From)
+                          </label>
+                          <input
+                            type="date"
+                            name="from "
+                            className="form-control"
+                            placeholder="From Date"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="row my-3">
+                        <div className="col-md-12 form-group mt-3 mt-md-0">
+                          <textarea
+                            className="form-control"
+                            name="information"
+                            rows="5"
+                            placeholder="Brief details about victim"
+                            required
+                          ></textarea>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="row my-3">
+                        <div className="col-md-6 form-group mt-3 mt-md-0">
+                          <label>Select The Victim</label>
+                          <select className="form-control">
+                            <option>Jeffrey Dahrem</option>
+                            <option>Jeffrey Dahrem</option>
+                            <option>Jeffrey Dahrem</option>
+                            <option>Jeffrey Dahrem</option>
+                          </select>
+                        </div>
+                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                          <label>Seen Location</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="location"
+                            placeholder="Location"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row my-3">
+                        <div className="col-md-12 form-group mt-3 mt-md-0">
+                          <textarea
+                            className="form-control"
+                            name="information"
+                            rows="5"
+                            placeholder="Your notes"
+                            required
+                          ></textarea>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   <div className="my-3">
                     <div className="loading">Loading</div>
                     <div className="error-message"></div>

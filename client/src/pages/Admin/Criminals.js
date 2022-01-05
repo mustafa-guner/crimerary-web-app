@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import CriminalsList from "../../components/Admin/layout/CriminalsList";
 import { Link } from "react-router-dom";
 const Criminals = (props) => {
@@ -12,7 +12,5 @@ const Criminals = (props) => {
     </div>
   );
 };
-
-Criminals.propTypes = {};
 
 export default Criminals;

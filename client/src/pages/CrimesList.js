@@ -4,6 +4,7 @@ import Footer from "../components/layout/Footer";
 import { NavLink } from "react-router-dom";
 import Categories from "../components/layout/Categories";
 import { connect } from "react-redux";
+import { Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 import CrimesListItem from "../components/layout/CrimesListItem";
 import {
@@ -25,6 +26,7 @@ const Crimes = ({
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchByTitle, setSearchByTitle] = useState({ k: "" });
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const handleChangeTitle = (e) =>
     setSearchByTitle({
@@ -35,16 +37,25 @@ const Crimes = ({
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchParams({ k: searchByTitle.k });
-    getCrimesBySearch(searchByTitle.k);
+    setSearchLoading(true);
+    getCrimesBySearch(searchByTitle.k).then(() => {
+      setSearchLoading(false);
+    });
   };
 
   useEffect(() => {
     getCategories();
 
     if (searchParams.get("category")) {
-      getCrimesByCategory(searchParams.get("category"));
+      setSearchLoading(true);
+      getCrimesByCategory(searchParams.get("category")).then(() => {
+        setSearchLoading(false);
+      });
     } else if (searchParams.get("k")) {
-      getCrimesByCategory(searchParams.get("k"));
+      setSearchLoading(true);
+      getCrimesByCategory(searchParams.get("k")).then(() => {
+        setSearchLoading(false);
+      });
     } else {
       getCrimes();
     }
@@ -139,6 +150,26 @@ const Crimes = ({
               </div>
             </div>
           </div>
+          {searchLoading && (
+            <Modal
+              show={searchLoading}
+              centered
+              backdrop="static"
+              keyboard={false}
+            >
+              <Modal.Body className="text-center">
+                <h3
+                  id="contained-modal-title-vcenter"
+                  className="text-center  my-4"
+                >
+                  Loading
+                </h3>
+                <div className="spinner-border text-center" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </Modal.Body>
+            </Modal>
+          )}
         </section>
       </main>
 

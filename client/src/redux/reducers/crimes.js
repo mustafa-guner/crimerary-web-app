@@ -33,7 +33,6 @@ const crime = (state = initialState, action) => {
       };
 
     case types.GET_CRIMES:
-      console.log(payload);
       return {
         ...state,
         crimes: payload,

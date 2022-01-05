@@ -5,6 +5,21 @@ module.exports = {
     try {
       const criminals = await Criminal.find({});
 
+      if (req.query.q) {
+        return res.status(200).json({
+          //Search by name and lastname
+          criminals: await Criminal.find({
+            $expr: {
+              $regexMatch: {
+                input: { $concat: ["$firstName", " ", "$lastName"] },
+                regex: req.query.q, //Your text search here
+                options: "i",
+              },
+            },
+          }),
+        });
+      }
+
       return res.status(200).json({
         success: true,
         criminals,
@@ -33,14 +48,4 @@ module.exports = {
       });
     }
   },
-
-  //   crime: async (req, res, next) => {
-  //     try {
-  //     } catch (error) {
-  //       return res.status(500).json({
-  //         success: false,
-  //         error: error.message,
-  //       });
-  //     }
-  //   },
 };

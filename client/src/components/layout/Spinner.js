@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import detectiveImage from "../../images/crime2.jpg";
 const Spinner = () => {
   return (
     <div
@@ -15,9 +16,11 @@ const Spinner = () => {
         height: "100vh",
       }}
     >
-      <h1 className="display-4">Loading</h1>
-
-      <div className="spinner-border " role="status">
+      <img src={`${detectiveImage}`} />
+      <h1 className="display-2 my-2">
+        Crime<span className="text-danger">Rary</span>
+      </h1>
+      <div className="spinner-border my-2 " role="status">
         <span className="sr-only">Loading...</span>
       </div>
     </div>

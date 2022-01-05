@@ -36,7 +36,7 @@ const CriminalsForm = ({ createCriminal }) => {
     setDisable(true);
     createCriminal(formData).then(() => {
       setDisable(false);
-      navigate("/dashboard/criminals");
+      //navigate("/dashboard/criminals");
     });
   };
 

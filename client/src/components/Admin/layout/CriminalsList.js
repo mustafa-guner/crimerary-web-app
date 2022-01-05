@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { getCriminal } from "../../../redux/actions/criminals";
 import { useNavigate } from "react-router-dom";
 import { removeCriminal } from "../../../redux/actions/criminals";
-
+import noData from "../../../images/no data.svg";
 import Swal from "sweetalert2";
 const CriminalsTable = ({
   criminals,
@@ -45,8 +45,8 @@ const CriminalsTable = ({
     <div>
       <Row xs={1} md={5} className="g-4">
         {criminals.criminals &&
-        criminals.criminals.length &&
-        !criminals.loading ? (
+          criminals.criminals.length > 0 &&
+          !criminals.loading &&
           criminals.criminals.map((criminal, idx) => (
             <Col>
               <div className="card p-4">
@@ -107,12 +107,7 @@ const CriminalsTable = ({
                 </div>
               </div>
             </Col>
-          ))
-        ) : criminals.length === 0 ? (
-          <h3>No Criminals</h3>
-        ) : (
-          <h3>Loading</h3>
-        )}
+          ))}
 
         {/* {disable && (
           <Col className="align-self-center">
@@ -121,6 +116,21 @@ const CriminalsTable = ({
             </div>
           </Col>
         )} */}
+      </Row>
+      <Row>
+        {criminals.criminals.length === 0 && (
+          <div className="text-center">
+            {" "}
+            <h1 className="display-4 text-center text-black-50 p-4">
+              No Criminals Found
+            </h1>
+            <img
+              style={{ width: "80px", height: "80px" }}
+              src={noData}
+              alt="No Data Found"
+            />{" "}
+          </div>
+        )}
       </Row>
     </div>
   );

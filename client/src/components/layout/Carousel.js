@@ -43,7 +43,13 @@ const Carousels = () => {
     </Carousel>
      */}
 
-      <section id="hero">
+      <section
+        id="hero"
+        style={{
+          backgroundImage:
+            "url('https://bloximages.chicago2.vip.townnews.com/globegazette.com/content/tncms/assets/v3/editorial/9/7d/97decab0-8486-5a32-9527-b04994d33156/5bf4617461652.image.jpg?crop=1209%2C907%2C72%2C0&resize=1209%2C907&order=crop%2Cresize')",
+        }}
+      >
         <div className="hero-container">
           <div
             id="heroCarousel"

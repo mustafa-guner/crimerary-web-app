@@ -7,7 +7,7 @@ export const getCategories = () => async (dispatch) => {
       method: "GET",
       withCredentials: true,
     });
-    console.log(data);
+
     dispatch({
       type: types.GET_CATEGORIES,
       payload: data.categories,
