@@ -12,12 +12,6 @@ module.exports = {
       ]);
 
       if (req.query.category) {
-        console.log(req.query.category);
-        console.log(
-          crimePosts.filter(
-            (crime) => crime.category.category === req.query.category
-          )
-        );
         return res.status(200).json({
           success: true,
           crimes: crimePosts.filter(

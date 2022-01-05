@@ -1,47 +1,52 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
-import { createCriminal } from "../../../redux/actions/criminals";
+import { createMissingPerson } from "../../../redux/actions/missingPerson";
 import { connect } from "react-redux";
-import Select from "react-select";
 
-const CriminalsForm = ({ createCriminal }) => {
-  const [criminalData, setCriminalData] = useState({
+const MissingPeopleForm = ({ createMissingPerson }) => {
+  const [missingPersonData, setMissingPersonDat] = useState({
     firstName: "",
     lastName: "",
     dob: "",
     gender: "",
     bio: "",
+    fromDate: "",
+    lastSeenLocation: "",
   });
 
-  const navigate = useNavigate();
   const [image, setImage] = useState({ photo: "" });
   const [disable, setDisable] = useState(false);
-  const { firstName, lastName, gender, dob, bio } = criminalData;
+  const { firstName, lastName, gender, dob, bio, lastSeenLocation, fromDate } =
+    missingPersonData;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
 
-    criminalData.photo = image.photo;
+    missingPersonData.photo = image.photo;
 
-    formData.append("firstName", criminalData.firstName.trim());
-    formData.append("lastName", criminalData.lastName.trim());
-    formData.append("photo", criminalData.photo);
-    formData.append("dob", criminalData.dob);
-    formData.append("gender", criminalData.gender);
-    formData.append("bio", criminalData.bio.trim());
+    formData.append("firstName", missingPersonData.firstName.trim());
+    formData.append("lastName", missingPersonData.lastName.trim());
+    formData.append("photo", missingPersonData.photo);
+    formData.append("fromDate", missingPersonData.fromDate);
+    formData.append("lastSeenLocation", missingPersonData.lastSeenLocation);
+    formData.append("dob", missingPersonData.dob);
+    formData.append("gender", missingPersonData.gender);
+    formData.append("bio", missingPersonData.bio.trim());
 
     setDisable(true);
-    createCriminal(formData).then(() => {
+    createMissingPerson(formData).then(() => {
       setDisable(false);
-      //navigate("/dashboard/criminals");
     });
   };
 
   const handleChange = (e) => {
-    setCriminalData({ ...criminalData, [e.target.name]: e.target.value });
+    setMissingPersonDat({
+      ...missingPersonData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleImageChange = (e) => {
@@ -49,16 +54,16 @@ const CriminalsForm = ({ createCriminal }) => {
   };
   return (
     <div>
-      <Link to="/dashboard/criminals" className="mb-3 nav-link pl-0">
+      <Link to="/dashboard/missing-people" className="mb-3 nav-link pl-0">
         <i class="fas fa-long-arrow-alt-left"></i> Back
       </Link>
       <h1 className="lead mb-4" style={{ fontSize: "2rem" }}>
-        Criminals Form
+        Missing Person Form
       </h1>
       <Form onSubmit={handleSubmit}>
         <Row xs={1} md={3}>
           <Col className="my-2">
-            <Form.Label>Enter Name of Criminal</Form.Label>
+            <Form.Label>Enter Name of Missing Person</Form.Label>
             <Form.Control
               placeholder="First name"
               name="firstName"
@@ -68,7 +73,7 @@ const CriminalsForm = ({ createCriminal }) => {
             />
           </Col>
           <Col className="my-2">
-            <Form.Label>Enter Surname of Criminal</Form.Label>
+            <Form.Label>Enter Surname of Missing Person</Form.Label>
             <Form.Control
               placeholder="Last name"
               name="lastName"
@@ -79,7 +84,7 @@ const CriminalsForm = ({ createCriminal }) => {
           </Col>
           <Col className="my-2">
             <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Upload Image of Criminal</Form.Label>
+              <Form.Label>Upload Image of Missing Person</Form.Label>
               <Form.Control
                 type="file"
                 onChange={handleImageChange}
@@ -91,7 +96,7 @@ const CriminalsForm = ({ createCriminal }) => {
         <Row className="my-4" xs={1} md={3}>
           <Col className="my-2">
             <Form.Group controlId="dob">
-              <Form.Label>Choose DOB of Criminal</Form.Label>
+              <Form.Label>Choose DOB of Missing Person</Form.Label>
               <Form.Control
                 type="date"
                 name="dob"
@@ -102,9 +107,36 @@ const CriminalsForm = ({ createCriminal }) => {
               />
             </Form.Group>
           </Col>
+
+          <Col className="my-2">
+            <Form.Label>Last Seen Location</Form.Label>
+            <Form.Control
+              placeholder="Location"
+              name="lastSeenLocation"
+              onChange={(e) => handleChange(e)}
+              value={lastSeenLocation}
+              disabled={disable}
+            />
+          </Col>
+
+          <Col className="my-2">
+            <Form.Group controlId="dob">
+              <Form.Label> Date of Disappearance (From)</Form.Label>
+              <Form.Control
+                type="date"
+                name="fromDate"
+                disabled={disable}
+                value={fromDate}
+                onChange={(e) => handleChange(e)}
+                placeholder="From Date"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row lg={3}>
           <Col className="align-self-center my-2">
             <Form.Label className="d-block">
-              Select Gender of Criminal
+              Select Gender of Missing person
             </Form.Label>
             <Form.Check
               inline
@@ -165,6 +197,6 @@ const CriminalsForm = ({ createCriminal }) => {
   );
 };
 
-CriminalsForm.propTypes = {};
+MissingPeopleForm.propTypes = {};
 
-export default connect(null, { createCriminal })(CriminalsForm);
+export default connect(null, { createMissingPerson })(MissingPeopleForm);

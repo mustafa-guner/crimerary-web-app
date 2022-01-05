@@ -33,7 +33,7 @@ module.exports = {
   testAuth: async (req, res, next) => {
     try {
       const admin = await Admin.findById(req.auth._id);
-      console.log(req.auth._id);
+
       return res.status(200).json(admin);
     } catch (error) {
       return res.status(500).json({

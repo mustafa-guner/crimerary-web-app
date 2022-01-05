@@ -17,7 +17,7 @@ const Spinner = () => {
       }}
     >
       <img src={`${detectiveImage}`} />
-      <h1 className="display-2 my-2">
+      <h1>
         Crime<span className="text-danger">Rary</span>
       </h1>
       <div className="spinner-border my-2 " role="status">

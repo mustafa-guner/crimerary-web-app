@@ -4,6 +4,7 @@ import crimes from "./crimes";
 import criminals from "./criminals";
 import category from "./category";
 import dashboard from "./dashboard";
+import missingPerson from "./missingPerson";
 
 import { combineReducers } from "redux";
 
@@ -14,4 +15,5 @@ export default combineReducers({
   criminals,
   category,
   dashboard,
+  missingPerson,
 });

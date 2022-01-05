@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
-import { getCriminals } from "../../../redux/actions/criminals";
+import {
+  getAllMissingPeople,
+  removeMissingPerson,
+} from "../../../redux/actions/missingPerson";
 import { connect } from "react-redux";
 import { getCriminal } from "../../../redux/actions/criminals";
 import { useNavigate } from "react-router-dom";
 import { removeCriminal } from "../../../redux/actions/criminals";
 import noData from "../../../images/no data.svg";
 import Swal from "sweetalert2";
-const CriminalsTable = ({
-  criminals,
-  getCriminals,
+
+const MissingPeopleList = ({
+  missingPeople,
+  getAllMissingPeople,
   getCriminal,
-  removeCriminal,
+  removeMissingPerson,
 }) => {
   const [disable, setDisable] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    getCriminals();
-  }, [getCriminals]);
+    getAllMissingPeople();
+  }, [getAllMissingPeople]);
 
-  const handleRemove = (criminalID) => {
+  console.log(missingPeople);
+  const handleRemove = (missinPersonID) => {
     Swal.fire({
       title: "Confirm your password",
       html: `
@@ -36,49 +41,38 @@ const CriminalsTable = ({
         return { password: password };
       },
     }).then((result) => {
-      return removeCriminal(criminalID, result.value.password);
+      return removeMissingPerson(missinPersonID, result.value.password);
     });
   };
 
   return (
     <div>
       <Row xs={1} md={5} className="g-4">
-        {criminals.criminals &&
-          criminals.criminals.length > 0 &&
-          !criminals.loading &&
-          criminals.criminals.map((criminal, idx) => (
+        {missingPeople.missingPeople &&
+          missingPeople.missingPeople.length > 0 &&
+          !missingPeople.loading &&
+          missingPeople.missingPeople.map((missingPerson, idx) => (
             <Col>
               <div className="card p-4">
                 <div className=" image d-flex flex-column justify-content-center align-items-center">
                   {" "}
                   <img
-                    src={criminal.photo}
+                    src={missingPerson.photo}
                     height="100"
                     width="100"
                     style={{ objectFit: "cover" }}
                   />
                   <span className="name mt-3">
-                    {criminal.firstName} {criminal.lastName}
+                    {missingPerson.firstName} {missingPerson.lastName}
                   </span>{" "}
                   <div className=" d-flex mt-2">
                     {" "}
-                    <button
-                      className="btn1 btn-dark mr-2"
-                      onClick={() => {
-                        setDisable(true);
-                        getCriminal(criminal._id).then(() => {
-                          setDisable(false);
-                          return navigate(
-                            `/dashboard/edit-criminal/${criminal._id}`
-                          );
-                        });
-                      }}
-                    >
-                      Edit{" "}
-                    </button>{" "}
+                    <button className="btn1 btn-dark mr-2">Edit </button>{" "}
                     <button
                       className="btn1 btn-danger"
-                      onClick={() => handleRemove(criminal._id)}
+                      onClick={() => {
+                        return handleRemove(missingPerson._id);
+                      }}
                     >
                       Remove{" "}
                     </button>{" "}
@@ -86,20 +80,20 @@ const CriminalsTable = ({
                   <div className="text mt-3">
                     {" "}
                     <span>
-                      {criminal.bio.length > 20
-                        ? criminal.bio.substring(0, 15) + "..."
-                        : criminal.bio}
+                      {missingPerson.bio.length > 20
+                        ? missingPerson.bio.substring(0, 15) + "..."
+                        : missingPerson.bio}
                       <br />
                     </span>{" "}
                   </div>
                   <div className=" px-2 rounded mt-4 border border-danger text-danger ">
-                    {criminal.gender}
+                    {missingPerson.gender}
                   </div>
                   <div className=" px-2 rounded mt-4 date ">
                     {" "}
                     <span className="join">
                       {new Date().getFullYear() -
-                        new Date(criminal.dob).getFullYear()}{" "}
+                        new Date(missingPerson.dob).getFullYear()}{" "}
                       years old
                     </span>{" "}
                   </div>
@@ -117,11 +111,11 @@ const CriminalsTable = ({
         )} */}
       </Row>
       <Row>
-        {criminals.criminals.length === 0 && (
+        {missingPeople.missingPeople.length === 0 && (
           <div className="text-center">
             {" "}
             <h1 className="display-4 text-center text-black-50 p-4">
-              No Criminals Found
+              No Missing People Found
             </h1>
             <img
               style={{ width: "80px", height: "80px" }}
@@ -135,12 +129,13 @@ const CriminalsTable = ({
   );
 };
 
-CriminalsTable.propTypes = {};
+MissingPeopleList.propTypes = {};
 const mapStateToProps = (state) => ({
-  criminals: state.criminals,
+  missingPeople: state.missingPerson,
 });
 export default connect(mapStateToProps, {
-  getCriminals,
+  getAllMissingPeople,
+
   getCriminal,
-  removeCriminal,
-})(CriminalsTable);
+  removeMissingPerson,
+})(MissingPeopleList);

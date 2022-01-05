@@ -7,11 +7,13 @@ const adminRouter = require("./admin");
 const crimeRouter = require("./crime");
 const criminalRouter = require("./criminal");
 const categoryRouter = require("./category");
+const missingRouter = require("./missingPeople");
 
 router.use("/auth/", authRouter);
 router.use("/admin/", adminRouter);
 router.use("/crimes/", crimeRouter);
 router.use("/criminals/", criminalRouter);
 router.use("/categories/", categoryRouter);
+router.use("/missing-people/", missingRouter);
 
 module.exports = router;

@@ -7,17 +7,35 @@ import SwipperSlider from "../components/layout/ClientsSlider";
 import Footer from "../components/layout/Footer";
 import HomeCategories from "../components/layout/HomeCategories";
 import { getCategories } from "../redux/actions/category";
+import { getAllMissingPeople } from "../redux/actions/missingPerson";
 import { connect } from "react-redux";
 
-const Home = ({ categories, getCategories }) => {
+const Home = ({
+  categories,
+  getCategories,
+  getAllMissingPeople,
+  missingPeople,
+}) => {
   useEffect(() => {
     getCategories();
-  }, [getCategories]);
+    getAllMissingPeople();
+  }, [getCategories, getAllMissingPeople]);
   return (
     <>
       <Navbar />
-
-      <Carousel />
+      <h2 className="text-center my-4">Missing People</h2>
+      {missingPeople.loading ? (
+        <div className=" text-center mx-auto mt-4">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      ) : missingPeople.missingPeople &&
+        missingPeople.missingPeople.length > 0 ? (
+        <Carousel missingPeople={missingPeople.missingPeople} />
+      ) : (
+        <h1>No Missing People To Show</h1>
+      )}
 
       <main id="main">
         <section id="featured" className="featured">
@@ -29,8 +47,10 @@ const Home = ({ categories, getCategories }) => {
             <h2 className="text-center mb-4">Crime Categories</h2>
             <div className="row">
               {categories.categories && categories.loading ? (
-                <div className="spinner-border " role="status">
-                  <span className="sr-only">Loading...</span>
+                <div className=" text-center mx-auto mt-4">
+                  <div className="spinner-border " role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               ) : (
                 <HomeCategories categories={categories.categories} />
@@ -60,6 +80,9 @@ Home.propTypes = {
 
 const mapStateToProps = (state) => ({
   categories: state.category,
+  missingPeople: state.missingPerson,
 });
 
-export default connect(mapStateToProps, { getCategories })(Home);
+export default connect(mapStateToProps, { getCategories, getAllMissingPeople })(
+  Home
+);

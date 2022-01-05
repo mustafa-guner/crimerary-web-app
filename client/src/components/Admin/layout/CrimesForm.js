@@ -266,16 +266,17 @@ const CrimesForm = ({
               disabled={disable}
               className="btn btn-success  w-100 text-center"
             >
-              Save
+              Save{" "}
+              {disable && (
+                <span
+                  className="spinner-border spinner-border-sm text-light "
+                  role="status"
+                >
+                  <span className="sr-only">Loading...</span>
+                </span>
+              )}
             </button>
           </Col>
-          {disable && (
-            <Col className="align-self-center">
-              <div className="spinner-border text-success " role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </Col>
-          )}
         </Row>
       </Form>
     </div>

@@ -1,10 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
-
-const MissingPeople = (props) => {
-  return <div>MissingPeople Page</div>;
+import MissingPeopleList from "../../components/Admin/layout/MissingPeopleList";
+import { Link } from "react-router-dom";
+const Criminals = (props) => {
+  return (
+    <div>
+      <Link to="/dashboard/add-missing-person" className="mb-3 nav-link pl-0">
+        Add New Missing Person
+      </Link>
+      <MissingPeopleList />
+    </div>
+  );
 };
 
-MissingPeople.propTypes = {};
-
-export default MissingPeople;
+export default Criminals;

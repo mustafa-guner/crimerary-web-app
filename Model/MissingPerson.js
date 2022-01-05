@@ -15,14 +15,21 @@ const missingPersonSchema = mongoose.Schema({
     type: String,
   },
 
-  information: {
+  bio: {
     type: String,
     required: true,
   },
 
+  photo: String,
+
   dob: {
     type: Date,
     required: true,
+  },
+
+  gender: {
+    type: String,
+    enum: ["male", "female"],
   },
 
   fromDate: {

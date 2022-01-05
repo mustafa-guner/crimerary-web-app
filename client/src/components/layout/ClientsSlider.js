@@ -14,7 +14,6 @@ import "./ClientsSlider.css";
 import CIA from "../../images/cia.png";
 import FBI from "../../images/FBI.png";
 import NASA from "../../images/NASA.png";
-import KBG from "../../images/KGB.png";
 import INTERPOL from "../../images/interpol.png";
 import NATIONAL from "../../images/national_security_agenty.png";
 import MIT from "../../images/MIT.png";

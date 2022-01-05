@@ -36,7 +36,7 @@ module.exports = {
     try {
       const { criminalID } = req.params;
       const criminal = await Criminal.findById(criminalID);
-      console.log(criminal);
+
       return res.status(200).json({
         success: true,
         criminal: criminal,

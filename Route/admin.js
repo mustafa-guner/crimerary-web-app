@@ -10,6 +10,8 @@ const {
   editCrime,
   editCriminal,
   removeCriminal,
+  createMissingPerson,
+  removeMissingPerson,
 } = require("../Controller/admin");
 
 //Admin Dashboard after success login
@@ -68,6 +70,18 @@ adminRoute.post(
   "/remove-crime/:crimeID",
   [checkAuthorization, adminAccess],
   removeCrime
+);
+
+adminRoute.post(
+  "/create-missing-person",
+  [checkAuthorization, adminAccess, uploadImage.single("photo")],
+  createMissingPerson
+);
+
+adminRoute.post(
+  "/remove-missing-person/:missingPersonID",
+  [checkAuthorization, adminAccess],
+  removeMissingPerson
 );
 
 adminRoute.get("/dashboard", [checkAuthorization, adminAccess], dashboard);

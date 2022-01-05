@@ -3,7 +3,6 @@ const path = require("path");
 const { v4 } = require("uuid");
 
 const DIR = path.dirname(require.main.filename);
-console.log(DIR);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -19,7 +18,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    console.log(req.file);
     if (
       file.mimetype == "image/png" ||
       file.mimetype == "image/jpg" ||

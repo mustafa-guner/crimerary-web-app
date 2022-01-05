@@ -1,51 +1,91 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
-
-const Carousels = () => {
+import Moment from "react-moment";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+const Carousels = ({ missingPeople }) => {
   return (
     <>
-      {/* <Carousel className="h-100" variant="dark">
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="https://wallpaperaccess.com/full/2015338.jpg"
-          alt="First slide"
-        />
-        <Carousel.Caption>
-          <h5>First slide label</h5>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="https://wallpapercave.com/wp/wp5351153.jpg"
-          alt="Second slide"
-        />
-        <Carousel.Caption>
-          <h5>Second slide label</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="https://mocah.org/uploads/posts/1174804-street-night-motorcycle-evening-Ryan-Gosling-midnight-infrastructure-The-Place-Beyond-the-Pines-crime-darkness-screenshot-pc-game.jpg"
-          alt="Third slide"
-        />
-        <Carousel.Caption>
-          <h5>Third slide label</h5>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
-     */}
+      <Carousel
+        variant="dark"
+        className="h-100 py-4"
+        style={{
+          height: "100vh !important",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundImage:
+            "url('https://bloximages.chicago2.vip.townnews.com/globegazette.com/content/tncms/assets/v3/editorial/9/7d/97decab0-8486-5a32-9527-b04994d33156/5bf4617461652.image.jpg?crop=1209%2C907%2C72%2C0&resize=1209%2C907&order=crop%2Cresize')",
+        }}
+      >
+        {missingPeople.map((person, index) => {
+          console.log(person);
+          return (
+            <Carousel.Item className="h-100" style={{ height: "100vh" }}>
+              <div className="row d-flex " style={{ justifyContent: "center" }}>
+                <div className="col-md-4 col-lg-4 col-sm-12">
+                  <div
+                    style={{
+                      width: "400px",
+                      height: "50vh",
+                      margin: "1rem auto",
+                    }}
+                  >
+                    {" "}
+                    <img
+                      className="d-block w-100 h-100"
+                      src={`${person.photo}`}
+                      alt={`${index + 1}_image`}
+                      style={{
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-5 col-md-5 col-sm-12 align-self-center">
+                  <Carousel.Caption
+                    className="d-block position-static my-4 text-white bg-dark p-3 text-left rounded-2"
+                    style={{ opacity: ".8" }}
+                  >
+                    <h2 className="mb-4">
+                      {person.firstName} {person.lastName}{" "}
+                      <span>
+                        ({" "}
+                        {new Date().getFullYear() -
+                          new Date(person.dob).getFullYear()}{" "}
+                        )
+                      </span>
+                    </h2>
+                    <div className="row mt-2">
+                      <div className="col-4">
+                        <p>
+                          Missing Since:{" "}
+                          <Moment format="YYYY/DD/MM">{person.fromDate}</Moment>
+                        </p>
+                      </div>
+                      <div className="col-4">
+                        <p>Last Seen At: {person.lastSeenLocation}</p>
+                      </div>
+                      <div className="col-4">
+                        <p>Sex: {person.gender}</p>
+                      </div>
+                    </div>
+                    <p>{person.bio}</p>
 
-      <section
+                    <button className="btn btn-danger">Let us know</button>
+                  </Carousel.Caption>
+                </div>
+              </div>
+            </Carousel.Item>
+          );
+        })}
+      </Carousel>
+
+      {/* <section
         id="hero"
         style={{
+          backgroundRepeat:"no-repeat",
+          backgroundSize:"cover",
+          backgroundPosition:"center",
           backgroundImage:
             "url('https://bloximages.chicago2.vip.townnews.com/globegazette.com/content/tncms/assets/v3/editorial/9/7d/97decab0-8486-5a32-9527-b04994d33156/5bf4617461652.image.jpg?crop=1209%2C907%2C72%2C0&resize=1209%2C907&order=crop%2Cresize')",
         }}
@@ -200,7 +240,7 @@ const Carousels = () => {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

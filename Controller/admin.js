@@ -1,7 +1,7 @@
 const Admin = require("../Model/Admin");
 const Crime = require("../Model/Crime");
 const Criminal = require("../Model/Criminal");
-const Category = require("../Model/Category");
+const MissingPerson = require("../Model/MissingPerson");
 
 module.exports = {
   createUser: async (req, res, next) => {
@@ -111,11 +111,9 @@ module.exports = {
       if (req.body.title) updates["title"] = req.body.title;
       if (req.body.description) updates["description"] = req.body.description;
       if (req.body.category) {
-        console.log(req.body.category);
         updates["category"] = req.body.category;
       }
       if (req.body.criminals) {
-        console.log(req.body.criminals);
         updates["criminals"] = JSON.parse(req.body.criminals).map(
           (criminal) => criminal.value
         );
@@ -223,8 +221,6 @@ module.exports = {
     try {
       const { firstName, lastName, gender, dob, bio } = req.body;
       const url = req.protocol + "://" + req.get("host");
-      console.log(req.body);
-      console.log(req.file);
 
       if (!firstName || !lastName || !gender || !dob || !bio || !req.file)
         return res.status(400).json({
@@ -243,10 +239,7 @@ module.exports = {
           success: false,
           message: "Criminal is already exists",
         });
-      // console.log(req.file.filename);
-      // const newCriminal = new Criminal({
-      //   ...criminalDetails,
-      // });
+
       const newCriminal = new Criminal({
         firstName,
         lastName,
@@ -314,6 +307,111 @@ module.exports = {
 
       if (admin.comparePasswords(password)) {
         await Criminal.findByIdAndRemove(id);
+        return res.status(200).json({
+          success: true,
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: "Passwords doesnt match",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  },
+
+  createMissingPerson: async (req, res, next) => {
+    try {
+      const {
+        firstName,
+        lastName,
+        dob,
+        gender,
+        lastSeenLocation,
+        fromDate,
+        bio,
+      } = req.body;
+      const url = req.protocol + "://" + req.get("host");
+
+      if (
+        !firstName ||
+        !lastName ||
+        !dob ||
+        !gender ||
+        !lastSeenLocation ||
+        !fromDate ||
+        !bio ||
+        !req.file
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: "Fill all the blanks",
+        });
+      }
+
+      const missingPerson = await MissingPerson.findOne({
+        firstName,
+        lastName,
+      });
+
+      if (missingPerson) {
+        return res.status(400).json({
+          success: false,
+          message: "The missing person that has same name had created before.",
+        });
+      }
+
+      const newMissingPerson = new MissingPerson({
+        firstName,
+        lastName,
+        dob,
+        gender,
+        lastSeenLocation,
+        fromDate,
+        bio,
+        photo: url + "/public/uploads/" + req.file.filename,
+      });
+
+      await newMissingPerson.save();
+      console.log(newMissingPerson);
+      return res.status(201).json({
+        success: true,
+        missingPerson: newMissingPerson,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  },
+
+  removeMissingPerson: async (req, res, next) => {
+    try {
+      const { missingPersonID } = req.params;
+      const { password } = req.body;
+
+      const admin = await Admin.findById({ _id: req.auth._id }).select(
+        "+password"
+      );
+
+      console.log(admin.comparePasswords(password));
+
+      const missingPerson = await MissingPerson.findById(missingPersonID);
+
+      if (!missingPerson)
+        return res.status(400).json({
+          success: false,
+          message: "Missing Person is not found to remove.",
+        });
+
+      console.log(admin.comparePasswords(password));
+      if (admin.comparePasswords(password)) {
+        await MissingPerson.findByIdAndRemove(missingPersonID);
         return res.status(200).json({
           success: true,
         });

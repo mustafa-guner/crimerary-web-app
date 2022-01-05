@@ -23,6 +23,7 @@ import CriminalsList from "./pages/CriminalsList";
 import CriminalEdit from "./components/Admin/layout/CriminalsEdit";
 import { Contact } from "./pages/Contact";
 import Crime from "./pages/Crime";
+import MissingPeopleForm from "./components/Admin/layout/MissingPeopleForm";
 
 if (window.localStorage.getItem("token")) {
   store.dispatch(loadUser());
@@ -123,6 +124,16 @@ function App() {
             element={
               <PrivateRoute>
                 <MissingPeople />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            exact
+            path={"/dashboard/add-missing-person"}
+            element={
+              <PrivateRoute>
+                <MissingPeopleForm />
               </PrivateRoute>
             }
           />
