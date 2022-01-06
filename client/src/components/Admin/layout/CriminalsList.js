@@ -108,6 +108,14 @@ const CriminalsTable = ({
             </Col>
           ))}
 
+        {criminals.loading && (
+          <div className="text-center mx-auto">
+            <div className="spinner-border text-center" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        )}
+
         {/* {disable && (
           <Col className="align-self-center">
             <div className="spinner-border text-success " role="status">

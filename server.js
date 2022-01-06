@@ -30,8 +30,8 @@ app.use(
 );
 
 process.env.NODE_ENV === "development" && app.use(morgan("dev"));
-// app.use(bp.json());
-// app.use(bp.urlencoded({ extended: false }));
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   "/public/uploads/",

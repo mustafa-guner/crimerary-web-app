@@ -56,6 +56,7 @@ const MissingPeopleList = ({
               <div className="card p-4">
                 <div className=" image d-flex flex-column justify-content-center align-items-center">
                   {" "}
+                  <p className="lead">Missing</p>
                   <img
                     src={missingPerson.photo}
                     height="100"

@@ -34,7 +34,7 @@ const Home = ({
         missingPeople.missingPeople.length > 0 ? (
         <Carousel missingPeople={missingPeople.missingPeople} />
       ) : (
-        <h1>No Missing People To Show</h1>
+        <h1 className="text-center">No Missing People To Show</h1>
       )}
 
       <main id="main">

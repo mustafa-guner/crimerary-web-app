@@ -2,16 +2,119 @@ import React, { useEffect, useState } from "react";
 import NavigationBar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { NavLink } from "react-router-dom";
+import { getAllMissingPeople } from "../redux/actions/missingPerson";
+import { connect } from "react-redux";
+import {
+  createExistedMissingPersonReport,
+  createNewMissingPersonReport,
+} from "../redux/actions/form";
 
-export const Contact = () => {
+const Contact = ({
+  getAllMissingPeople,
+  missingPeople,
+  createNewMissingPersonReport,
+  createExistedMissingPersonReport,
+}) => {
+  useEffect(() => {
+    getAllMissingPeople();
+  }, [getAllMissingPeople]);
+
   //Documentation
   //1- ->Report new missing people
   //2- ->Report existed missing people
   const [contactTopic, setContactTopic] = useState({ topic: "1" });
-
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [photo, setPhoto] = useState(null);
   const handleTopicChange = (e) => {
-    console.log(e.target.value);
     setContactTopic({ ...contactTopic.topic, topic: e.target.value });
+  };
+
+  //Form Sender Credentials
+  const [senderCredentials, setSenderCredentials] = useState({
+    senderName: "",
+    senderEmail: "",
+  });
+
+  //Reporting new missing person
+  const [newMissingPerson, setNewMissingPerson] = useState({
+    missingPersonName: "",
+    missingPersonLastName: "",
+    missingPersonDob: "",
+    missingPersonMissingFromDate: "",
+    missingPersonLastLocation: "",
+    missingPersonBio: "",
+  });
+
+  const [reportExistedPerson, setReportExistedPerson] = useState({
+    seenLocation: "",
+    notes: "",
+    missingPerson: "",
+  });
+
+  const handlePhotoChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
+  const handleChangeExistedPerson = (e) => {
+    setReportExistedPerson({
+      ...reportExistedPerson,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleChangeNewPerson = (e) => {
+    setNewMissingPerson({
+      ...newMissingPerson,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSenderChange = (e) => {
+    setSenderCredentials({
+      ...senderCredentials,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("senderName", senderCredentials.senderName);
+    formData.append("senderEmail", senderCredentials.senderEmail);
+    if (contactTopic.topic === "1") {
+      newMissingPerson.photo = photo;
+      formData.append("missingPersonName", newMissingPerson.missingPersonName);
+      formData.append(
+        "missingPersonLastName",
+        newMissingPerson.missingPersonLastName
+      );
+      formData.append("missingPersonDob", newMissingPerson.missingPersonDob);
+      formData.append(
+        "missingPersonMissingFromDate",
+        newMissingPerson.missingPersonMissingFromDate
+      );
+      formData.append(
+        "missingPersonLastLocation",
+        newMissingPerson.missingPersonLastLocation
+      );
+      formData.append("photo", newMissingPerson.photo);
+      formData.append("missingPersonBio", newMissingPerson.missingPersonBio);
+      console.log(newMissingPerson);
+      setSubmitLoading(true);
+      createNewMissingPersonReport(formData).then(() => {
+        setSubmitLoading(false);
+      });
+    } else {
+      formData.append("seenLocation", reportExistedPerson.seenLocation);
+      formData.append("notes", reportExistedPerson.notes);
+      formData.append("missingPerson", reportExistedPerson.missingPerson);
+      console.log(reportExistedPerson);
+
+      setSubmitLoading(true);
+      createExistedMissingPersonReport(formData).then(() => {
+        setSubmitLoading(false);
+      });
+    }
   };
 
   return (
@@ -63,33 +166,37 @@ export const Contact = () => {
             <div className="row">
               <div className="col-lg-12">
                 <form
-                  action="forms/contact.php"
-                  method="post"
                   role="form"
                   className="php-email-form"
+                  onSubmit={handleSubmit}
                 >
                   <div className="row">
                     <div className="col-md-6 form-group">
                       <label>Your Name</label>
                       <input
                         type="text"
-                        name="name"
+                        name="senderName"
                         className="form-control"
                         placeholder="Enter Name"
                         required
+                        onChange={(e) => handleSenderChange(e)}
+                        disabled={submitLoading}
                       />
                     </div>
                     <div className="col-md-6 form-group  mt-md-0">
                       <label>Your Email </label>
                       <input
                         type="email"
-                        name="email"
+                        name="senderEmail"
                         className="form-control"
                         placeholder="Enter Email"
+                        onChange={(e) => handleSenderChange(e)}
+                        disabled={submitLoading}
                         required
                       />
                     </div>
                   </div>
+
                   <div className="row my-3">
                     <div className="form-group">
                       <label>Select the topic</label>
@@ -104,7 +211,7 @@ export const Contact = () => {
                       </select>
                     </div>
                   </div>
-                  {contactTopic.topic == "1" ? (
+                  {contactTopic.topic === "1" ? (
                     <>
                       <div className="row my-3">
                         <div className="col-md-6 form-group mt-3 mt-md-0">
@@ -112,9 +219,13 @@ export const Contact = () => {
                           <input
                             type="text"
                             className="form-control"
-                            name="firstName"
+                            name="missingPersonName"
                             placeholder="Firstname"
+                            onChange={(e) => handleChangeNewPerson(e)}
                             required
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           />
                         </div>
                         <div className="col-md-6 form-group mt-3 mt-md-0 ">
@@ -122,9 +233,13 @@ export const Contact = () => {
                           <input
                             type="text"
                             className="form-control"
-                            name="lastName"
+                            name="missingPersonLastName"
                             placeholder="Lastname"
                             required
+                            onChange={(e) => handleChangeNewPerson(e)}
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           />
                         </div>
                       </div>
@@ -134,8 +249,12 @@ export const Contact = () => {
                           <input
                             type="date"
                             className="form-control"
-                            name="dob"
+                            name="missingPersonDob"
                             required
+                            onChange={(e) => handleChangeNewPerson(e)}
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           />
                         </div>
                         <div className="col-md-6 form-group mt-3 mt-md-0 ">
@@ -143,9 +262,13 @@ export const Contact = () => {
                           <input
                             type="text"
                             className="form-control"
-                            name="location"
+                            name="missingPersonLastLocation"
                             placeholder="Location"
                             required
+                            onChange={(e) => handleChangeNewPerson(e)}
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           />
                         </div>
                       </div>
@@ -156,9 +279,13 @@ export const Contact = () => {
                           </label>
                           <input
                             type="file"
+                            onChange={(e) => handlePhotoChange(e)}
                             name="photo "
                             placeholder="Lastname"
                             required
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           />
                         </div>
 
@@ -168,10 +295,14 @@ export const Contact = () => {
                           </label>
                           <input
                             type="date"
-                            name="from "
+                            name="missingPersonMissingFromDate"
                             className="form-control"
                             placeholder="From Date"
                             required
+                            onChange={(e) => handleChangeNewPerson(e)}
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           />
                         </div>
                       </div>
@@ -179,10 +310,14 @@ export const Contact = () => {
                         <div className="col-md-12 form-group mt-3 mt-md-0">
                           <textarea
                             className="form-control"
-                            name="information"
+                            name="missingPersonBio"
                             rows="5"
+                            onChange={(e) => handleChangeNewPerson(e)}
                             placeholder="Brief details about victim"
                             required
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
                           ></textarea>
                         </div>
                       </div>
@@ -192,11 +327,38 @@ export const Contact = () => {
                       <div className="row my-3">
                         <div className="col-md-6 form-group mt-3 mt-md-0">
                           <label>Select The Victim</label>
-                          <select className="form-control">
-                            <option>Jeffrey Dahrem</option>
-                            <option>Jeffrey Dahrem</option>
-                            <option>Jeffrey Dahrem</option>
-                            <option>Jeffrey Dahrem</option>
+                          {missingPeople.missingPeople &&
+                            missingPeople.loading &&
+                            missingPeople.length === 0 && (
+                              <p className="text-danger">
+                                No Missing People Found
+                              </p>
+                            )}
+
+                          <select
+                            className="form-control"
+                            name="missingPerson"
+                            onChange={(e) => handleChangeExistedPerson(e)}
+                            disabled={
+                              contactTopic.topic === "1" || submitLoading
+                            }
+                          >
+                            {missingPeople &&
+                              missingPeople.missingPeople.length > 0 &&
+                              !missingPeople.loading &&
+                              missingPeople.missingPeople.map(
+                                (missingPerson) => {
+                                  return (
+                                    <option
+                                      value={missingPerson._id}
+                                      key={missingPerson._id}
+                                    >
+                                      {missingPerson.firstName}{" "}
+                                      {missingPerson.lastName}
+                                    </option>
+                                  );
+                                }
+                              )}
                           </select>
                         </div>
                         <div className="col-md-6 form-group mt-3 mt-md-0 ">
@@ -204,9 +366,13 @@ export const Contact = () => {
                           <input
                             type="text"
                             className="form-control"
-                            name="location"
+                            name="seenLocation"
                             placeholder="Location"
                             required
+                            onChange={(e) => handleChangeExistedPerson(e)}
+                            disabled={
+                              contactTopic.topic === "1" || submitLoading
+                            }
                           />
                         </div>
                       </div>
@@ -215,25 +381,24 @@ export const Contact = () => {
                         <div className="col-md-12 form-group mt-3 mt-md-0">
                           <textarea
                             className="form-control"
-                            name="information"
+                            name="notes"
                             rows="5"
+                            onChange={(e) => handleChangeExistedPerson(e)}
                             placeholder="Your notes"
                             required
+                            disabled={
+                              contactTopic.topic === "1" || submitLoading
+                            }
                           ></textarea>
                         </div>
                       </div>
                     </>
                   )}
 
-                  <div className="my-3">
-                    <div className="loading">Loading</div>
-                    <div className="error-message"></div>
-                    <div className="sent-message">
-                      Your message has been sent. Thank you!
-                    </div>
-                  </div>
                   <div className="text-center">
-                    <button type="submit">Contact Us</button>
+                    <button disabled={submitLoading} type="submit">
+                      Contact Us
+                    </button>
                   </div>
                 </form>
               </div>
@@ -245,3 +410,12 @@ export const Contact = () => {
     </>
   );
 };
+
+const mapStateToProps = (state) => ({
+  missingPeople: state.missingPerson,
+});
+export default connect(mapStateToProps, {
+  getAllMissingPeople,
+  createNewMissingPersonReport,
+  createExistedMissingPersonReport,
+})(Contact);

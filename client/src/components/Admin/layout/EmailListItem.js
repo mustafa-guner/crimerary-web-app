@@ -9,7 +9,7 @@ const EmailListItem = () => {
         </a>
       </div>
       <a href="#" className="email-subject">
-        Reporting of New Missing Person<i className="unread">&nbsp;</i>
+        Report New Missing Person<i className="unread">&nbsp;</i>
       </a>
     </li>
   );
