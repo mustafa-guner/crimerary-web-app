@@ -13,7 +13,7 @@ dotenv.config({
 
 const PORT = process.env.PORT || 80;
 const { CLIENT_URL } = process.env;
-console.log(CLIENT_URL);
+
 //Connect to database;
 connectDB();
 
