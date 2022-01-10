@@ -63,7 +63,10 @@ module.exports = {
           message: "Please fill all the required blanks.",
         });
 
-      const url = req.protocol + "://" + req.get("host");
+      const url =
+        process.env.NODE_ENV === "development"
+          ? req.protocol + "://" + req.get("host")
+          : process.env.PRODUCTION_URL;
 
       const crimePost = await Crime.findOne({ title, description });
 
@@ -104,7 +107,11 @@ module.exports = {
   editCrime: async (req, res, next) => {
     try {
       const { crimeID } = req.params;
-      const url = req.protocol + "://" + req.get("host");
+
+      const url =
+        process.env.NODE_ENV === "development"
+          ? req.protocol + "://" + req.get("host")
+          : process.env.PRODUCTION_URL;
 
       const updates = {};
 
@@ -220,7 +227,10 @@ module.exports = {
   createCriminal: async (req, res, next) => {
     try {
       const { firstName, lastName, gender, dob, bio } = req.body;
-      const url = req.protocol + "://" + req.get("host");
+      const url =
+        process.env.NODE_ENV === "development"
+          ? req.protocol + "://" + req.get("host")
+          : process.env.PRODUCTION_URL;
 
       if (!firstName || !lastName || !gender || !dob || !bio || !req.file)
         return res.status(400).json({
@@ -264,7 +274,10 @@ module.exports = {
   editCriminal: async (req, res, next) => {
     try {
       const { criminalID } = req.params;
-      const url = req.protocol + "://" + req.get("host");
+      const url =
+        process.env.NODE_ENV === "development"
+          ? req.protocol + "://" + req.get("host")
+          : process.env.PRODUCTION_URL;
       const updates = {};
       if (req.body.firstName) updates["firstName"] = req.body.firstName;
       if (req.body.lastName) updates["lastName"] = req.body.lastName;
@@ -335,7 +348,10 @@ module.exports = {
         fromDate,
         bio,
       } = req.body;
-      const url = req.protocol + "://" + req.get("host");
+      const url =
+        process.env.NODE_ENV === "development"
+          ? req.protocol + "://" + req.get("host")
+          : process.env.PRODUCTION_URL;
 
       if (
         !firstName ||
@@ -377,7 +393,7 @@ module.exports = {
       });
 
       await newMissingPerson.save();
-      console.log(newMissingPerson);
+
       return res.status(201).json({
         success: true,
         missingPerson: newMissingPerson,
@@ -399,8 +415,6 @@ module.exports = {
         "+password"
       );
 
-      console.log(admin.comparePasswords(password));
-
       const missingPerson = await MissingPerson.findById(missingPersonID);
 
       if (!missingPerson)
@@ -409,7 +423,6 @@ module.exports = {
           message: "Missing Person is not found to remove.",
         });
 
-      console.log(admin.comparePasswords(password));
       if (admin.comparePasswords(password)) {
         await MissingPerson.findByIdAndRemove(missingPersonID);
         return res.status(200).json({
