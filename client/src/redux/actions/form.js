@@ -5,19 +5,15 @@ import Swal from "sweetalert2";
 export const createExistedMissingPersonReport =
   (details) => async (dispatch) => {
     try {
-      console.log(details.get("missingPerson"));
       const { data } = await contactAPI(
         "/contact/report-existed-missing-person",
         {
           method: "POST",
           withCredentials: true,
           data: details,
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
         }
       );
-
+      console.log(data);
       dispatch({
         type: types.CREATE_CONTACT_FORM,
         payload: data.form,

@@ -18,9 +18,12 @@ const Carousels = ({ missingPeople }) => {
         }}
       >
         {missingPeople.map((person, index) => {
-          console.log(person);
           return (
-            <Carousel.Item className="h-100" style={{ height: "100vh" }}>
+            <Carousel.Item
+              className="h-100"
+              style={{ height: "100vh" }}
+              key={person._id}
+            >
               <div className="row d-flex " style={{ justifyContent: "center" }}>
                 <div className="col-md-4 col-lg-4 col-sm-12">
                   <div

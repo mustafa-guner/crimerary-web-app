@@ -36,7 +36,7 @@ const Pagination = ({ data, RenderComponent, dataLimit }) => {
         {getPaginatedData().map((crime) => {
           return (
             <div className="col-6 col-lg-6 mt-4">
-              <RenderComponent crime={crime} />{" "}
+              <RenderComponent key={crime._id} crime={crime} />{" "}
             </div>
           );
         })}

@@ -99,19 +99,17 @@ const Contact = ({
       );
       formData.append("photo", newMissingPerson.photo);
       formData.append("missingPersonBio", newMissingPerson.missingPersonBio);
-      console.log(newMissingPerson);
+
       setSubmitLoading(true);
-      createNewMissingPersonReport(formData).then(() => {
+      return createNewMissingPersonReport(formData).then(() => {
         setSubmitLoading(false);
       });
     } else {
-      formData.append("seenLocation", reportExistedPerson.seenLocation);
-      formData.append("notes", reportExistedPerson.notes);
-      formData.append("missingPerson", reportExistedPerson.missingPerson);
-      console.log(reportExistedPerson);
+      reportExistedPerson.senderName = senderCredentials.senderName;
+      reportExistedPerson.senderEmail = senderCredentials.senderEmail;
 
       setSubmitLoading(true);
-      createExistedMissingPersonReport(formData).then(() => {
+      return createExistedMissingPersonReport(reportExistedPerson).then(() => {
         setSubmitLoading(false);
       });
     }
