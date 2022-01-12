@@ -4,13 +4,13 @@ const {
   reportExistedMissingPerson,
   reportNewMissingPerson,
   getForms,
-  getForm,
+  removeForm,
 } = require("../Controller/form");
 
 const { uploadImage } = require("../Middleware/Uploads/upload");
 
 formRouter.get("/forms", getForms);
-formRouter.get("/forms/:formID", getForm);
+formRouter.delete("/forms/:formID", removeForm);
 formRouter.post("/report-existed-missing-person", reportExistedMissingPerson);
 formRouter.post(
   "/report-new-missing-person",

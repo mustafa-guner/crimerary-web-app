@@ -131,21 +131,20 @@ module.exports = {
     }
   },
 
-  getForm: async (req, res, next) => {
+  removeForm: async (req, res, next) => {
     try {
       const { formID } = req.params;
-      const ExistedMissingPersonForms = await ReportExisted.findById(
-        formID
-      ).populate("missingpeople");
-      const ReportedNewMissingPersonForms = await ReportNew.find({ formID });
-      const form = ExistedMissingPersonForms
-        ? ExistedMissingPersonForms
-        : ReportedNewMissingPersonForms
-        ? ReportedNewMissingPersonForms
-        : null;
+      console.log(formID);
+      const ExistedMissingPersonForms = await ReportExisted.findById(formID);
+      const ReportedNewMissingPersonForms = await ReportNew.findById(formID);
+
+      if (ExistedMissingPersonForms)
+        await ReportExisted.findByIdAndRemove(formID);
+      if (ReportedNewMissingPersonForms)
+        await ReportNew.findByIdAndRemove(formID);
+
       return res.status(200).json({
         success: true,
-        form,
       });
     } catch (error) {
       return res.status(500).json({

@@ -1,7 +1,8 @@
 import React from "react";
 import Moment from "react-moment";
-const EmailWrapper = ({ currentForm, createNewMissingPerson }) => {
-  console.log(currentForm);
+
+const EmailWrapper = ({ currentForm, createNewMissingPerson, rejectForm }) => {
+  const [disable, setDisable] = React.useState(false);
   return (
     <div className="email-desc-wrapper h-100">
       <div className="email-header">
@@ -78,16 +79,24 @@ const EmailWrapper = ({ currentForm, createNewMissingPerson }) => {
         )}
       </div>
 
-      {/* {!currentForm.title.includes("Existed") && (
+      {!currentForm.title.includes("Existed") && (
         <div className="email-action">
           <button
+            disabled={disable}
             className="btn text-white"
             style={{ backgroundColor: "#DC2E32" }}
+            onClick={() => {
+              setDisable(true);
+              rejectForm(currentForm._id).then(() => {
+                setDisable(false);
+              });
+            }}
           >
             Reject
           </button>
 
           <button
+            disabled={disable}
             className="btn btn-dark text-white"
             onClick={() => {
               const formData = new FormData();
@@ -107,13 +116,24 @@ const EmailWrapper = ({ currentForm, createNewMissingPerson }) => {
               formData.append("gender", currentForm.missingPersonGender);
               formData.append("bio", currentForm.missingPersonBio);
 
-              createNewMissingPerson(formData);
+              setDisable(true);
+              createNewMissingPerson(formData).then(() => {
+                setDisable(false);
+              });
             }}
           >
-            Confirm
+            Confirm{" "}
           </button>
+          {disable && (
+            <span
+              className="spinner-border spinner-border-sm text-light "
+              role="status"
+            >
+              <span className="sr-only">Loading...</span>
+            </span>
+          )}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

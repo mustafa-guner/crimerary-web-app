@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./Forms.css";
 import EmailWrapper from "../../components/Admin/layout/EmailWrapper";
 import EmailListItem from "../../components/Admin/layout/EmailListItem";
-import { getForms } from "../../redux/actions/form";
+import { getForms, rejectForm } from "../../redux/actions/form";
 import { connect } from "react-redux";
 import { createMissingPerson } from "../../redux/actions/missingPerson";
 import noData from "../../images/no data.svg";
@@ -12,10 +12,11 @@ const Forms = ({
   forms: { forms, loading },
   getForms,
   createMissingPerson,
+  rejectForm,
 }) => {
   useEffect(() => {
     getForms();
-  }, [getForms]);
+  }, [getForms, rejectForm]);
 
   const [currentForm, setCurrentForm] = useState({});
 
@@ -57,6 +58,7 @@ const Forms = ({
         {Object.keys(currentForm).length > 0 && (
           <EmailWrapper
             createNewMissingPerson={createMissingPerson}
+            rejectForm={rejectForm}
             currentForm={currentForm}
           />
         )}
@@ -71,6 +73,8 @@ const mapStateToProps = (state) => ({
   forms: state.form,
 });
 
-export default connect(mapStateToProps, { getForms, createMissingPerson })(
-  Forms
-);
+export default connect(mapStateToProps, {
+  getForms,
+  createMissingPerson,
+  rejectForm,
+})(Forms);

@@ -93,3 +93,23 @@ export const getForms = () => async (dispatch) => {
     });
   }
 };
+
+export const rejectForm = (id) => async (dispatch) => {
+  try {
+    await contactAPI(`/contact/forms/${id}`, {
+      withCredentials: true,
+      method: "DELETE",
+    });
+
+    Swal.fire("Deleted!", "Form has been deleted.", "success");
+
+    return dispatch({
+      type: types.REMOVE_FORM,
+      payload: id,
+    });
+  } catch (error) {
+    return dispatch({
+      type: types.ERROR_CRIMINAL,
+    });
+  }
+};

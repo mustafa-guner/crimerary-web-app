@@ -39,6 +39,14 @@ const form = (state = initialState, action) => {
         loading: false,
       };
 
+    case types.REMOVE_FORM:
+      return {
+        ...state,
+
+        forms: state.forms.filter((form) => form._id !== payload),
+        loading: false,
+      };
+
     default:
       return state;
   }

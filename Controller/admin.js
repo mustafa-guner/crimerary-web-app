@@ -352,7 +352,8 @@ module.exports = {
         process.env.NODE_ENV === "development"
           ? req.protocol + "://" + req.get("host")
           : process.env.PRODUCTION_URL;
-      console.log(req.file);
+
+      console.log(req.body.photo);
 
       if (
         !firstName ||
@@ -361,8 +362,7 @@ module.exports = {
         !gender ||
         !lastSeenLocation ||
         !fromDate ||
-        !bio ||
-        !req.file
+        !bio
       ) {
         return res.status(400).json({
           success: false,
@@ -390,8 +390,8 @@ module.exports = {
         lastSeenLocation,
         fromDate,
         bio,
-        photo: req.file.includes("http")
-          ? req.file.filename
+        photo: req.body.photo
+          ? req.body.photo
           : url + "/public/uploads/" + req.file.filename,
       });
 
