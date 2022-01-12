@@ -13,7 +13,7 @@ export const createExistedMissingPersonReport =
           data: details,
         }
       );
-      console.log(data);
+
       dispatch({
         type: types.CREATE_CONTACT_FORM,
         payload: data.form,
@@ -29,7 +29,7 @@ export const createExistedMissingPersonReport =
       dispatch({
         type: types.ERROR_CONTACT_FORM,
       });
-      console.log(error.response.data);
+
       return Swal.fire({
         icon: "error",
         title: "Form is not submitted",
@@ -71,6 +71,25 @@ export const createNewMissingPersonReport = (details) => async (dispatch) => {
       title: "Form is not submitted",
       confirmButtonColor: "#212529",
       text: `${error.response.data.message}`,
+    });
+  }
+};
+
+export const getForms = () => async (dispatch) => {
+  try {
+    const { data } = await contactAPI("/contact/forms", {
+      method: "GET",
+      withCredentials: true,
+      headers: {},
+    });
+
+    return dispatch({
+      type: types.GET_FORMS,
+      payload: data.forms,
+    });
+  } catch (error) {
+    dispatch({
+      type: types.ERROR_CRIMINAL,
     });
   }
 };

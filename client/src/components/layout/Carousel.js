@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import Moment from "react-moment";
+import { Link } from "react-router-dom";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 const Carousels = ({ missingPeople }) => {
   return (
@@ -74,7 +75,9 @@ const Carousels = ({ missingPeople }) => {
                     </div>
                     <p>{person.bio}</p>
 
-                    <button className="btn btn-danger">Let us know</button>
+                    <Link to={"/contact"} className="btn btn-danger">
+                      Let us know
+                    </Link>
                   </Carousel.Caption>
                 </div>
               </div>

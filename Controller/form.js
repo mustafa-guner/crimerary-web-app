@@ -25,6 +25,7 @@ module.exports = {
         senderName,
         senderEmail,
         missingPerson,
+        title: "Reporting Existed Missing Person",
         seenLocation,
         notes,
       });
@@ -54,10 +55,11 @@ module.exports = {
         missingPersonDob,
         missingPersonMissingFromDate,
         missingPersonLastLocation,
+        missingPersonGender,
         missingPersonBio,
       } = req.body;
       const url = req.protocol + "://" + req.get("host");
-
+      console.log(req.body);
       if (
         !senderName ||
         !senderEmail ||
@@ -66,6 +68,7 @@ module.exports = {
         !missingPersonDob ||
         !missingPersonName ||
         !missingPersonMissingFromDate ||
+        !missingPersonGender ||
         !missingPersonBio ||
         !req.file
       ) {
@@ -81,8 +84,10 @@ module.exports = {
         missingPersonName,
         missingPersonLastName,
         missingPersonDob,
+        title: "Reporting New Missing Person",
         missingPersonBio,
         missingPersonMissingFromDate,
+        missingPersonGender,
         missingPersonLastLocation,
         photo: url + "/public/uploads/" + req.file.filename,
       });
@@ -98,6 +103,54 @@ module.exports = {
       return res.status(500).json({
         success: false,
         error: error.message,
+      });
+    }
+  },
+
+  getForms: async (req, res, next) => {
+    try {
+      const ExistedMissingPersonForms = await ReportExisted.find({}).populate(
+        "missingPerson"
+      );
+      const ReportedNewMissingPersonForms = await ReportNew.find({});
+
+      console.log([
+        ...ExistedMissingPersonForms,
+        ...ReportedNewMissingPersonForms,
+      ]);
+
+      return res.status(200).json({
+        success: true,
+        forms: [...ExistedMissingPersonForms, ...ReportedNewMissingPersonForms],
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  getForm: async (req, res, next) => {
+    try {
+      const { formID } = req.params;
+      const ExistedMissingPersonForms = await ReportExisted.findById(
+        formID
+      ).populate("missingpeople");
+      const ReportedNewMissingPersonForms = await ReportNew.find({ formID });
+      const form = ExistedMissingPersonForms
+        ? ExistedMissingPersonForms
+        : ReportedNewMissingPersonForms
+        ? ReportedNewMissingPersonForms
+        : null;
+      return res.status(200).json({
+        success: true,
+        form,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
       });
     }
   },

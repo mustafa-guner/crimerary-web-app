@@ -15,6 +15,7 @@ const reportExisted = mongoose.Schema({
     default: Date.now(),
   },
 
+  title: String,
   read: {
     type: Boolean,
     default: false,

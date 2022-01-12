@@ -134,7 +134,7 @@ const SingleCrime = ({ crime, getSimilarCategories, getCrimeByID, crimes }) => {
           ).length > 0 &&
           !crimes.loading ? (
           <div className="similar-crimes my-4">
-            <h4>Similar Posts</h4>
+            <h4>Related Posts</h4>
             <Swiper
               // install Swiper modules
               modules={[Navigation, Pagination, Scrollbar, A11y]}

@@ -9,6 +9,8 @@ const reportNewSchema = mongoose.Schema({
   missingPersonMissingFromDate: Date,
   missingPersonLastLocation: String,
   missingPersonBio: String,
+  missingPersonGender: String,
+  title: String,
   photo: String,
   //Sent date
   sendAt: {

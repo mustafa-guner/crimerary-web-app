@@ -44,3 +44,5 @@ export const REMOVE_MISSING_PERSON = "REMOVE_MISSING_PERSON";
 //Form / Contact Types
 export const CREATE_CONTACT_FORM = "CREATE_CONTACT_FORM";
 export const ERROR_CONTACT_FORM = "ERROR_CONTACT_FORM";
+export const GET_FORMS = "GET_FORMS";
+export const GET_FORM = "GET_FORM";

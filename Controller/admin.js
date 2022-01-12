@@ -352,6 +352,7 @@ module.exports = {
         process.env.NODE_ENV === "development"
           ? req.protocol + "://" + req.get("host")
           : process.env.PRODUCTION_URL;
+      console.log(req.file);
 
       if (
         !firstName ||
@@ -389,7 +390,9 @@ module.exports = {
         lastSeenLocation,
         fromDate,
         bio,
-        photo: url + "/public/uploads/" + req.file.filename,
+        photo: req.file.includes("http")
+          ? req.file.filename
+          : url + "/public/uploads/" + req.file.filename,
       });
 
       await newMissingPerson.save();

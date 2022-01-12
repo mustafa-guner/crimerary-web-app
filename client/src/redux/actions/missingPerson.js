@@ -30,10 +30,10 @@ export const createMissingPerson = (details) => async (dispatch) => {
     dispatch({
       type: types.ERROR_MISSING_PERSON,
     });
-
+    console.log(error.response.data.message);
     return Swal.fire({
       icon: "error",
-      title: "Crime is not created",
+      title: "Missing Person is not created",
       confirmButtonColor: "#212529",
       text: `${error.response.data.message}`,
     });

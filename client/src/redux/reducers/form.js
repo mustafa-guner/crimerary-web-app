@@ -25,6 +25,20 @@ const form = (state = initialState, action) => {
         loading: false,
       };
 
+    case types.GET_FORMS:
+      return {
+        ...state,
+        forms: payload,
+        loading: false,
+      };
+
+    case types.GET_FORM:
+      return {
+        ...state,
+        form: payload,
+        loading: false,
+      };
+
     default:
       return state;
   }

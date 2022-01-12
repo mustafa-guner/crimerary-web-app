@@ -53,7 +53,7 @@ const Crimes = ({
       });
     } else if (searchParams.get("k")) {
       setSearchLoading(true);
-      getCrimesByCategory(searchParams.get("k")).then(() => {
+      getCrimesBySearch(searchParams.get("k")).then(() => {
         setSearchLoading(false);
       });
     } else {

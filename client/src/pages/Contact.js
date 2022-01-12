@@ -43,6 +43,7 @@ const Contact = ({
     missingPersonMissingFromDate: "",
     missingPersonLastLocation: "",
     missingPersonBio: "",
+    missingPersonGender: "",
   });
 
   const [reportExistedPerson, setReportExistedPerson] = useState({
@@ -99,6 +100,10 @@ const Contact = ({
       );
       formData.append("photo", newMissingPerson.photo);
       formData.append("missingPersonBio", newMissingPerson.missingPersonBio);
+      formData.append(
+        "missingPersonGender",
+        newMissingPerson.missingPersonGender
+      );
 
       setSubmitLoading(true);
       return createNewMissingPersonReport(formData).then(() => {
@@ -271,7 +276,7 @@ const Contact = ({
                         </div>
                       </div>
                       <div className="row my-3">
-                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                        <div className="col-md-4 form-group mt-3 mt-md-0 ">
                           <label className="d-block">
                             Picture of the Victim
                           </label>
@@ -287,7 +292,7 @@ const Contact = ({
                           />
                         </div>
 
-                        <div className="col-md-6 form-group mt-3 mt-md-0 ">
+                        <div className="col-md-4 form-group mt-3 mt-md-0 ">
                           <label className="d-block">
                             Date of Disappearance (From)
                           </label>
@@ -302,6 +307,32 @@ const Contact = ({
                               contactTopic.topic === "2" || submitLoading
                             }
                           />
+                        </div>
+                        <div className="col-md-4 form-group mt-3 mt-md-0 ">
+                          <label className="d-block">Gender</label>
+                          <input
+                            type="radio"
+                            name="missingPersonGender"
+                            required
+                            value={"female"}
+                            onChange={(e) => handleChangeNewPerson(e)}
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
+                          />
+                          <span className="mx-2">Female</span>
+                          <input
+                            type="radio"
+                            name="missingPersonGender"
+                            required
+                            className="ml-2"
+                            value={"male"}
+                            onChange={(e) => handleChangeNewPerson(e)}
+                            disabled={
+                              contactTopic.topic === "2" || submitLoading
+                            }
+                          />
+                          <span className="mx-2">Male </span>
                         </div>
                       </div>
                       <div className="row my-3">
