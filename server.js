@@ -42,7 +42,7 @@ const indexRoute = require("./Route/index");
 
 app.use("/api/v1/", indexRoute);
 
-app.get("/*", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
